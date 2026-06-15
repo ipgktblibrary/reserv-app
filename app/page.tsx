@@ -1,65 +1,700 @@
-import Image from "next/image";
+// // "use client";
 
-export default function Home() {
+// // import React, { useState, useRef, useEffect } from "react";
+// // import { Room, ROOMS, TIME_SLOTS, TimeSlot } from "./data/bookingData";
+
+// // export default function RoomReservation() {
+// //   // Properly typed state management
+// //   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
+// //   const [selectedTime, setSelectedTime] = useState<TimeSlot | null>(null);
+// //   const [studentName, setStudentName] = useState<string>("");
+// //   const [studentId, setStudentId] = useState<string>("");
+
+// //   const formRef = useRef<HTMLDivElement>(null);
+
+// //   // Smooth scroll to form when both room and time are selected
+// //   useEffect(() => {
+// //     if (selectedRoom && selectedTime) {
+// //       formRef.current?.scrollIntoView({ behavior: "smooth" });
+// //     }
+// //   }, [selectedRoom, selectedTime]);
+
+// //   const handleConfirmBooking = (event: React.FormEvent<HTMLFormElement>) => {
+// //     event.preventDefault();
+
+// //     if (!selectedRoom || !selectedTime) return;
+
+// //     // Browser feedback logic
+// //     alert(
+// //       `Reservation Successful!\n\n` +
+// //         `Room: ${selectedRoom.name}\n` +
+// //         `Time: ${selectedTime.value}\n` +
+// //         `Reserved By: ${studentName} (${studentId})`,
+// //     );
+
+// //     // Reset Form State natively
+// //     setSelectedRoom(null);
+// //     setSelectedTime(null);
+// //     setStudentName("");
+// //     setStudentId("");
+// //   };
+
+// //   return (
+// //     <div className="min-h-screen p-8 flex justify-center items-start">
+// //       <div className="w-full max-w-200 bg-(--surface) p-8 rounded-xl shadow-md border border-(--border)">
+// //         <header className="text-center mb-8">
+// //           <h1 className="text-3xl font-bold mb-2">Reserve a Study Room</h1>
+// //           <p className="text-[var(--text-light)]">
+// //             Select a room and your preferred timing below.
+// //           </p>
+// //         </header>
+
+// //         {/* Reservation Rules & Guidelines Context Board */}
+// //         <div className="mb-10 p-5 bg-slate-50 border border-slate-200 rounded-xl">
+// //           <h3 className="text-sm font-semibold text-slate-700 uppercase tracking-wider mb-3 text-left px-1">
+// //             Important Guidelines
+// //           </h3>
+// //           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-slate-600 text-left">
+// //             <div className="flex items-start gap-2.5 p-2 bg-white rounded-lg border border-slate-100 shadow-xs">
+// //               <span className="text-amber-500 font-bold mt-0.5">⚠️</span>
+// //               <p>
+// //                 <strong className="text-slate-800">
+// //                   Advanced Booking Only:
+// //                 </strong>{" "}
+// //                 Reservations must be made at least{" "}
+// //                 <strong>1 day in advance</strong>. Same-day on-the-spot bookings
+// //                 are not permitted.
+// //               </p>
+// //             </div>
+
+// //             <div className="flex items-start gap-2.5 p-2 bg-white rounded-lg border border-slate-100 shadow-xs">
+// //               <span className="text-blue-500 font-bold mt-0.5">⏱️</span>
+// //               <p>
+// //                 <strong className="text-slate-800">Time Limit:</strong> Each
+// //                 student group is limited to{" "}
+// //                 <strong>one time slot per day</strong> to ensure fair access for
+// //                 everyone.
+// //               </p>
+// //             </div>
+
+// //             <div className="flex items-start gap-2.5 p-2 bg-white rounded-lg border border-slate-100 shadow-xs">
+// //               <span className="text-emerald-500 font-bold mt-0.5">✅</span>
+// //               <p>
+// //                 <strong className="text-slate-800">Grace Period:</strong> Held
+// //                 for <strong>15 minutes</strong> past start time. Rooms not
+// //                 occupied by then will automatically be released.
+// //               </p>
+// //             </div>
+
+// //             <div className="flex items-start gap-2.5 p-2 bg-white rounded-lg border border-slate-100 shadow-xs">
+// //               <span className="text-purple-500 font-bold mt-0.5">🧹</span>
+// //               <p>
+// //                 <strong className="text-slate-800">Room Etiquette:</strong>{" "}
+// //                 Please keep the room clean, maintain proper noise levels, and
+// //                 leave promptly when your slot ends.
+// //               </p>
+// //             </div>
+// //           </div>
+// //         </div>
+
+// //         {/* 1. Room Selection */}
+// //         <h2 className="text-lg font-semibold mb-4">1. Select a Room</h2>
+// //         <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-4 mb-8">
+// //           {ROOMS.map((room) => {
+// //             const isSelected = selectedRoom?.id === room.id;
+
+// //             return (
+// //               <div
+// //                 key={room.id}
+// //                 onClick={() => setSelectedRoom(room)}
+// //                 className={`relative border-2 p-5 pt-8 rounded-lg text-center cursor-pointer transition-all duration-200 flex flex-col justify-center items-center gap-1 min-h-[120px] ${
+// //                   room.teacherOnly && !isSelected
+// //                     ? "border-amber-200 bg-amber-50/40 hover:border-amber-300 hover:bg-amber-50"
+// //                     : isSelected
+// //                       ? "border-[var(--selected)] bg-[#eff6ff] shadow-[0_0_0_1px_var(--selected)]"
+// //                       : "border-[var(--border)] bg-white hover:border-[var(--primary)] hover:bg-[#f0f7ff]"
+// //                 }`}
+// //               >
+// //                 {/* Tag Label with precise positioning & clear space */}
+// //                 {room.teacherOnly && (
+// //                   <span className="absolute top-2.5 right-2.5 bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-200 uppercase tracking-wider">
+// //                     Teacher Only
+// //                   </span>
+// //                 )}
+
+// //                 {/* Content has natural breathing room now */}
+// //                 <h3 className="text-lg font-semibold text-[var(--text)] mt-1">
+// //                   {room.label}
+// //                 </h3>
+// //                 <p className="text-sm text-[var(--text-light)]">
+// //                   {room.capacity}
+// //                 </p>
+// //               </div>
+// //             );
+// //           })}
+// //         </div>
+
+// //         {/* 2. Time Slot Selection */}
+// //         <h2 className="text-lg font-semibold mb-4">2. Select Time Slot</h2>
+// //         <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-3 mb-8">
+// //           {TIME_SLOTS.map((slot) => (
+// //             <button
+// //               key={slot.id}
+// //               onClick={() => setSelectedTime(slot)}
+// //               className={`border p-3 rounded-md font-medium text-center transition-all duration-200 hover:border-(--text) ${
+// //                 selectedTime?.id === slot.id
+// //                   ? "bg-(--selected) text-white border-(--selected)"
+// //                   : "bg-(--surface) border-(--border)"
+// //               }`}
+// //             >
+// //               {slot.display}
+// //             </button>
+// //           ))}
+// //         </div>
+
+// //         {/* 3. Dynamic Booking Form */}
+// //         {selectedRoom && selectedTime && (
+// //           <div
+// //             ref={formRef}
+// //             className="bg-[#f1f5f9] p-6 rounded-lg transition-all duration-300"
+// //           >
+// //             <h2 className="text-lg font-semibold mb-2">
+// //               3. Student Verification
+// //             </h2>
+// //             <p className="text-sm text-(--primary) font-medium mb-4">
+// //               You are reserving:{" "}
+// //               <span className="font-bold">{selectedRoom.name}</span> for the
+// //               slot <span className="font-bold">{selectedTime.value}</span>
+// //             </p>
+
+// //             <form onSubmit={handleConfirmBooking} className="space-y-4">
+// //               <div>
+// //                 <label
+// //                   className="block text-sm font-medium mb-2"
+// //                   htmlFor="studentName"
+// //                 >
+// //                   Full Name
+// //                 </label>
+// //                 <input
+// //                   type="text"
+// //                   id="studentName"
+// //                   required
+// //                   placeholder="e.g. John Doe"
+// //                   value={studentName}
+// //                   onChange={(e) => setStudentName(e.target.value)}
+// //                   className="w-full p-3 border border-(--border) rounded-md text-base text-black focus:outline-none focus:border-(--primary) focus:ring-3 focus:ring-blue-100"
+// //                 />
+// //               </div>
+
+// //               <div>
+// //                 <label
+// //                   className="block text-sm font-medium mb-2"
+// //                   htmlFor="studentId"
+// //                 >
+// //                   Student ID Number
+// //                 </label>
+// //                 <input
+// //                   type="text"
+// //                   id="studentId"
+// //                   required
+// //                   placeholder="e.g. Reservation accountability"
+// //                   value={studentId}
+// //                   onChange={(e) => setStudentId(e.target.value)}
+// //                   className="w-full p-3 border border-[var(--border)] rounded-md text-base text-black focus:outline-none focus:border-[var(--primary)] focus:ring-3 focus:ring-blue-100"
+// //                 />
+// //               </div>
+
+// //               <button
+// //                 type="submit"
+// //                 className="w-full bg-[var(--primary)] text-white p-3 rounded-md font-semibold text-lg hover:bg-[var(--primary-hover)] transition-colors duration-200"
+// //               >
+// //                 Confirm Reservation
+// //               </button>
+// //             </form>
+// //           </div>
+// //         )}
+// //       </div>
+// //     </div>
+// //   );
+// // }
+
+// "use client";
+
+// import React, { useState, useRef, useEffect } from "react";
+// import { Room, ROOMS, TIME_SLOTS, TimeSlot } from "./data/bookingData";
+
+// export default function RoomReservation() {
+//   // Properly typed state management
+//   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
+//   const [selectedTime, setSelectedTime] = useState<TimeSlot | null>(null);
+//   const [studentName, setStudentName] = useState<string>("");
+//   const [studentId, setStudentId] = useState<string>("");
+
+//   const formRef = useRef<HTMLDivElement>(null);
+
+//   // --- ADDED HERE: Dynamic Tomorrow Date Calculator ---
+//   const tomorrow = new Date();
+//   tomorrow.setDate(tomorrow.getDate() + 1);
+//   const formattedTomorrow = tomorrow.toLocaleDateString("en-US", {
+//     weekday: "long",
+//     year: "numeric",
+//     month: "long",
+//     day: "numeric",
+//   });
+
+//   // Smooth scroll to form when both room and time are selected
+//   useEffect(() => {
+//     if (selectedRoom && selectedTime) {
+//       formRef.current?.scrollIntoView({ behavior: "smooth" });
+//     }
+//   }, [selectedRoom, selectedTime]);
+
+//   const handleConfirmBooking = (event: React.FormEvent<HTMLFormElement>) => {
+//     event.preventDefault();
+
+//     if (!selectedRoom || !selectedTime) return;
+
+//     // Browser feedback logic
+//     alert(
+//       `Reservation Successful!\n\n` +
+//         `Date: ${formattedTomorrow}\n` +
+//         `Room: ${selectedRoom.name}\n` +
+//         `Time: ${selectedTime.value}\n` +
+//         `Reserved By: ${studentName} (${studentId})`,
+//     );
+
+//     // Reset Form State natively
+//     setSelectedRoom(null);
+//     setSelectedTime(null);
+//     setStudentName("");
+//     setStudentId("");
+//   };
+
+//   return (
+//     <div className="min-h-screen p-8 flex justify-center items-start">
+//       <div className="w-full max-w-200 bg-(--surface) p-8 rounded-xl shadow-md border border-(--border)">
+//         <header className="text-center mb-8">
+//           <h1 className="text-3xl font-bold mb-2">Reserve a Study Room</h1>
+//           <p className="text-[var(--text-light)]">
+//             Select a room and your preferred timing below.
+//           </p>
+//         </header>
+
+//         {/* Reservation Rules & Guidelines Context Board */}
+//         <div className="mb-10 p-5 bg-slate-50 border border-slate-200 rounded-xl">
+//           <h3 className="text-sm font-semibold text-slate-700 uppercase tracking-wider mb-3 text-left px-1">
+//             Important Guidelines
+//           </h3>
+//           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-slate-600 text-left">
+//             {/* UPDATED GUIDELINE SPOT */}
+//             <div className="flex items-start gap-2.5 p-2 bg-white rounded-lg border border-slate-100 shadow-xs">
+//               <span className="text-amber-500 font-bold mt-0.5">⚠️</span>
+//               <p>
+//                 <strong className="text-slate-800">
+//                   Advanced Booking Only:
+//                 </strong>{" "}
+//                 Reservations must be made 1 day in advance. You are currently
+//                 booking for tomorrow:{" "}
+//                 <span className="text-blue-600 font-semibold underline">
+//                   {formattedTomorrow}
+//                 </span>
+//                 .
+//               </p>
+//             </div>
+
+//             <div className="flex items-start gap-2.5 p-2 bg-white rounded-lg border border-slate-100 shadow-xs">
+//               <span className="text-blue-500 font-bold mt-0.5">⏱️</span>
+//               <p>
+//                 <strong className="text-slate-800">Time Limit:</strong> Each
+//                 student group is limited to{" "}
+//                 <strong>one time slot per day</strong> to ensure fair access for
+//                 everyone.
+//               </p>
+//             </div>
+
+//             <div className="flex items-start gap-2.5 p-2 bg-white rounded-lg border border-slate-100 shadow-xs">
+//               <span className="text-emerald-500 font-bold mt-0.5">✅</span>
+//               <p>
+//                 <strong className="text-slate-800">Grace Period:</strong> Held
+//                 for <strong>15 minutes</strong> past start time. Rooms not
+//                 occupied by then will automatically be released.
+//               </p>
+//             </div>
+
+//             <div className="flex items-start gap-2.5 p-2 bg-white rounded-lg border border-slate-100 shadow-xs">
+//               <span className="text-purple-500 font-bold mt-0.5">🧹</span>
+//               <p>
+//                 <strong className="text-slate-800">Room Etiquette:</strong>{" "}
+//                 Please keep the room clean, maintain proper noise levels, and
+//                 leave promptly when your slot ends.
+//               </p>
+//             </div>
+//           </div>
+//         </div>
+
+//         {/* 1. Room Selection */}
+//         <h2 className="text-lg font-semibold mb-4">1. Select a Room</h2>
+//         <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-4 mb-8">
+//           {ROOMS.map((room) => {
+//             const isSelected = selectedRoom?.id === room.id;
+
+//             return (
+//               <div
+//                 key={room.id}
+//                 onClick={() => setSelectedRoom(room)}
+//                 className={`relative border-2 p-5 pt-8 rounded-lg text-center cursor-pointer transition-all duration-200 flex flex-col justify-center items-center gap-1 min-h-[120px] ${
+//                   room.teacherOnly && !isSelected
+//                     ? "border-amber-200 bg-amber-50/40 hover:border-amber-300 hover:bg-amber-50"
+//                     : isSelected
+//                       ? "border-[var(--selected)] bg-[#eff6ff] shadow-[0_0_0_1px_var(--selected)]"
+//                       : "border-[var(--border)] bg-white hover:border-[var(--primary)] hover:bg-[#f0f7ff]"
+//                 }`}
+//               >
+//                 {/* Tag Label with precise positioning & clear space */}
+//                 {room.teacherOnly && (
+//                   <span className="absolute top-2.5 right-2.5 bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-200 uppercase tracking-wider">
+//                     Teacher Only
+//                   </span>
+//                 )}
+
+//                 {/* Content has natural breathing room now */}
+//                 <h3 className="text-lg font-semibold text-[var(--text)] mt-1">
+//                   {room.label}
+//                 </h3>
+//                 <p className="text-sm text-[var(--text-light)]">
+//                   {room.capacity}
+//                 </p>
+//               </div>
+//             );
+//           })}
+//         </div>
+
+//         {/* 2. Time Slot Selection */}
+//         <h2 className="text-lg font-semibold mb-4">2. Select Time Slot</h2>
+//         <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-3 mb-8">
+//           {TIME_SLOTS.map((slot) => (
+//             <button
+//               key={slot.id}
+//               onClick={() => setSelectedTime(slot)}
+//               className={`border p-3 rounded-md font-medium text-center transition-all duration-200 hover:border-(--text) ${
+//                 selectedTime?.id === slot.id
+//                   ? "bg-(--selected) text-white border-(--selected)"
+//                   : "bg-(--surface) border-(--border)"
+//               }`}
+//             >
+//               {slot.display}
+//             </button>
+//           ))}
+//         </div>
+
+//         {/* 3. Dynamic Booking Form */}
+//         {selectedRoom && selectedTime && (
+//           <div
+//             ref={formRef}
+//             className="bg-[#f1f5f9] p-6 rounded-lg transition-all duration-300"
+//           >
+//             <h2 className="text-lg font-semibold mb-2">
+//               3. Student Verification
+//             </h2>
+//             {/* UPDATED SUMMARY TEXT WITH TOMORROW'S DATE */}
+//             <p className="text-sm text-(--primary) font-medium mb-4">
+//               You are reserving:{" "}
+//               <span className="font-bold">{selectedRoom.name}</span> for
+//               tomorrow (
+//               <span className="text-slate-800 font-bold">
+//                 {formattedTomorrow}
+//               </span>
+//               ) during the slot{" "}
+//               <span className="font-bold">{selectedTime.value}</span>
+//             </p>
+
+//             <form onSubmit={handleConfirmBooking} className="space-y-4">
+//               <div>
+//                 <label
+//                   className="block text-sm font-medium mb-2"
+//                   htmlFor="studentName"
+//                 >
+//                   Full Name
+//                 </label>
+//                 <input
+//                   type="text"
+//                   id="studentName"
+//                   required
+//                   placeholder="e.g. John Doe"
+//                   value={studentName}
+//                   onChange={(e) => setStudentName(e.target.value)}
+//                   className="w-full p-3 border border-(--border) rounded-md text-base text-black focus:outline-none focus:border-(--primary) focus:ring-3 focus:ring-blue-100"
+//                 />
+//               </div>
+
+//               <div>
+//                 <label
+//                   className="block text-sm font-medium mb-2"
+//                   htmlFor="studentId"
+//                 >
+//                   Student ID Number
+//                 </label>
+//                 <input
+//                   type="text"
+//                   id="studentId"
+//                   required
+//                   placeholder="e.g. Reservation accountability"
+//                   value={studentId}
+//                   onChange={(e) => setStudentId(e.target.value)}
+//                   className="w-full p-3 border border-[var(--border)] rounded-md text-base text-black focus:outline-none focus:border-[var(--primary)] focus:ring-3 focus:ring-blue-100"
+//                 />
+//               </div>
+
+//               <button
+//                 type="submit"
+//                 className="w-full bg-[var(--primary)] text-white p-3 rounded-md font-semibold text-lg hover:bg-[var(--primary-hover)] transition-colors duration-200"
+//               >
+//                 Confirm Reservation
+//               </button>
+//             </form>
+//           </div>
+//         )}
+//       </div>
+//     </div>
+//   );
+// }
+"use client";
+
+import React, { useState, useRef, useEffect } from "react";
+import { Room, ROOMS, TIME_SLOTS, TimeSlot } from "./data/bookingData";
+
+export default function RoomReservation() {
+  // Properly typed state management
+  const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
+  const [selectedTime, setSelectedTime] = useState<TimeSlot | null>(null);
+  const [studentName, setStudentName] = useState<string>("");
+  const [studentId, setStudentId] = useState<string>("");
+
+  const formRef = useRef<HTMLDivElement>(null);
+
+  // --- ADDED HERE: Dynamic Tomorrow Date Calculator ---
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const formattedTomorrow = tomorrow.toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
+  // Smooth scroll to form when both room and time are selected
+  useEffect(() => {
+    if (selectedRoom && selectedTime) {
+      formRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [selectedRoom, selectedTime]);
+
+  const handleConfirmBooking = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!selectedRoom || !selectedTime) return;
+
+    // Browser feedback logic
+    alert(
+      `Reservation Successful!\n\n` +
+        `Date: ${formattedTomorrow}\n` +
+        `Room: ${selectedRoom.name}\n` +
+        `Time: ${selectedTime.value}\n` +
+        `Reserved By: ${studentName} (${studentId})`,
+    );
+
+    // Reset Form State natively
+    setSelectedRoom(null);
+    setSelectedTime(null);
+    setStudentName("");
+    setStudentId("");
+  };
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className="min-h-screen p-8 flex justify-center items-start">
+      <div className="w-full max-w-200 bg-(--surface) p-8 rounded-xl shadow-md border border-(--border)">
+        <header className="text-center mb-8">
+          <h1 className="text-3xl font-bold mb-2">Reserve a Study Room</h1>
+          <p className="text-[var(--text-light)]">
+            Select a room and your preferred timing below.
           </p>
+        </header>
+
+        {/* Reservation Rules & Guidelines Context Board */}
+        <div className="mb-10 p-5 bg-slate-50 border border-slate-200 rounded-xl">
+          <h3 className="text-sm font-semibold text-slate-700 uppercase tracking-wider mb-3 text-left px-1">
+            Important Guidelines
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-slate-600 text-left">
+            {/* UPDATED GUIDELINE SPOT */}
+            <div className="flex items-start gap-2.5 p-2 bg-white rounded-lg border border-slate-100 shadow-xs">
+              <span className="text-amber-500 font-bold mt-0.5">⚠️</span>
+              <p>
+                <strong className="text-slate-800">
+                  Advanced Booking Only:
+                </strong>{" "}
+                Reservations must be made 1 day in advance. You are currently
+                booking for tomorrow:{" "}
+                <span className="text-blue-600 font-semibold underline">
+                  {formattedTomorrow}
+                </span>
+                .
+              </p>
+            </div>
+
+            <div className="flex items-start gap-2.5 p-2 bg-white rounded-lg border border-slate-100 shadow-xs">
+              <span className="text-blue-500 font-bold mt-0.5">⏱️</span>
+              <p>
+                <strong className="text-slate-800">Time Limit:</strong> Each
+                student group is limited to{" "}
+                <strong>one time slot per day</strong> to ensure fair access for
+                everyone.
+              </p>
+            </div>
+
+            <div className="flex items-start gap-2.5 p-2 bg-white rounded-lg border border-slate-100 shadow-xs">
+              <span className="text-emerald-500 font-bold mt-0.5">✅</span>
+              <p>
+                <strong className="text-slate-800">Grace Period:</strong> Held
+                for <strong>15 minutes</strong> past start time. Rooms not
+                occupied by then will automatically be released.
+              </p>
+            </div>
+
+            <div className="flex items-start gap-2.5 p-2 bg-white rounded-lg border border-slate-100 shadow-xs">
+              <span className="text-purple-500 font-bold mt-0.5">🧹</span>
+              <p>
+                <strong className="text-slate-800">Room Etiquette:</strong>{" "}
+                Please keep the room clean, maintain proper noise levels, and
+                leave promptly when your slot ends.
+              </p>
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        {/* 1. Room Selection */}
+        <h2 className="text-lg font-semibold mb-4">1. Select a Room</h2>
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-4 mb-8">
+          {ROOMS.map((room) => {
+            const isSelected = selectedRoom?.id === room.id;
+
+            return (
+              <div
+                key={room.id}
+                onClick={() => setSelectedRoom(room)}
+                className={`relative border-2 p-5 pt-8 rounded-lg text-center cursor-pointer transition-all duration-200 flex flex-col justify-center items-center gap-1 min-h-[120px] ${
+                  room.teacherOnly && !isSelected
+                    ? "border-amber-200 bg-amber-50/40 hover:border-amber-300 hover:bg-amber-50"
+                    : isSelected
+                      ? "border-[var(--selected)] bg-[#eff6ff] shadow-[0_0_0_1px_var(--selected)]"
+                      : "border-[var(--border)] bg-white hover:border-[var(--primary)] hover:bg-[#f0f7ff]"
+                }`}
+              >
+                {/* Tag Label with precise positioning & clear space */}
+                {room.teacherOnly && (
+                  <span className="absolute top-2.5 right-2.5 bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-200 uppercase tracking-wider">
+                    Teacher Only
+                  </span>
+                )}
+
+                {/* Content has natural breathing room now */}
+                <h3 className="text-lg font-semibold text-[var(--text)] mt-1">
+                  {room.label}
+                </h3>
+                <p className="text-sm text-[var(--text-light)]">
+                  {room.capacity}
+                </p>
+              </div>
+            );
+          })}
         </div>
-      </main>
+
+        {/* 2. Time Slot Selection */}
+        <h2 className="text-lg font-semibold mb-4">2. Select Time Slot</h2>
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-3 mb-8">
+          {TIME_SLOTS.map((slot) => (
+            <button
+              key={slot.id}
+              onClick={() => setSelectedTime(slot)}
+              className={`border p-3 rounded-md font-medium text-center transition-all duration-200 hover:border-(--text) ${
+                selectedTime?.id === slot.id
+                  ? "bg-(--selected) text-white border-(--selected)"
+                  : "bg-(--surface) border-(--border)"
+              }`}
+            >
+              {slot.display}
+            </button>
+          ))}
+        </div>
+
+        {/* 3. Dynamic Booking Form */}
+        {selectedRoom && selectedTime && (
+          <div
+            ref={formRef}
+            className="bg-[#f1f5f9] p-6 rounded-lg transition-all duration-300"
+          >
+            <h2 className="text-lg font-semibold mb-2">
+              3. Student Verification
+            </h2>
+            {/* UPDATED SUMMARY TEXT WITH TOMORROW'S DATE */}
+            <p className="text-sm text-(--primary) font-medium mb-4">
+              You are reserving:{" "}
+              <span className="font-bold">{selectedRoom.name}</span> for
+              tomorrow (
+              <span className="text-slate-800 font-bold">
+                {formattedTomorrow}
+              </span>
+              ) during the slot{" "}
+              <span className="font-bold">{selectedTime.value}</span>
+            </p>
+
+            <form onSubmit={handleConfirmBooking} className="space-y-4">
+              <div>
+                <label
+                  className="block text-sm font-medium mb-2"
+                  htmlFor="studentName"
+                >
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  id="studentName"
+                  required
+                  placeholder="e.g. John Doe"
+                  value={studentName}
+                  onChange={(e) => setStudentName(e.target.value)}
+                  className="w-full p-3 border border-(--border) rounded-md text-base text-black focus:outline-none focus:border-(--primary) focus:ring-3 focus:ring-blue-100"
+                />
+              </div>
+
+              <div>
+                <label
+                  className="block text-sm font-medium mb-2"
+                  htmlFor="studentId"
+                >
+                  Student ID Number
+                </label>
+                <input
+                  type="text"
+                  id="studentId"
+                  required
+                  placeholder="e.g. Reservation accountability"
+                  value={studentId}
+                  onChange={(e) => setStudentId(e.target.value)}
+                  className="w-full p-3 border border-[var(--border)] rounded-md text-base text-black focus:outline-none focus:border-[var(--primary)] focus:ring-3 focus:ring-blue-100"
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-[var(--primary)] text-white p-3 rounded-md font-semibold text-lg hover:bg-[var(--primary-hover)] transition-colors duration-200"
+              >
+                Confirm Reservation
+              </button>
+            </form>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
