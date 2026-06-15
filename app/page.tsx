@@ -1,254 +1,227 @@
 // "use client";
 
-// import React, { useState, useRef, useEffect } from "react";
-// import { Room, ROOMS, TIME_SLOTS, TimeSlot } from "./data/bookingData";
+// import React, { useEffect, useMemo, useRef, useState } from "react";
+// import { Room, ROOMS, TIME_SLOTS_BY_ROOM, TimeSlot } from "./data/bookingData";
 
 // export default function RoomReservation() {
-//   // Properly typed state management
 //   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
 //   const [selectedTime, setSelectedTime] = useState<TimeSlot | null>(null);
-//   const [studentName, setStudentName] = useState<string>("");
-//   const [studentId, setStudentId] = useState<string>("");
+//   const [studentName, setStudentName] = useState("");
+//   const [userRole, setUserRole] = useState("Student");
 
-//   const [userRole, setUserRole] = useState<string>("");
+//   const [tajukProjek, setTajukProjek] = useState("");
+//   const [kelas, setKelas] = useState("");
+//   const [jumlahPeserta, setJumlahPeserta] = useState("");
 
 //   const formRef = useRef<HTMLDivElement>(null);
 
-//   // --- ADDED HERE: Dynamic Tomorrow Date Calculator ---
-//   const tomorrow = new Date();
-//   tomorrow.setDate(tomorrow.getDate() + 1);
-//   const formattedTomorrow = tomorrow.toLocaleDateString("en-US", {
-//     weekday: "long",
-//     year: "numeric",
-//     month: "long",
-//     day: "numeric",
-//   });
+//   const formattedTomorrow = useMemo(() => {
+//     const d = new Date();
+//     d.setDate(d.getDate() + 1);
+//     return d.toLocaleDateString("en-GB", {
+//       weekday: "short",
+//       day: "2-digit",
+//       month: "short",
+//       year: "numeric",
+//     });
+//   }, []);
 
-//   // Smooth scroll to form when both room and time are selected
+//   useEffect(() => {
+//     if (selectedRoom?.teacherOnly) {
+//       queueMicrotask(() => {
+//         setUserRole("Teacher");
+//       });
+//     }
+//   }, [selectedRoom]);
+
 //   useEffect(() => {
 //     if (selectedRoom && selectedTime) {
-//       formRef.current?.scrollIntoView({ behavior: "smooth" });
+//       formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
 //     }
 //   }, [selectedRoom, selectedTime]);
 
-//   const handleConfirmBooking = (event: React.FormEvent<HTMLFormElement>) => {
-//     event.preventDefault();
-
+//   const handleConfirmBooking = (e: React.FormEvent) => {
+//     e.preventDefault();
 //     if (!selectedRoom || !selectedTime) return;
 
-//     // Browser feedback logic
-//     alert(
-//       `Reservation Successful!\n\n` +
-//         `Date: ${formattedTomorrow}\n` +
-//         `Room: ${selectedRoom.name}\n` +
-//         `Time: ${selectedTime.value}\n` +
-//         `Reserved By: ${studentName} (${studentId})`,
-//     );
+//     if (selectedRoom.teacherOnly && userRole !== "Teacher") {
+//       alert("Restricted to faculty only");
+//       return;
+//     }
 
-//     // Reset Form State natively
+//     alert("Reservation successful");
+
 //     setSelectedRoom(null);
 //     setSelectedTime(null);
 //     setStudentName("");
-//     setStudentId("");
+//     setJumlahPeserta("");
+//     setTajukProjek("");
+//     setKelas("");
 //   };
+//   // const isFriday = new Date().getDay() === 5;
+
+//   const MOCK_FRIDAY = true;
+
+//   const isFriday = MOCK_FRIDAY || new Date().getDay() === 5;
+
+//   const timeSlots: TimeSlot[] = useMemo(() => {
+//     if (!selectedRoom) return [];
+//     if (selectedRoom.id === "C") {
+//       return TIME_SLOTS_BY_ROOM.creative ?? [];
+//     }
+//     if (isFriday) {
+//       return TIME_SLOTS_BY_ROOM.friday ?? [];
+//     }
+//     return TIME_SLOTS_BY_ROOM.default ?? [];
+//   }, [selectedRoom, isFriday]);
 
 //   return (
-//     <div className="min-h-screen p-8 flex justify-center items-start">
-//       <div className="w-full max-w-200 bg-(--surface) p-8 rounded-xl shadow-md border border-(--border)">
+//     <div className="min-h-screen bg-neutral-50 flex justify-center px-4 py-10">
+//       <div className="w-full max-w-2xl bg-white border border-neutral-200 rounded-2xl shadow-sm p-6 sm:p-10">
+//         {/* Header */}
 //         <header className="text-center mb-8">
-//           <h1 className="text-3xl font-bold mb-2">Reserve a Study Room</h1>
-//           <p className="text-[var(--text-light)]">
-//             Select a room and your preferred timing below.
+//           <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-neutral-900">
+//             Room Reservation
+//           </h1>
+//           <p className="text-sm text-neutral-500 mt-1">
+//             Book a study room for {formattedTomorrow}
 //           </p>
 //         </header>
 
-//         {/* Reservation Rules & Guidelines Context Board */}
-//         <div className="mb-10 p-5 bg-slate-50 border border-slate-200 rounded-xl">
-//           <h3 className="text-sm font-semibold text-slate-700 uppercase tracking-wider mb-3 text-left px-1">
-//             Important Guidelines
-//           </h3>
-//           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-slate-600 text-left">
-//             {/* UPDATED GUIDELINE SPOT */}
-//             <div className="flex items-start gap-2.5 p-2 bg-white rounded-lg border border-slate-100 shadow-xs">
-//               <span className="text-amber-500 font-bold mt-0.5">⚠️</span>
-//               <p>
-//                 <strong className="text-slate-800">
-//                   Advanced Booking Only:
-//                 </strong>{" "}
-//                 Reservations must be made 1 day in advance. You are currently
-//                 booking for tomorrow:{" "}
-//                 <span className="text-blue-600 font-semibold underline">
-//                   {formattedTomorrow}
-//                 </span>
-//                 .
-//               </p>
-//             </div>
+//         {/* Guidelines */}
+//         <section className="mb-8 rounded-xl border border-neutral-200 bg-neutral-50 p-5 text-sm text-neutral-600 space-y-3">
+//           <p className="font-medium text-neutral-900">Booking rules</p>
+//           <p>• Only tomorrow bookings allowed</p>
+//           <p>• One slot per group</p>
+//           <p>• Teacher priority override enabled</p>
+//           <p>• 15 min auto-release</p>
+//         </section>
 
-//             <div className="flex items-start gap-2.5 p-2 bg-white rounded-lg border border-slate-100 shadow-xs">
-//               <span className="text-blue-500 font-bold mt-0.5">⏱️</span>
-//               <p>
-//                 <strong className="text-slate-800">Time Limit:</strong> Each
-//                 student group is limited to{" "}
-//                 <strong>one time slot per day</strong> to ensure fair access for
-//                 everyone.
-//               </p>
-//             </div>
+//         {/* Rooms */}
+//         <section className="mb-8">
+//           <h2 className="text-sm font-medium text-neutral-900 mb-3">
+//             Select Room
+//           </h2>
 
-//             <div className="flex items-start gap-2.5 p-2 bg-white rounded-lg border border-slate-100 shadow-xs">
-//               <span className="text-emerald-500 font-bold mt-0.5">✅</span>
-//               <p>
-//                 <strong className="text-slate-800">Grace Period:</strong> Held
-//                 for <strong>15 minutes</strong> past start time. Rooms not
-//                 occupied by then will automatically be released.
-//               </p>
-//             </div>
+//           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+//             {ROOMS.map((room) => {
+//               const active = selectedRoom?.id === room.id;
 
-//             <div className="flex items-start gap-2.5 p-2 bg-white rounded-lg border border-slate-100 shadow-xs">
-//               <span className="text-purple-500 font-bold mt-0.5">🧹</span>
-//               <p>
-//                 <strong className="text-slate-800">Room Etiquette:</strong>{" "}
-//                 Please keep the room clean, maintain proper noise levels, and
-//                 leave promptly when your slot ends.
-//               </p>
-//             </div>
+//               return (
+//                 <button
+//                   key={room.id}
+//                   type="button"
+//                   onClick={() => setSelectedRoom(room)}
+//                   className={[
+//                     "rounded-xl border p-4 text-left transition",
+//                     active
+//                       ? "bg-neutral-900 text-white border-neutral-900"
+//                       : "bg-white border-neutral-200 hover:border-neutral-400",
+//                     room.teacherOnly && !active ? "opacity-70" : "",
+//                   ].join(" ")}
+//                 >
+//                   <div className="font-medium">{room.label}</div>
+//                   <div className="text-xs mt-1 opacity-70">{room.capacity}</div>
+
+//                   {room.teacherOnly && (
+//                     <span className="inline-block mt-3 text-[10px] uppercase tracking-wide opacity-70">
+//                       Teacher only
+//                     </span>
+//                   )}
+//                 </button>
+//               );
+//             })}
 //           </div>
-//         </div>
+//         </section>
 
-//         {/* 1. Room Selection */}
-//         <h2 className="text-lg font-semibold mb-4">1. Select a Room</h2>
-//         <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-4 mb-8">
-//           {ROOMS.map((room) => {
-//             const isSelected = selectedRoom?.id === room.id;
+//         {/* Time */}
+//         <section className="mb-8">
+//           <h2 className="text-sm font-medium text-neutral-900 mb-3">
+//             Select Time
+//           </h2>
+//           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+//             {(timeSlots ?? []).map((slot) => {
+//               const active = selectedTime?.id === slot.id;
 
-//             return (
-//               <div
-//                 key={room.id}
-//                 onClick={() => setSelectedRoom(room)}
-//                 className={`relative border-2 p-5 pt-8 rounded-lg text-center cursor-pointer transition-all duration-200 flex flex-col justify-center items-center gap-1 min-h-[120px] ${
-//                   room.teacherOnly && !isSelected
-//                     ? "border-amber-200 bg-amber-50/40 hover:border-amber-300 hover:bg-amber-50"
-//                     : isSelected
-//                       ? "border-[var(--selected)] bg-[#eff6ff] shadow-[0_0_0_1px_var(--selected)]"
-//                       : "border-[var(--border)] bg-white hover:border-[var(--primary)] hover:bg-[#f0f7ff]"
-//                 }`}
-//               >
-//                 {/* Tag Label with precise positioning & clear space */}
-//                 {room.teacherOnly && (
-//                   <span className="absolute top-2.5 right-2.5 bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-200 uppercase tracking-wider">
-//                     Teacher Only
-//                   </span>
-//                 )}
+//               return (
+//                 <button
+//                   key={slot.id}
+//                   type="button"
+//                   onClick={() => setSelectedTime(slot)}
+//                   className={[
+//                     "rounded-xl border px-4 py-2 text-sm font-medium transition-all",
+//                     "active:scale-[0.98]",
+//                     "focus:outline-none focus:ring-2 focus:ring-black/10",
+//                     active
+//                       ? "bg-neutral-900 text-white border-neutral-900 shadow-sm"
+//                       : "bg-white text-neutral-700 border-neutral-200 hover:border-neutral-400 hover:bg-neutral-50",
+//                   ].join(" ")}
+//                 >
+//                   {slot.display}
+//                 </button>
+//               );
+//             })}
+//           </div>
+//         </section>
 
-//                 {/* Content has natural breathing room now */}
-//                 <h3 className="text-lg font-semibold text-[var(--text)] mt-1">
-//                   {room.label}
-//                 </h3>
-//                 <p className="text-sm text-[var(--text-light)]">
-//                   {room.capacity}
-//                 </p>
-//               </div>
-//             );
-//           })}
-//         </div>
-
-//         {/* 2. Time Slot Selection */}
-//         <h2 className="text-lg font-semibold mb-4">2. Select Time Slot</h2>
-//         <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-3 mb-8">
-//           {TIME_SLOTS.map((slot) => (
-//             <button
-//               key={slot.id}
-//               onClick={() => setSelectedTime(slot)}
-//               className={`border p-3 rounded-md font-medium text-center transition-all duration-200 hover:border-(--text) ${
-//                 selectedTime?.id === slot.id
-//                   ? "bg-(--selected) text-white border-(--selected)"
-//                   : "bg-(--surface) border-(--border)"
-//               }`}
-//             >
-//               {slot.display}
-//             </button>
-//           ))}
-//         </div>
-
-//         {/* 3. Dynamic Booking Form */}
+//         {/* Form */}
 //         {selectedRoom && selectedTime && (
-//           <div
-//             ref={formRef}
-//             className="bg-[#f1f5f9] p-6 rounded-lg transition-all duration-300"
-//           >
-//             <h2 className="text-lg font-semibold mb-2">
-//               3. Verification & Identity
-//             </h2>
-//             <p className="text-sm text-(--primary) font-medium mb-4">
-//               You are reserving:{" "}
-//               <span className="font-bold">{selectedRoom.name}</span> for
-//               tomorrow (
-//               <span className="text-slate-800 font-bold">
-//                 {formattedTomorrow}
-//               </span>
-//               ) during the slot{" "}
-//               <span className="font-bold">{selectedTime.value}</span>
-//             </p>
-
-//             {/* Added: Role Selection Dropdown */}
-//             <div className="mb-4">
-//               <label className="block text-sm font-medium mb-2 text-slate-700">
-//                 I am a...
-//               </label>
-//               <select
-//                 value={userRole} // Add a [userRole, setUserRole] = useState("Student") at top of component
-//                 onChange={(e) => setUserRole(e.target.value)}
-//                 className="w-full p-3 border border-slate-200 bg-white rounded-md text-base text-black focus:outline-none focus:ring-3 focus:ring-blue-100"
-//               >
-//                 <option value="Student">Student</option>
-//                 <option value="Teacher">Teacher / Faculty Staff</option>
-//               </select>
+//           <div ref={formRef} className="rounded-xl border bg-neutral-50 p-6">
+//             <div className="mb-5">
+//               <h3 className="font-medium text-neutral-900">Confirm booking</h3>
+//               <p className="text-sm text-neutral-500 mt-1">
+//                 {selectedRoom.name} • {selectedTime.value} • {formattedTomorrow}
+//               </p>
 //             </div>
 
 //             <form onSubmit={handleConfirmBooking} className="space-y-4">
-//               <div>
-//                 <label
-//                   className="block text-sm font-medium mb-2"
-//                   htmlFor="studentName"
-//                 >
-//                   Full Name
-//                 </label>
-//                 <input
-//                   type="text"
-//                   id="studentName"
-//                   required
-//                   placeholder="e.g. John Doe"
-//                   value={studentName}
-//                   onChange={(e) => setStudentName(e.target.value)}
-//                   className="w-full p-3 border border-[var(--border)] rounded-md text-base text-black focus:outline-none focus:border-[var(--primary)] focus:ring-3 focus:ring-blue-100"
-//                 />
-//               </div>
+//               <select
+//                 required
+//                 value={userRole}
+//                 onChange={(e) => setUserRole(e.target.value)}
+//                 className="w-full rounded-lg border border-neutral-200 bg-white p-3 text-sm"
+//               >
+//                 {!selectedRoom.teacherOnly && (
+//                   <option value="Student">Student</option>
+//                 )}
+//                 <option value="Teacher">Teacher</option>
+//               </select>
 
-//               <div>
-//                 <label
-//                   className="block text-sm font-medium mb-2"
-//                   htmlFor="studentId"
-//                 >
-//                   {/* Dynamic clean label change depending on selection */}
-//                   {userRole === "Teacher"
-//                     ? "Staff ID Number"
-//                     : "Student ID Number"}
-//                 </label>
-//                 <input
-//                   type="text"
-//                   id="studentId"
-//                   required
-//                   placeholder={
-//                     userRole === "Teacher" ? "e.g. T-14023" : "e.g. S-90210"
-//                   }
-//                   value={studentId}
-//                   onChange={(e) => setStudentId(e.target.value)}
-//                   className="w-full p-3 border border-[var(--border)] rounded-md text-base text-black focus:outline-none focus:border-[var(--primary)] focus:ring-3 focus:ring-blue-100"
-//                 />
-//               </div>
+//               <input
+//                 required
+//                 placeholder="Full name"
+//                 value={studentName}
+//                 onChange={(e) => setStudentName(e.target.value)}
+//                 className="w-full rounded-lg border border-neutral-200 p-3 text-sm"
+//               />
+
+//               <input
+//                 required
+//                 type="number"
+//                 min={1}
+//                 placeholder="Jumlah peserta"
+//                 value={jumlahPeserta}
+//                 onChange={(e) => setJumlahPeserta(e.target.value)}
+//                 className="w-full rounded-lg border border-neutral-200 p-3 text-sm"
+//               />
+
+//               <input
+//                 placeholder="Tajuk projek (optional)"
+//                 value={tajukProjek}
+//                 onChange={(e) => setTajukProjek(e.target.value)}
+//                 className="w-full rounded-lg border border-neutral-200 p-3 text-sm"
+//               />
+
+//               <input
+//                 placeholder="Kelas (optional)"
+//                 value={kelas}
+//                 onChange={(e) => setKelas(e.target.value)}
+//                 className="w-full rounded-lg border border-neutral-200 p-3 text-sm"
+//               />
 
 //               <button
 //                 type="submit"
-//                 className="w-full bg-[var(--primary)] text-white p-3 rounded-md font-semibold text-lg hover:bg-[var(--primary-hover)] transition-colors duration-200"
+//                 className="w-full rounded-lg bg-black py-3 text-sm font-medium text-white hover:opacity-90 active:scale-[0.99] transition"
 //               >
 //                 Confirm Reservation
 //               </button>
@@ -262,243 +235,330 @@
 
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
-import { Room, ROOMS, TIME_SLOTS, TimeSlot } from "./data/bookingData";
+import React, { useMemo, useRef, useState, useEffect } from "react";
+import { Room, ROOMS, TIME_SLOTS_BY_ROOM, TimeSlot } from "./data/bookingData";
+import { useBookingSession } from "./hooks/useBookingSession";
 
 export default function RoomReservation() {
+  const {
+    phone,
+    myBookings,
+    loadingBookings,
+    login,
+    logout,
+    handleCancel,
+    handleAddBooking,
+  } = useBookingSession();
+
+  // --- LOCAL INPUT STATE ---
+  const [inputPhone, setInputPhone] = useState("");
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
   const [selectedTime, setSelectedTime] = useState<TimeSlot | null>(null);
-  const [studentName, setStudentName] = useState<string>("");
-  const [studentId, setStudentId] = useState<string>("");
-  const [userRole, setUserRole] = useState<string>("Student");
+  const [studentName, setStudentName] = useState("");
+  const [userRole, setUserRole] = useState("Student");
+  const [tajukProjek, setTajukProjek] = useState("");
+  const [kelas, setKelas] = useState("");
+  const [jumlahPeserta, setJumlahPeserta] = useState("");
 
   const formRef = useRef<HTMLDivElement>(null);
 
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  const formattedTomorrow = tomorrow.toLocaleDateString("en-US", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  // Time calculations
+  const formattedTomorrow = useMemo(() => {
+    const d = new Date();
+    d.setDate(d.getDate() + 1);
+    return d.toLocaleDateString("en-GB", {
+      weekday: "short",
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  }, []);
+
+  const formattedTomorrowDateString = useMemo(() => {
+    const d = new Date();
+    d.setDate(d.getDate() + 1);
+    return d.toISOString().split("T")[0];
+  }, []);
+
+  useEffect(() => {
+    if (selectedRoom?.teacherOnly) {
+      queueMicrotask(() => {
+        setUserRole("Teacher");
+      });
+    }
+  }, [selectedRoom]);
 
   useEffect(() => {
     if (selectedRoom && selectedTime) {
-      formRef.current?.scrollIntoView({ behavior: "smooth" });
+      formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }, [selectedRoom, selectedTime]);
 
-  const handleConfirmBooking = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const isFriday = useMemo(() => new Date().getDay() === 5, []);
+
+  const timeSlots: TimeSlot[] = useMemo(() => {
+    if (!selectedRoom) return [];
+    if (selectedRoom.id === "C") return TIME_SLOTS_BY_ROOM.creative ?? [];
+    if (isFriday) return TIME_SLOTS_BY_ROOM.friday ?? [];
+    return TIME_SLOTS_BY_ROOM.default ?? [];
+  }, [selectedRoom, isFriday]);
+
+  // Form submission dispatcher
+  const onSubmitBooking = async (e: React.FormEvent) => {
+    e.preventDefault();
     if (!selectedRoom || !selectedTime) return;
 
-    alert(
-      `Reservation Successful!\n\n` +
-        `Date: ${formattedTomorrow}\n` +
-        `Room: ${selectedRoom.name}\n` +
-        `Time: ${selectedTime.value}\n` +
-        `Reserved By: ${studentName} (${studentId})`,
-    );
+    if (selectedRoom.teacherOnly && userRole !== "Teacher") {
+      alert("Restricted to faculty only");
+      return;
+    }
 
-    setSelectedRoom(null);
-    setSelectedTime(null);
-    setStudentName("");
-    setStudentId("");
+    const success = await handleAddBooking({
+      room_id: selectedRoom.id,
+      slot_id: selectedTime.id,
+      booking_date: formattedTomorrowDateString,
+      user_role: userRole,
+      full_name: studentName,
+      jumlah_peserta: parseInt(jumlahPeserta),
+      tajuk_projek: tajukProjek || null,
+      kelas: kelas || null,
+    });
+
+    if (success) {
+      setSelectedRoom(null);
+      setSelectedTime(null);
+      setStudentName("");
+      setJumlahPeserta("");
+      setTajukProjek("");
+      setKelas("");
+    }
   };
 
-  return (
-    // Breathable wrapper wrapper for outer edge screen margins on mobile
-    <div className="min-h-screen p-4 sm:p-8 flex justify-center items-start bg-slate-50">
-      <div className="w-full max-w-2xl bg-[var(--surface)] p-5 sm:p-8 rounded-xl shadow-sm border border-[var(--border)]">
-        <header className="text-center mb-6">
-          <h1 className="text-2xl sm:text-3xl font-bold mb-1.5 tracking-tight text-slate-900">
-            Reserve a Study Room
+  // --- UI VIEW A: LOG IN SCREEN ---
+  if (!phone) {
+    return (
+      <div className="min-h-screen bg-neutral-50 flex items-center justify-center px-4">
+        <div className="w-full max-w-sm bg-white border border-neutral-200 rounded-2xl p-6 shadow-sm">
+          <h1 className="text-xl font-bold text-neutral-900 text-center mb-1">
+            Library Room Booking
           </h1>
-          <p className="text-sm text-[var(--text-light)]">
-            Select a room and your preferred timing below.
+          <p className="text-xs text-neutral-500 text-center mb-6">
+            Enter phone number to track your active slots.
+          </p>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              login(inputPhone);
+            }}
+            className="space-y-4"
+          >
+            <input
+              type="tel"
+              required
+              placeholder="e.g. 0123456789"
+              value={inputPhone}
+              onChange={(e) => setInputPhone(e.target.value)}
+              className="w-full rounded-xl border border-neutral-200 p-3 text-sm text-black focus:outline-none"
+            />
+            <button
+              type="submit"
+              className="w-full rounded-xl bg-black py-3 text-sm font-medium text-white"
+            >
+              Check My Bookings
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
+  // --- UI VIEW B: WORKSPACE DESKTOP ---
+  return (
+    <div className="min-h-screen bg-neutral-50 flex justify-center px-4 py-10">
+      <div className="w-full max-w-2xl bg-white border border-neutral-200 rounded-2xl shadow-sm p-6 sm:p-10">
+        {/* User Badge row */}
+        <div className="flex justify-between items-center bg-neutral-50 border border-neutral-200 rounded-xl px-4 py-2 text-xs mb-6 text-neutral-600">
+          <span>
+            Logged in as: <strong className="text-neutral-900">{phone}</strong>
+          </span>
+          <button
+            onClick={logout}
+            className="text-red-600 hover:underline font-medium"
+          >
+            Change Number
+          </button>
+        </div>
+
+        {/* Live Active Tracker Cards */}
+        <section className="mb-8 p-4 border border-neutral-200 rounded-xl bg-neutral-50/50">
+          <h3 className="text-sm font-bold text-neutral-900 mb-3">
+            Your Upcoming Bookings
+          </h3>
+          {loadingBookings ? (
+            <p className="text-xs text-neutral-400 animate-pulse">
+              Loading reservations...
+            </p>
+          ) : myBookings.length === 0 ? (
+            <p className="text-xs text-neutral-400 italic">
+              No bookings found for this number.
+            </p>
+          ) : (
+            <div className="space-y-2">
+              {myBookings.map((b) => (
+                <div
+                  key={b.id}
+                  className="flex justify-between items-center bg-white border border-neutral-200 p-3 rounded-lg text-xs"
+                >
+                  <div>
+                    <span className="font-semibold text-neutral-800">
+                      Room {b.room_id}
+                    </span>
+                    <span className="mx-1.5 text-neutral-300">•</span>
+                    <span className="text-neutral-500">
+                      {b.booking_date} (Slot {b.slot_id})
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => handleCancel(b.id)}
+                    className="text-red-600 border border-red-200 bg-red-50/20 px-2.5 py-1 rounded font-medium"
+                  >
+                    Cancel Slot
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+
+        <header className="text-center mb-8">
+          <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-neutral-900">
+            Room Reservation
+          </h1>
+          <p className="text-sm text-neutral-500 mt-1">
+            Book a study room for {formattedTomorrow}
           </p>
         </header>
 
-        {/* Compact, Ultra-breathable Guidelines Info Board */}
-        <div className="mb-6 p-4 bg-slate-50/80 border border-slate-200 rounded-lg">
-          <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2.5">
-            Booking Guidelines
-          </h3>
-          <div className="flex flex-col gap-2.5 text-xs sm:text-sm text-slate-600">
-            <div className="flex items-start gap-2">
-              <span className="mt-0.5">⚠️</span>
-              <p>
-                <strong className="text-slate-800">
-                  Advanced Booking Only:
-                </strong>{" "}
-                Currently reserving for tomorrow:{" "}
-                <span className="text-blue-600 font-semibold underline">
-                  {formattedTomorrow}
-                </span>
-                .
-              </p>
-            </div>
-            <div className="flex items-start gap-2">
-              <span className="mt-0.5">⏱️</span>
-              <p>
-                <strong className="text-slate-800">Limits:</strong> One slot per
-                day per group. Held for 15 mins max before release.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* 1. Room Selection */}
-        <h2 className="text-base sm:text-lg font-semibold mb-3 text-slate-900">
-          1. Select a Room
-        </h2>
-        {/* Adjusted to grid-cols-2 for mobile to keep screen height clean and breathable */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
-          {ROOMS.map((room) => {
-            const isSelected = selectedRoom?.id === room.id;
-
-            return (
-              <div
-                key={room.id}
-                onClick={() => setSelectedRoom(room)}
-                className={`p-3.5 rounded-lg text-center cursor-pointer transition-all duration-200 flex flex-col justify-between items-center gap-2 min-h-[105px] border-2 ${
-                  room.teacherOnly && !isSelected
-                    ? "border-amber-200 bg-amber-50/40 hover:border-amber-300 hover:bg-amber-50"
-                    : isSelected
-                      ? "border-[var(--selected)] bg-[#eff6ff] shadow-[0_0_0_1px_var(--selected)]"
-                      : "border-[var(--border)] bg-white hover:border-[var(--primary)] hover:bg-[#f0f7ff]"
-                }`}
-              >
-                <div className="w-full flex flex-col items-center gap-1">
-                  <h3 className="text-base font-semibold text-slate-900 leading-tight">
-                    {room.label}
-                  </h3>
-                  <p className="text-xs text-[var(--text-light)]">
-                    {room.capacity}
-                  </p>
-                </div>
-
-                {/* Inline Label Tag - Prevents ever overlapping text titles on small screens */}
-                {room.teacherOnly && (
-                  <span className="bg-amber-100 text-amber-900 text-[9px] font-bold px-2 py-0.5 rounded-md border border-amber-200 uppercase tracking-wide">
-                    Teacher Only
-                  </span>
-                )}
-              </div>
-            );
-          })}
-        </div>
-
-        {/* 2. Time Slot Selection */}
-        <h2 className="text-base sm:text-lg font-semibold mb-3 text-slate-900">
-          2. Select Time Slot
-        </h2>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-6">
-          {TIME_SLOTS.map((slot) => (
-            <button
-              key={slot.id}
-              onClick={() => setSelectedTime(slot)}
-              className={`border p-2.5 rounded-lg text-sm font-medium text-center transition-all duration-200 ${
-                selectedTime?.id === slot.id
-                  ? "bg-[var(--selected)] text-white border-[var(--selected)]"
-                  : "bg-[var(--surface)] border-[var(--border)] text-slate-700 hover:border-slate-400"
-              }`}
-            >
-              {slot.display}
-            </button>
-          ))}
-        </div>
-
-        {/* 3. Dynamic Booking Form */}
-        {selectedRoom && selectedTime && (
-          <div
-            ref={formRef}
-            className="bg-slate-100 p-4 sm:p-6 rounded-xl border border-slate-200/60 transition-all duration-300"
-          >
-            <h2 className="text-base sm:text-lg font-semibold mb-1 text-slate-900">
-              3. Verification & Identity
-            </h2>
-            <p className="text-xs sm:text-sm text-blue-700 font-medium mb-4 leading-relaxed">
-              Reserving:{" "}
-              <span className="font-bold text-slate-900">
-                {selectedRoom.name}
-              </span>{" "}
-              for tomorrow (
-              <span className="text-slate-900 font-bold">
-                {formattedTomorrow}
-              </span>
-              ) at{" "}
-              <span className="font-bold text-slate-900">
-                {selectedTime.value}
-              </span>
-              .
-            </p>
-
-            <div className="space-y-3.5">
-              <div>
-                <label className="block text-xs sm:text-sm font-medium mb-1.5 text-slate-700">
-                  I am a...
-                </label>
-                <select
-                  value={userRole}
-                  onChange={(e) => setUserRole(e.target.value)}
-                  className="w-full p-2.5 border border-slate-200 bg-white rounded-lg text-sm text-black focus:outline-none focus:ring-2 focus:ring-blue-500/20"
-                >
-                  <option value="Student">Student</option>
-                  <option value="Teacher">Teacher / Faculty Staff</option>
-                </select>
-              </div>
-
-              <form onSubmit={handleConfirmBooking} className="space-y-3.5">
-                <div>
-                  <label
-                    className="block text-xs sm:text-sm font-medium mb-1.5 text-slate-700"
-                    htmlFor="studentName"
-                  >
-                    Full Name
-                  </label>
-                  <input
-                    type="text"
-                    id="studentName"
-                    required
-                    placeholder="e.g. John Doe"
-                    value={studentName}
-                    onChange={(e) => setStudentName(e.target.value)}
-                    className="w-full p-2.5 border border-slate-200 bg-white rounded-lg text-sm text-black focus:outline-none focus:ring-2 focus:ring-blue-500/20"
-                  />
-                </div>
-
-                <div>
-                  <label
-                    className="block text-xs sm:text-sm font-medium mb-1.5 text-slate-700"
-                    htmlFor="studentId"
-                  >
-                    {userRole === "Teacher"
-                      ? "Staff ID Number"
-                      : "Student ID Number"}
-                  </label>
-                  <input
-                    type="text"
-                    id="studentId"
-                    required
-                    placeholder={
-                      userRole === "Teacher" ? "e.g. T-14023" : "e.g. S-90210"
-                    }
-                    value={studentId}
-                    onChange={(e) => setStudentId(e.target.value)}
-                    className="w-full p-2.5 border border-slate-200 bg-white rounded-lg text-sm text-black focus:outline-none focus:ring-2 focus:ring-blue-500/20"
-                  />
-                </div>
-
+        {/* Rooms Selection */}
+        <section className="mb-8">
+          <h2 className="text-sm font-medium text-neutral-900 mb-3">
+            Select Room
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {ROOMS.map((room) => {
+              const active = selectedRoom?.id === room.id;
+              return (
                 <button
-                  type="submit"
-                  className="w-full mt-2 bg-[var(--primary)] text-white p-3 rounded-lg font-semibold text-sm sm:text-base hover:bg-[var(--primary-hover)] active:scale-[0.99] transition-all duration-150 shadow-xs"
+                  key={room.id}
+                  type="button"
+                  onClick={() => setSelectedRoom(room)}
+                  className={[
+                    "rounded-xl border p-4 text-left transition",
+                    active
+                      ? "bg-neutral-900 text-white border-neutral-900"
+                      : "bg-white border-neutral-200 hover:border-neutral-400",
+                    room.teacherOnly && !active ? "opacity-70" : "",
+                  ].join(" ")}
                 >
-                  Confirm Reservation
+                  <div className="font-medium">{room.label}</div>
+                  <div className="text-xs mt-1 opacity-70">{room.capacity}</div>
+                  {room.teacherOnly && (
+                    <span className="inline-block mt-3 text-[10px] uppercase tracking-wide opacity-70">
+                      Teacher only
+                    </span>
+                  )}
                 </button>
-              </form>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* Time Selection */}
+        <section className="mb-8">
+          <h2 className="text-sm font-medium text-neutral-900 mb-3">
+            Select Time
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            {(timeSlots ?? []).map((slot) => {
+              const active = selectedTime?.id === slot.id;
+              return (
+                <button
+                  key={slot.id}
+                  type="button"
+                  onClick={() => setSelectedTime(slot)}
+                  className={[
+                    "rounded-xl border px-4 py-2 text-sm font-medium transition-all active:scale-[0.98]",
+                    active
+                      ? "bg-neutral-900 text-white border-neutral-900 shadow-sm"
+                      : "bg-white text-neutral-700 border-neutral-200 hover:border-neutral-400 hover:bg-neutral-50",
+                  ].join(" ")}
+                >
+                  {slot.display}
+                </button>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* Confirmation Form Box */}
+        {selectedRoom && selectedTime && (
+          <div ref={formRef} className="rounded-xl border bg-neutral-50 p-6">
+            <div className="mb-5">
+              <h3 className="font-medium text-neutral-900">Confirm booking</h3>
+              <p className="text-sm text-neutral-500 mt-1">
+                {selectedRoom.name} • {selectedTime.value} • {formattedTomorrow}
+              </p>
             </div>
+
+            <form onSubmit={onSubmitBooking} className="space-y-4">
+              <select
+                required
+                value={userRole}
+                onChange={(e) => setUserRole(e.target.value)}
+                className="w-full rounded-lg border border-neutral-200 bg-white p-3 text-sm text-black"
+              >
+                {!selectedRoom.teacherOnly && (
+                  <option value="Student">Student</option>
+                )}
+                <option value="Teacher">Teacher</option>
+              </select>
+
+              <input
+                required
+                placeholder="Full name"
+                value={studentName}
+                onChange={(e) => setStudentName(e.target.value)}
+                className="w-full rounded-lg border border-neutral-200 p-3 text-sm text-black bg-white"
+              />
+              <input
+                required
+                type="number"
+                min={1}
+                placeholder="Jumlah peserta"
+                value={jumlahPeserta}
+                onChange={(e) => setJumlahPeserta(e.target.value)}
+                className="w-full rounded-lg border border-neutral-200 p-3 text-sm text-black bg-white"
+              />
+              <input
+                placeholder="Tajuk projek (optional)"
+                value={tajukProjek}
+                onChange={(e) => setTajukProjek(e.target.value)}
+                className="w-full rounded-lg border border-neutral-200 p-3 text-sm text-black bg-white"
+              />
+              <input
+                placeholder="Kelas (optional)"
+                value={kelas}
+                onChange={(e) => setKelas(e.target.value)}
+                className="w-full rounded-lg border border-neutral-200 p-3 text-sm text-black bg-white"
+              />
+
+              <button
+                type="submit"
+                className="w-full rounded-lg bg-black py-3 text-sm font-medium text-white transition"
+              >
+                Confirm Reservation
+              </button>
+            </form>
           </div>
         )}
       </div>
