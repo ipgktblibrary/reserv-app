@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { getBookingsByPhone, deleteBooking, BookingPayload, createBooking } from "@/services/bookingService";
 import { useState, useEffect } from "react";
-import { getBookingsByPhone, createBooking, deleteBooking, BookingPayload } from "../lib/bookingService";
 
 export function useBookingSession() {
   const [phone, setPhone] = useState<string | null>(null);
