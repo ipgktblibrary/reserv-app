@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/set-state-in-effect */
 import { useState, useEffect, useCallback } from "react";
 import {
@@ -12,25 +13,20 @@ import {
   getEffectiveSlots,
 } from "../services/adminService";
 
-//TYPES
-import { Room } from "../types/room";
-import { Reservation } from "../types/reservation";
-import { RoomTimeSlot } from "../types/roomTimeSlot";
-
 export function useAdminDashboard(initialRoomId?: string) {
   // --- STATE MANAGEMENT ---
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [isHydrated, setIsHydrated] = useState<boolean>(false); 
-  
-  const [selectedRoomId, setSelectedRoomId] = useState<string | undefined>(initialRoomId);
-  
-  const [rooms, setRooms] = useState<Room[]>([]);
-  const [timeSlots, setTimeSlots] = useState<RoomTimeSlot[]>([]);
-  const [reservations, setReservations] = useState<Reservation[]>([]);
+  const [isHydrated, setIsHydrated] = useState<boolean>(false);
 
-  
+  const [selectedRoomId, setSelectedRoomId] = useState<string | undefined>(
+    initialRoomId,
+  );
+
+  const [rooms, setRooms] = useState<any[]>([]);
+  const [timeSlots, setTimeSlots] = useState<any[]>([]);
+  const [reservations, setReservations] = useState<any[]>([]);
 
   // --- HYDRATION LIFECYCLE CONTROLLER ---
   useEffect(() => {
@@ -38,27 +34,27 @@ export function useAdminDashboard(initialRoomId?: string) {
     if (savedSession === "active") {
       setIsAdmin(true);
     }
-    setIsHydrated(true); 
+    setIsHydrated(true);
   }, []);
 
   // --- AUTHENTICATION ENGINE ---
-const verifyPasscode = async (code: string) => {
-  setLoading(true);
-  setError(null);
-  try {
-    const isMatched = await verifyAdminPasscode(code);
-    if (isMatched) {
-      setIsAdmin(true);
-      localStorage.setItem("system_admin_session", "active");
-    } else {
-      setError("Invalid administrative passcode.");
+  const verifyPasscode = async (code: string) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const isMatched = await verifyAdminPasscode(code);
+      if (isMatched) {
+        setIsAdmin(true);
+        localStorage.setItem("system_admin_session", "active");
+      } else {
+        setError("Invalid administrative passcode.");
+      }
+    } catch {
+      setError("Authentication service fault.");
+    } finally {
+      setLoading(false);
     }
-  } catch {
-    setError("Authentication service fault.");
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   const adminLogout = () => {
     setIsAdmin(false);
@@ -73,9 +69,9 @@ const verifyPasscode = async (code: string) => {
     if (!isAdmin) return;
     try {
       const data = await getAllReservations();
-      console.log("reservations",data);
+      console.log("reservations", data);
       setReservations(data || []);
-    } catch  {
+    } catch {
       setError("Failed to fetch reservations");
     }
   }, [isAdmin]);
@@ -87,33 +83,31 @@ const verifyPasscode = async (code: string) => {
       setRooms(data || []);
       if (!selectedRoomId && data && data.length > 0) {
         setSelectedRoomId(data[0].id);
-        console.log("ROOM",data)
+        console.log("ROOM", data);
       }
     } catch {
-      setError( "Failed to fetch rooms");
+      setError("Failed to fetch rooms");
     }
   }, [selectedRoomId, isAdmin]);
 
+  const fetchTimeSlots = useCallback(async () => {
+    if (!selectedRoomId || !isAdmin) return;
 
-const fetchTimeSlots = useCallback(async () => {
-  if (!selectedRoomId || !isAdmin) return;
+    try {
+      const data = await getEffectiveSlots(
+        selectedRoomId,
+        new Date("2026-06-18"),
+      );
 
-  try {
-  
-    const data = await getEffectiveSlots(selectedRoomId, new Date("2026-06-18"));
+      setTimeSlots(data || []);
 
-    setTimeSlots(data || []);
-
-    console.log("LOCAL:", new Date());
-console.log("ISO:", new Date().toISOString());
-console.log("DAY:", new Date().getDay());
-  } catch {
-    setError("Failed to fetch time slots");
-  }
-}, [selectedRoomId, isAdmin]);
-
-
-
+      console.log("LOCAL:", new Date());
+      console.log("ISO:", new Date().toISOString());
+      console.log("DAY:", new Date().getDay());
+    } catch {
+      setError("Failed to fetch time slots");
+    }
+  }, [selectedRoomId, isAdmin]);
 
   const refreshDashboard = useCallback(async () => {
     if (!isAdmin) return;
@@ -143,12 +137,16 @@ console.log("DAY:", new Date().getDay());
       setReservations((prev) => prev.filter((res) => res.id !== id));
     } catch {
       setError("Failed to delete reservation");
-      
     }
   };
 
   const purgeAllReservations = async () => {
-    if (!window.confirm("NUCLEAR OPTION: Are you absolutely sure you want to delete ALL reservations?")) return;
+    if (
+      !window.confirm(
+        "NUCLEAR OPTION: Are you absolutely sure you want to delete ALL reservations?",
+      )
+    )
+      return;
     setError(null);
     try {
       await adminTruncateAllReservations();
@@ -158,38 +156,46 @@ console.log("DAY:", new Date().getDay());
     }
   };
 
-
   const modifyRoomCapacity = async (roomId: string, capacity: number) => {
     setError(null);
     try {
       await updateRoomCapacity(roomId, capacity);
       setRooms((prev) =>
-        prev.map((room) => (room.id === roomId ? { ...room, capacity } : room))
+        prev.map((room) => (room.id === roomId ? { ...room, capacity } : room)),
       );
-    } catch{
+    } catch {
       setError("Failed to update room capacity");
-      
     }
   };
 
-  const toggleBlockSlot = async (slotId: string, currentlyBlocked: boolean, reason?: string) => {
+  const toggleBlockSlot = async (
+    slotId: string,
+    currentlyBlocked: boolean,
+    reason?: string,
+  ) => {
     setError(null);
     try {
       if (currentlyBlocked) {
         await unblockTimeSlot(slotId);
         setTimeSlots((prev) =>
           prev.map((slot) =>
-            slot.id === slotId ? { ...slot, is_blocked: false, blocked_reason: null } : slot
-          )
+            slot.id === slotId
+              ? { ...slot, is_blocked: false, blocked_reason: null }
+              : slot,
+          ),
         );
       } else {
         await blockTimeSlot(slotId, reason);
         setTimeSlots((prev) =>
           prev.map((slot) =>
             slot.id === slotId
-              ? { ...slot, is_blocked: true, blocked_reason: reason || "Blocked by Administrator" }
-              : slot
-          )
+              ? {
+                  ...slot,
+                  is_blocked: true,
+                  blocked_reason: reason || "Blocked by Administrator",
+                }
+              : slot,
+          ),
         );
       }
     } catch {
@@ -198,8 +204,8 @@ console.log("DAY:", new Date().getDay());
   };
 
   return {
-    isAdmin,             
-    isHydrated, 
+    isAdmin,
+    isHydrated,
     reservations,
     rooms,
     timeSlots,
@@ -209,8 +215,8 @@ console.log("DAY:", new Date().getDay());
 
     setSelectedRoomId,
     setError,
-    verifyPasscode,      
-    adminLogout,         
+    verifyPasscode,
+    adminLogout,
     refreshDashboard,
     deleteReservation,
     purgeAllReservations,
