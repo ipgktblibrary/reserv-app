@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase/client";
 
 export interface BookingPayload {
   phone_number: string;
@@ -19,7 +19,7 @@ export async function getBookingsByPhone(phone: string) {
     .select("*")
     .eq("phone_number", phone)
     .order("booking_date", { ascending: true });
-    
+
   if (error) throw error;
   return data || [];
 }

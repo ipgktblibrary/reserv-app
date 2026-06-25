@@ -2,8 +2,7 @@
 // 1. RESERVATIONS LEDGER
 // ==========================================
 
-import { supabase } from "@/lib/supabase";
-
+import { supabase } from "@/lib/supabase/client";
 
 export async function getAllReservations() {
   const { data, error } = await supabase
@@ -16,10 +15,7 @@ export async function getAllReservations() {
 }
 
 export async function adminDeleteReservation(id: string) {
-  const { error } = await supabase
-    .from("reservations")
-    .delete()
-    .eq("id", id);
+  const { error } = await supabase.from("reservations").delete().eq("id", id);
 
   if (error) throw error;
 }
@@ -28,7 +24,7 @@ export async function adminTruncateAllReservations() {
   const { error } = await supabase
     .from("reservations")
     .delete()
-    .neq("id", "00000000-0000-0000-0000-000000000000"); 
+    .neq("id", "00000000-0000-0000-0000-000000000000");
 
   if (error) throw error;
 }
@@ -48,7 +44,7 @@ export async function getRooms() {
 }
 
 export async function updateRoomCapacity(roomId: string, capacity: number) {
- const cleanRoomId = roomId.trim().toLowerCase();
+  const cleanRoomId = roomId.trim().toLowerCase();
   const { data, error } = await supabase
     .from("rooms")
     .update({ capacity })
@@ -67,7 +63,6 @@ export async function updateRoomCapacity(roomId: string, capacity: number) {
 // ==========================================
 // 3. TIME SLOTS / BLOCK CONTROLS
 // ==========================================
-
 
 // export async function getTimeSlots(roomId: string) {
 //   const { data, error } = await supabase
@@ -112,11 +107,9 @@ export async function getEffectiveSlots(roomId: string, date: Date) {
   if (baseSlots.error) throw baseSlots.error;
   if (overrides.error) throw overrides.error;
 
-  const overrideMap = new Map(
-    overrides.data.map(o => [o.slot_id, o])
-  );
+  const overrideMap = new Map(overrides.data.map((o) => [o.slot_id, o]));
 
-  const merged = (baseSlots.data ?? []).map(slot => {
+  const merged = (baseSlots.data ?? []).map((slot) => {
     const ov = overrideMap.get(slot.id);
 
     if (!ov) return slot;
@@ -130,7 +123,6 @@ export async function getEffectiveSlots(roomId: string, date: Date) {
 
   return merged;
 }
-
 
 export async function getTimeSlots(roomId: string, date: Date) {
   const dayOfWeek = date.getDay() === 0 ? 7 : date.getDay();
@@ -147,14 +139,12 @@ export async function getTimeSlots(roomId: string, date: Date) {
   return data ?? [];
 }
 
-
-
 export async function blockTimeSlot(slotId: string, reason?: string) {
   const { error } = await supabase
     .from("room_time_slots")
-    .update({ 
-      is_blocked: true, 
-      blocked_reason: reason || "Blocked by Administrator" 
+    .update({
+      is_blocked: true,
+      blocked_reason: reason || "Blocked by Administrator",
     })
     .eq("id", slotId);
 
@@ -164,9 +154,9 @@ export async function blockTimeSlot(slotId: string, reason?: string) {
 export async function unblockTimeSlot(slotId: string) {
   const { error } = await supabase
     .from("room_time_slots")
-    .update({ 
-      is_blocked: false, 
-      blocked_reason: null 
+    .update({
+      is_blocked: false,
+      blocked_reason: null,
     })
     .eq("id", slotId);
 
@@ -181,7 +171,9 @@ export async function unblockTimeSlot(slotId: string) {
  * Verifies an access code against the public.admins table.
  * Returns true if a match is found, false otherwise.
  */
-export async function verifyAdminPasscode(accessCode: string): Promise<boolean> {
+export async function verifyAdminPasscode(
+  accessCode: string,
+): Promise<boolean> {
   const { data, error } = await supabase
     .from("admins")
     .select("id")
@@ -192,11 +184,10 @@ export async function verifyAdminPasscode(accessCode: string): Promise<boolean> 
       code: error.code,
       message: error.message,
       details: error.details,
-      hint: error.hint
+      hint: error.hint,
     });
     throw error;
   }
-  
 
   console.log("🍏 [SUPABASE ADMIN DATA]:", data);
 
