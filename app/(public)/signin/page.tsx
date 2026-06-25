@@ -8,6 +8,8 @@ export default function SignInPage() {
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
 
+  const [checking, setChecking] = useState(true);
+
   const router = useRouter();
 
   useEffect(() => {
@@ -15,8 +17,11 @@ export default function SignInPage() {
       const { data } = await supabase.auth.getUser();
       if (data.user) {
         router.replace("/");
+        return;
       }
+      setChecking(false);
     };
+
     check();
   }, [router]);
 
@@ -38,6 +43,17 @@ export default function SignInPage() {
     router.replace("/booking");
     router.refresh();
     return data;
+  }
+
+  if (checking) {
+    return (
+      <div className="h-screen w-full flex items-center justify-center bg-background">
+        <div className="flex flex-col items-center gap-3">
+          <div className="h-6 w-6 animate-spin rounded-full border-2 border-current border-t-transparent opacity-70" />
+          <div className="text-sm text-muted-foreground">Loading</div>
+        </div>
+      </div>
+    );
   }
 
   return (
