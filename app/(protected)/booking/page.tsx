@@ -1,29 +1,100 @@
 "use client";
 
-import { supabase } from "@/lib/supabase/client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import RoomList from "../my-bookings/components/ListRoomCard";
+import TimeSlotSelector from "../my-bookings/components/TimeSlotSelector";
+import BookingForm, {
+  BookingFormState,
+} from "../my-bookings/components/BookingForm";
+import { useRooms } from "@/features/hooks/useRooms";
+import { ProgressStatus, ProjectType } from "@/features/misc/enums";
 
-export default function BookingPage() {
-  const [name, setName] = useState<string>("");
+export default function Page() {
+  const { rooms } = useRooms();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("name")
-        .single();
+  const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
+  const [selectedSlots, setSelectedSlots] = useState<string[]>([]);
 
-      if (error) {
-        console.error(error);
-        return;
-      }
+  const selectedRoom = rooms.find((r) => r.id === selectedRoomId);
 
-      setName(data?.name ?? "");
-      console.log("profiles:", data);
-    };
+  const bookedSlotIds = new Set<string>();
+  function onToggleSlot(id: string) {
+    setSelectedSlots((prev) => {
+      const exists = prev.includes(id);
+      if (exists) return prev.filter((s) => s !== id);
+      if (prev.length >= 2) return prev;
+      return [...prev, id];
+    });
+  }
 
-    fetchData();
-  }, []);
+  const [form, setForm] = useState<BookingFormState>({
+    fullName: "",
+    participants: "",
+    projectType: "",
+    progressStatus: "",
+  });
 
-  return <div>HELLO WORLD {name}</div>;
+  function handleChange(patch: Partial<typeof form>) {
+    setForm((prev) => ({ ...prev, ...patch }));
+  }
+
+  function handleSubmit() {
+    console.log({
+      roomId: selectedRoomId,
+      slots: selectedSlots,
+      form,
+    });
+  }
+
+  return (
+    <div className="min-h-screen bg-neutral-50 px-4 py-10 flex justify-center">
+      <div className="w-full max-w-2xl">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-2xl font-bold">My Bookings</h1>
+          <p className="mt-1 text-sm text-neutral-500">Booker ID: {}</p>
+        </div>
+
+        <RoomList
+          selectedRoomId={selectedRoomId}
+          onSelect={setSelectedRoomId}
+        />
+
+        <div className="mb-8">
+          <h1 className="text-2xl font-bold">Select Time Slots</h1>
+          <p className="mt-1 text-sm text-neutral-500">Max Two Slots</p>
+        </div>
+
+        {selectedRoomId && (
+          <TimeSlotSelector
+            roomId={selectedRoomId}
+            selectedSlots={selectedSlots}
+            bookedSlotIds={bookedSlotIds}
+            onToggleSlot={onToggleSlot}
+          />
+        )}
+
+        <div className="mb-8 mt-5">
+          <h1 className="text-2xl font-bold">Booking Form</h1>
+          <p className="mt-1 text-sm text-neutral-500">
+            Booking for Tomorrow [FULL DATE[ [DAY]
+          </p>
+        </div>
+
+        {selectedRoomId && selectedSlots.length > 0 && (
+          <BookingForm
+            form={form}
+            capacity={selectedRoom?.capacity ?? 0}
+            projectTypes={Object.values(ProjectType)}
+            progressStatuses={Object.values(ProgressStatus)}
+            onChange={handleChange}
+            onSubmit={handleSubmit}
+          />
+        )}
+
+        <div className="mt-6">Selected Room: {selectedRoomId ?? "none"}</div>
+        <div className="mt-6">Selected Time Slots: {[selectedSlots]}</div>
+      </div>
+    </div>
+  );
 }

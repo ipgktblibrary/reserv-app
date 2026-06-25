@@ -39,7 +39,7 @@ export default function SignUpPage() {
       return;
     }
 
-    router.replace("/signin");
+    router.replace("/booking");
   }
 
   return (

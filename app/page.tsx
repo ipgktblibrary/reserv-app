@@ -1,16 +1,29 @@
-import React from "react";
+"use client";
 
-export default function ComingSoonPage() {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-900 px-4 text-white">
-      <div className="text-center">
-        <span className="inline-block rounded-full bg-indigo-500/10 px-3 py-1 text-xs font-medium tracking-wider text-indigo-400 uppercase">
-          Under Construction
-        </span>
-        <h1 className="mt-4 text-4xl font-bold tracking-tight sm:text-6xl">
-          Coming Soon
-        </h1>
-      </div>
-    </div>
-  );
+import { supabase } from "@/lib/supabase/client";
+import { useEffect, useState } from "react";
+
+export default function HomePage() {
+  const [name, setName] = useState<string>("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("name")
+        .single();
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      setName(data?.name ?? "");
+      console.log("profiles:", data);
+    };
+
+    fetchData();
+  }, []);
+
+  return <div>HELLO WORLD {name}</div>;
 }
