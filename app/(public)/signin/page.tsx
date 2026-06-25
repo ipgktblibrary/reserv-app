@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 export default function SignInPage() {
@@ -9,6 +9,16 @@ export default function SignInPage() {
   const [error, setError] = useState<string | null>(null);
 
   const router = useRouter();
+
+  useEffect(() => {
+    const check = async () => {
+      const { data } = await supabase.auth.getUser();
+      if (data.user) {
+        router.replace("/");
+      }
+    };
+    check();
+  }, [router]);
 
   async function handleSignin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
