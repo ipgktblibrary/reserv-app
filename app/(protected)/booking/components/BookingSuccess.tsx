@@ -1,14 +1,25 @@
-// components/BookingSuccess.tsx
+/* eslint-disable react-hooks/set-state-in-effect */
+"use client";
+
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+
 type Props = {
   open: boolean;
   onClose?: () => void;
 };
 
 export default function BookingSuccess({ open, onClose }: Props) {
-  if (!open) return null;
+  const [mounted, setMounted] = useState(false);
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!open || !mounted) return null;
+
+  return createPortal(
+    <div className="fixed inset-0 z-99999 flex items-center justify-center bg-black/40 px-4">
       <div className="w-full max-w-sm rounded-2xl bg-white p-6 text-center shadow-xl">
         <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-green-600">
           ✓
@@ -29,6 +40,7 @@ export default function BookingSuccess({ open, onClose }: Props) {
           OK
         </button>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

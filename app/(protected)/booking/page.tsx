@@ -52,7 +52,6 @@ export default function Page() {
   }
 
   async function handleSubmit() {
-    console.log("SUBMIT CLICKED");
     const user = await getUser();
     console.log(user);
 
@@ -62,8 +61,6 @@ export default function Page() {
       name: user.name,
     });
 
-    console.log("ROLE", user.role);
-    console.log("SELECTED SLOT", selectedSlots);
     try {
       await reservationService.createReservation({
         fullName: form.fullName,

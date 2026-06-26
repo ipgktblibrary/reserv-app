@@ -28,7 +28,6 @@ export function toReservationInsert(input: CreateReservationInput) {
 export const reservationService = {
   async createReservation(input: CreateReservationInput) {
     const payload = toReservationInsert(input);
-
     const { data, error } = await supabase
       .from("reservations")
       .insert(payload)
