@@ -51,7 +51,6 @@ export function useTimeSlots(roomId: string, date: string) {
       const data = await timeSlotsService.getByRoom(roomId, date);
 
       if (!active) return;
-
       setSlots(data);
       setLoading(false);
     };

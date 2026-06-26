@@ -14,9 +14,9 @@ export type RoomTimeSlot = {
 function getDayOfWeek(dateStr: string): 1 | 2 | 3 | 4 | 5 {
   const jsDay = new Date(dateStr).getDay();
   const mapped = jsDay === 0 ? 7 : jsDay;
-  if (mapped < 1 || mapped > 5) {
-    throw new Error("Booking only allowed on weekdays");
-  }
+  // if (mapped < 1 || mapped > 5) {
+  //   throw new Error("Booking only allowed on weekdays");
+  // }
   return mapped as 1 | 2 | 3 | 4 | 5;
 }
 
@@ -33,6 +33,8 @@ export const timeSlotsService = {
     console.log("DATE TODAY", dayOfWeek);
     if (error) {
       console.error(error);
+      console.log("DATE TODAY", dayOfWeek);
+
       return [];
     }
 
