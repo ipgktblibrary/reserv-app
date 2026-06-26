@@ -52,7 +52,11 @@ export default function Page() {
   }
 
   async function handleSubmit() {
+    console.log("SUBMIT CLICKED");
     const user = await getUser();
+    console.log(user);
+    alert(JSON.stringify(user));
+
     if (!user) return;
 
     const booker = await bookerService.ensure(user.id, {
