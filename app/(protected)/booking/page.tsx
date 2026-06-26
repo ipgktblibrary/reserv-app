@@ -3,14 +3,15 @@
 import { useState } from "react";
 import RoomList from "./components/ListRoomCard";
 import TimeSlotSelector from "./components/TimeSlotSelector";
-import BookingForm, {
-  BookingFormState,
-} from "./components/BookingForm";
+import BookingForm, { BookingFormState } from "./components/BookingForm";
 import { useRooms } from "@/features/hooks/useRooms";
 import { ProgressStatus, ProjectType } from "@/features/misc/enums";
+import { useLogout } from "@/features/hooks/useLogout";
 
 export default function Page() {
   const { rooms } = useRooms();
+  const logout = useLogout();
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
   const [selectedSlots, setSelectedSlots] = useState<string[]>([]);
@@ -130,10 +131,43 @@ export default function Page() {
 
             <button
               type="button"
+              onClick={() => setConfirmOpen(true)}
               className="border-transparent text-neutral-400 hover:border-neutral-300 hover:text-neutral-600 whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-medium transition-all duration-200"
             >
-              Profile
+              Log Out
             </button>
+            {confirmOpen && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+                <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl">
+                  <h2 className="text-base font-semibold text-neutral-900">
+                    Confirm logout
+                  </h2>
+
+                  <p className="mt-2 text-sm text-neutral-500">
+                    You’ll be signed out of your account on this device.
+                  </p>
+
+                  <div className="mt-6 flex gap-3">
+                    <button
+                      onClick={() => setConfirmOpen(false)}
+                      className="flex-1 rounded-xl border border-neutral-200 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50"
+                    >
+                      Cancel
+                    </button>
+
+                    <button
+                      onClick={async () => {
+                        setConfirmOpen(false);
+                        await logout();
+                      }}
+                      className="flex-1 rounded-xl bg-black py-2 text-sm font-medium text-white hover:bg-neutral-800"
+                    >
+                      Log out
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </nav>
         </div>
         <RoomList
