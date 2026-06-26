@@ -55,7 +55,6 @@ export default function Page() {
     console.log("SUBMIT CLICKED");
     const user = await getUser();
     console.log(user);
-    alert(JSON.stringify(user));
 
     if (!user) return;
 
@@ -76,15 +75,9 @@ export default function Page() {
         userRole: user.role,
         bookerId: booker.id,
       });
-
       setSuccess(true);
-      // optional: success UX
-
-      console.log("Booking created");
     } catch (err) {
       console.error(err);
-
-      // show toast/modal
     }
   }
 
@@ -108,11 +101,10 @@ export default function Page() {
           onClose={() => {
             setSuccess(false);
             resetForm();
-            setTimeout(() => {
-              router.replace("/history");
-            }, 600);
+            router.replace("/history");
           }}
-        />{" "}
+        />
+
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-2xl font-bold tracking-tight text-neutral-900">
