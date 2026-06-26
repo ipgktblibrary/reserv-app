@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import RoomList from "../my-bookings/components/ListRoomCard";
-import TimeSlotSelector from "../my-bookings/components/TimeSlotSelector";
+import RoomList from "./components/ListRoomCard";
+import TimeSlotSelector from "./components/TimeSlotSelector";
 import BookingForm, {
   BookingFormState,
-} from "../my-bookings/components/BookingForm";
+} from "./components/BookingForm";
 import { useRooms } from "@/features/hooks/useRooms";
 import { ProgressStatus, ProjectType } from "@/features/misc/enums";
 
