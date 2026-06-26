@@ -9,8 +9,6 @@ export default function RoomList(props: Props) {
   const { onSelect, selectedRoomId } = props;
   const { rooms } = useRooms();
 
-  console.log("ROOMS", rooms);
-
   return (
     <>
       <section className="mb-10">

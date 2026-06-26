@@ -28,12 +28,11 @@ export const timeSlotsService = {
       .from("room_time_slots")
       .select("*")
       .eq("room_id", roomId)
-      .eq("day_of_week", 2);
+      .eq("day_of_week", 3);
 
     console.log("DATE TODAY", dayOfWeek);
     if (error) {
       console.error(error);
-      console.log("DATE TODAY", dayOfWeek);
 
       return [];
     }

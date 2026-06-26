@@ -5,18 +5,17 @@ import { getBookingDate } from "@/features/misc/booking-date";
 type Props = {
   roomId: string;
   selectedSlots: string[];
-  bookedSlotIds: Set<string>;
   onToggleSlot: (id: string) => void;
 };
 
 export default function TimeSlotSelector({
   roomId,
   selectedSlots,
-  bookedSlotIds,
   onToggleSlot,
 }: Props) {
   const bookingDate = getBookingDate();
-  const { slots } = useTimeSlots(roomId, bookingDate);
+
+  const { slots, bookedSlotIds } = useTimeSlots(roomId, bookingDate);
 
   const sortedSlots = [...slots].sort((a, b) =>
     a.start_time.localeCompare(b.start_time),

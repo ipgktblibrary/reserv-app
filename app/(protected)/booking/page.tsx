@@ -8,17 +8,27 @@ import { useRooms } from "@/features/hooks/useRooms";
 import { ProgressStatus, ProjectType } from "@/features/misc/enums";
 import { useLogout } from "@/features/hooks/useLogout";
 
+import { reservationService } from "@/features/services/reservation.service";
+import { getBookingDate } from "@/features/misc/booking-date";
+import { getUser } from "@/lib/auth";
+import { bookerService } from "@/features/services/booker.service";
+import BookingSuccess from "./components/BookingSuccess";
+import { useRouter } from "next/navigation";
+
 export default function Page() {
   const { rooms } = useRooms();
+
+  const router = useRouter();
   const logout = useLogout();
+
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
   const [selectedSlots, setSelectedSlots] = useState<string[]>([]);
 
   const selectedRoom = rooms.find((r) => r.id === selectedRoomId);
 
-  const bookedSlotIds = new Set<string>();
   function onToggleSlot(id: string) {
     setSelectedSlots((prev) => {
       const exists = prev.includes(id);
@@ -37,71 +47,68 @@ export default function Page() {
 
   function handleChange(patch: Partial<typeof form>) {
     setForm((prev) => ({ ...prev, ...patch }));
+
+    console.log("ROOM ID : ", selectedRoomId!);
   }
 
-  function handleSubmit() {
-    console.log({
-      roomId: selectedRoomId,
-      slots: selectedSlots,
-      form,
+  async function handleSubmit() {
+    const user = await getUser();
+    if (!user) return;
+
+    const booker = await bookerService.ensure(user.id, {
+      name: user.name,
     });
+
+    console.log("ROLE", user.role);
+    console.log("SELECTED SLOT", selectedSlots);
+    try {
+      await reservationService.createReservation({
+        fullName: form.fullName,
+        participants: Number(form.participants),
+        projectType: form.projectType,
+        roomId: selectedRoomId!, //ROOM ID
+        slotIds: selectedSlots, //LIST OF SLOT ID
+        bookingDate: getBookingDate(), //GET TOMOROW DATE BOOKING
+        userRole: user.role,
+        bookerId: booker.id,
+      });
+
+      setSuccess(true);
+      // optional: success UX
+
+      console.log("Booking created");
+    } catch (err) {
+      console.error(err);
+
+      // show toast/modal
+    }
   }
 
-  // return (
-  //   <div className="min-h-screen bg-neutral-50 px-4 py-10 flex justify-center">
-  //     <div className="w-full max-w-2xl">
-  //       {/* Header */}
-  //       <div className="mb-8">
-  //         <h1 className="text-2xl font-bold">My Bookings</h1>
-  //         <p className="mt-1 text-sm text-neutral-500">Booker ID: {}</p>
-  //       </div>
+  function resetForm() {
+    setForm({
+      fullName: "",
+      participants: "",
+      projectType: "",
+      progressStatus: "",
+    });
 
-  //       <RoomList
-  //         selectedRoomId={selectedRoomId}
-  //         onSelect={setSelectedRoomId}
-  //       />
-
-  //       <div className="mb-8">
-  //         <h1 className="text-2xl font-bold">Select Time Slots</h1>
-  //         <p className="mt-1 text-sm text-neutral-500">Max Two Slots</p>
-  //       </div>
-
-  //       {selectedRoomId && (
-  //         <TimeSlotSelector
-  //           roomId={selectedRoomId}
-  //           selectedSlots={selectedSlots}
-  //           bookedSlotIds={bookedSlotIds}
-  //           onToggleSlot={onToggleSlot}
-  //         />
-  //       )}
-
-  //       <div className="mb-8 mt-5">
-  //         <h1 className="text-2xl font-bold">Booking Form</h1>
-  //         <p className="mt-1 text-sm text-neutral-500">
-  //           Booking for Tomorrow [FULL DATE[ [DAY]
-  //         </p>
-  //       </div>
-
-  //       {selectedRoomId && selectedSlots.length > 0 && (
-  //         <BookingForm
-  //           form={form}
-  //           capacity={selectedRoom?.capacity ?? 0}
-  //           projectTypes={Object.values(ProjectType)}
-  //           progressStatuses={Object.values(ProgressStatus)}
-  //           onChange={handleChange}
-  //           onSubmit={handleSubmit}
-  //         />
-  //       )}
-
-  //       <div className="mt-6">Selected Room: {selectedRoomId ?? "none"}</div>
-  //       <div className="mt-6">Selected Time Slots: {[selectedSlots]}</div>
-  //     </div>
-  //   </div>
-  // );
+    setSelectedSlots([]);
+    setSelectedRoomId(null);
+  }
 
   return (
     <div className="min-h-screen bg-neutral-50 px-4 py-6 sm:py-10 flex justify-center">
       <div className="w-full max-w-2xl">
+        <BookingSuccess
+          open={success}
+          onClose={() => {
+            setSuccess(false);
+            resetForm();
+            setTimeout(() => {
+              router.replace("/history");
+            }, 600);
+          }}
+        />{" "}
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-2xl font-bold tracking-tight text-neutral-900">
@@ -109,7 +116,6 @@ export default function Page() {
           </h1>
           <p className="mt-1 text-sm text-neutral-500">Booker ID: {}</p>
         </div>
-
         <div className="mb-8 w-full border-b border-neutral-200">
           <nav
             className="-mb-px flex space-x-6 overflow-x-auto no-scrollbar scroll-smooth"
@@ -124,6 +130,7 @@ export default function Page() {
 
             <button
               type="button"
+              onClick={() => router.replace("/history")}
               className="border-transparent text-neutral-400 hover:border-neutral-300 hover:text-neutral-600 whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-medium transition-all duration-200"
             >
               History
@@ -174,23 +181,19 @@ export default function Page() {
           selectedRoomId={selectedRoomId}
           onSelect={setSelectedRoomId}
         />
-
         <div className="mb-8 mt-8">
           <h1 className="text-2xl font-bold tracking-tight text-neutral-900">
             Select Time Slots
           </h1>
           <p className="mt-1 text-sm text-neutral-500">Max Two Slots</p>
         </div>
-
         {selectedRoomId && (
           <TimeSlotSelector
             roomId={selectedRoomId}
             selectedSlots={selectedSlots}
-            bookedSlotIds={bookedSlotIds}
             onToggleSlot={onToggleSlot}
           />
         )}
-
         <div className="mb-8 mt-8">
           <h1 className="text-2xl font-bold tracking-tight text-neutral-900">
             Booking Form
@@ -199,7 +202,6 @@ export default function Page() {
             Booking for Tomorrow [FULL DATE] [DAY]
           </p>
         </div>
-
         {selectedRoomId && selectedSlots.length > 0 && (
           <BookingForm
             form={form}
@@ -210,7 +212,6 @@ export default function Page() {
             onSubmit={handleSubmit}
           />
         )}
-
         <div className="mt-12 pt-6 border-t border-neutral-200/60 flex flex-col gap-1 text-xs text-neutral-400 font-mono">
           <div>Selected Room: {selectedRoomId ?? "none"}</div>
           <div>Selected Time Slots: {[selectedSlots]}</div>
