@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { supabase } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import { SelectBlock } from "@/features/misc/selectBloc";
+import { Chevron } from "@/features/misc/chevron";
 
 export default function SignUpPage() {
   const [email, setEmail] = useState<string>("");
@@ -14,6 +16,7 @@ export default function SignUpPage() {
   const [role, setRole] = useState<"teacher" | "student">("student");
 
   const [error, setError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   const router = useRouter();
 
@@ -27,6 +30,7 @@ export default function SignUpPage() {
     });
 
     const user = data.user;
+
     if (user) {
       await supabase.rpc("create_profile", {
         user_id: user.id,
@@ -137,16 +141,14 @@ export default function SignUpPage() {
                   </p>
                 )}
               </div>
-              <div>
-                <label className="block text-xs font-semibold tracking-widest text-gray-400 uppercase mb-2">
-                  Select Account Type
-                </label>
+
+              <SelectBlock label="Select Account Type">
                 <select
                   value={role}
                   onChange={(e) =>
                     setRole(e.target.value as "teacher" | "student")
                   }
-                  className="w-full bg-[#F8FAFC] border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition duration-200"
+                  className="w-full appearance-none rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-3 pr-10 text-sm focus:border-black focus:ring-2 focus:ring-black/10"
                   required
                 >
                   <option value="" disabled hidden>
@@ -154,22 +156,62 @@ export default function SignUpPage() {
                   </option>
                   <option value="student">Student</option>
                   <option value="teacher">Teacher</option>
-                </select>{" "}
-                {/* <-- Added the proper closing tag here */}
-              </div>
-              <div>
-                <label className="block text-xs font-semibold tracking-widest text-gray-400 uppercase mb-2">
-                  Password
-                </label>
+                </select>
+                <Chevron />
+              </SelectBlock>
 
+              <div className="relative">
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="w-full bg-[#F8FAFC] border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition duration-200"
+                  className="w-full bg-[#F8FAFC] border border-gray-200 rounded-xl px-4 py-3 pr-10 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition duration-200"
                   required
                 />
+
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((v) => !v)}
+                  className="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-gray-600"
+                  aria-label="Toggle password visibility"
+                >
+                  {showPassword ? (
+                    /* eye-off */
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-5 h-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1.5}
+                        d="M3 3l18 18M10.58 10.58A3 3 0 0013.41 13.41M9.88 4.13A10.94 10.94 0 0112 4c7 0 10 8 10 8a18.45 18.45 0 01-3.23 4.5M6.52 6.52A18.45 18.45 0 002 12s3 8 10 8a10.94 10.94 0 005.87-1.69"
+                      />
+                    </svg>
+                  ) : (
+                    /* eye */
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-5 h-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1.5}
+                        d="M2 12s3.5-8 10-8 10 8 10 8-3.5 8-10 8-10-8-10-8z"
+                      />
+                      <circle cx="12" cy="12" r="3" strokeWidth={1.5} />
+                    </svg>
+                  )}
+                </button>
               </div>
 
               <button

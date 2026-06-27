@@ -9,7 +9,7 @@ import { ProgressStatus, ProjectType } from "@/features/misc/enums";
 import { useLogout } from "@/features/hooks/useLogout";
 
 import { reservationService } from "@/features/services/reservation.service";
-import { getBookingDate } from "@/features/misc/booking-date";
+import { getBookingDate, getTomorrowDate } from "@/features/misc/booking-date";
 import { getUser } from "@/lib/auth";
 import { bookerService } from "@/features/services/booker.service";
 import BookingSuccess from "./components/BookingSuccess";
@@ -171,12 +171,16 @@ export default function Page() {
           selectedRoomId={selectedRoomId}
           onSelect={setSelectedRoomId}
         />
+
         <div className="mb-8 mt-8">
           <h1 className="text-2xl font-bold tracking-tight text-neutral-900">
-            Select Time Slots
+            Choose Your Time Slot
           </h1>
-          <p className="mt-1 text-sm text-neutral-500">Max Two Slots</p>
+          <p className="mt-1 text-sm text-neutral-500">
+            You can select up to 2 time slots per booking
+          </p>
         </div>
+
         {selectedRoomId && (
           <TimeSlotSelector
             roomId={selectedRoomId}
@@ -186,10 +190,10 @@ export default function Page() {
         )}
         <div className="mb-8 mt-8">
           <h1 className="text-2xl font-bold tracking-tight text-neutral-900">
-            Booking Form
+            Confirm Your Booking
           </h1>
           <p className="mt-1 text-sm text-neutral-500">
-            Booking for Tomorrow [FULL DATE] [DAY]
+            Scheduled for tomorrow • {getTomorrowDate()}
           </p>
         </div>
         {selectedRoomId && selectedSlots.length > 0 && (

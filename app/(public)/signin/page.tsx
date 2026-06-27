@@ -8,6 +8,7 @@ export default function SignInPage() {
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
 
+  const [showPassword, setShowPassword] = useState(false);
   const [checking, setChecking] = useState(true);
 
   const router = useRouter();
@@ -115,30 +116,58 @@ export default function SignInPage() {
                   required
                 />
               </div>
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <label
-                    htmlFor="password"
-                    className="block text-xs font-semibold tracking-widest text-gray-400 uppercase"
-                  >
-                    Password
-                  </label>
-                  <a
-                    href="#"
-                    className="text-xs font-medium text-blue-600 hover:text-blue-500 transition-colors"
-                  >
-                    Forgot?
-                  </a>
-                </div>
+              <div className="relative">
                 <input
-                  type="current-password"
+                  type={showPassword ? "text" : "password"}
                   id="password"
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-[#F8FAFC] border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition duration-200"
+                  className="w-full bg-[#F8FAFC] border border-gray-200 rounded-xl px-4 py-3 pr-10 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition duration-200"
                   required
                 />
+
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((v) => !v)}
+                  className="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-gray-600"
+                  aria-label="Toggle password visibility"
+                >
+                  {showPassword ? (
+                    /* eye-off */
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-5 h-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1.5}
+                        d="M3 3l18 18M10.58 10.58A3 3 0 0013.41 13.41M9.88 4.13A10.94 10.94 0 0112 4c7 0 10 8 10 8a18.45 18.45 0 01-3.23 4.5M6.52 6.52A18.45 18.45 0 002 12s3 8 10 8a10.94 10.94 0 005.87-1.69"
+                      />
+                    </svg>
+                  ) : (
+                    /* eye */
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-5 h-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1.5}
+                        d="M2 12s3.5-8 10-8 10 8 10 8-3.5 8-10 8-10-8-10-8z"
+                      />
+                      <circle cx="12" cy="12" r="3" strokeWidth={1.5} />
+                    </svg>
+                  )}
+                </button>
               </div>
               <button
                 type="submit"
@@ -152,53 +181,71 @@ export default function SignInPage() {
           {/* Footer Integration */}
           <div className="mt-10 pt-6 border-t border-gray-100 text-center md:text-left">
             <p className="text-sm text-gray-500">
-              Dont have an account?{" "}
+              Dont have an account?
               <a
-                href="#"
+                href="/signup"
                 className="font-medium text-blue-600 hover:text-blue-500 transition-colors"
               >
-                Sign up
+                {""} Sign up
               </a>
             </p>
           </div>
         </div>
 
         {/* Right Side: Structural Branding Block */}
-        <div className="md:col-span-7 bg-white p-8 md:p-12 flex flex-col justify-end min-h-112.5 relative overflow-hidden group rounded-2xl border border-gray-200/80 shadow-xl shadow-gray-100">
-          {/* Subtle Graphic Number Overlay */}
+        <div className="md:col-span-7 bg-white p-8 md:p-12 flex flex-col justify-end min-h-112.5 relative overflow-hidden rounded-2xl border border-gray-200/80 shadow-xl shadow-gray-100">
+          {/* Background Number */}
           <div className="absolute top-0 right-0 p-6 opacity-[0.03] font-bold text-[220px] pointer-events-none select-none text-gray-900 leading-none">
-            01
+            📚
           </div>
 
-          {/* Accent Flow Blend */}
-          <div className="absolute inset-0 bg-linear-to-br from-blue-500/3 via-transparent to-transparent opacity-60 pointer-events-none" />
+          {/* Soft Accent */}
+          <div className="absolute inset-0 bg-linear-to-br from-blue-500/5 via-transparent to-transparent pointer-events-none" />
 
-          {/* Content Grouping */}
           <div className="relative z-10 max-w-md">
-            <div className="text-blue-600 mb-6">
+            <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                strokeWidth="1.5"
+                strokeWidth={1.8}
                 stroke="currentColor"
-                className="w-8 h-8"
+                className="h-7 w-7"
               >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  d="M9 9V4.5M9 9H4.5M9 9L3 3m12 6V4.5M15 9h4.5M15 9l6-6M9 15V19.5M9 15H4.5M9 15l-6 6m12-6V19.5M15 15h4.5M15 15l6 6"
+                  d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"
                 />
               </svg>
             </div>
-            <h3 className="text-2xl font-semibold mb-3 tracking-tight text-gray-900">
-              Intentional Curation
+
+            <h3 className="text-3xl font-semibold tracking-tight text-gray-900">
+              Reserve Library Spaces with Ease
             </h3>
-            <p className="text-sm text-gray-500 leading-relaxed">
-              Experience an ecosystem focused entirely on execution. We reject
-              the noise, maximizing deep engagement and reducing unnecessary
-              cognitive clutter.
+
+            <p className="mt-4 text-sm leading-7 text-gray-500">
+              Book study rooms and collaborative spaces in just a few clicks.
+              Check real-time availability, manage your reservations, and focus
+              on what matters most—your learning.
             </p>
+
+            <div className="mt-8 space-y-3 text-sm text-gray-600">
+              <div className="flex items-center gap-3">
+                <span className="text-blue-600">✓</span>
+                Real-time room availability
+              </div>
+
+              <div className="flex items-center gap-3">
+                <span className="text-blue-600">✓</span>
+                Fast and secure reservations
+              </div>
+
+              <div className="flex items-center gap-3">
+                <span className="text-blue-600">✓</span>
+                Access your booking history anytime
+              </div>
+            </div>
           </div>
         </div>
       </div>
