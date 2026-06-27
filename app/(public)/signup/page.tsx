@@ -9,13 +9,15 @@ export default function SignUpPage() {
   const [password, setPassword] = useState<string>("");
   const [name, setName] = useState<string>("");
 
+  const [phone, setPhone] = useState<string>("");
+
   const [role, setRole] = useState<"teacher" | "student">("student");
 
   const [error, setError] = useState<string | null>(null);
 
   const router = useRouter();
 
-  async function handleSignup(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSignup(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
     setError(null);
 
@@ -31,6 +33,7 @@ export default function SignUpPage() {
         user_email: email,
         user_role: role,
         user_name: name,
+        user_phone_number: phone,
       });
     }
 
@@ -42,6 +45,7 @@ export default function SignUpPage() {
     router.replace("/booking");
   }
 
+  const malaysiaPhoneRegex = /^01\d{8,9}$/;
   return (
     <div className="bg-[#F8FAFC] text-gray-900 min-h-screen flex items-center justify-center p-6 relative overflow-hidden font-sans">
       <div className="absolute -top-20 -right-20 w-100 h-100 bg-blue-600/3 blur-[120px] pointer-events-none select-none" />
@@ -109,6 +113,29 @@ export default function SignUpPage() {
                   className="w-full bg-[#F8FAFC] border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition duration-200"
                   required
                 />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold tracking-widest text-gray-400 uppercase mb-2">
+                  Phone Number
+                </label>
+                <input
+                  type="tel"
+                  inputMode="numeric"
+                  value={phone}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/\D/g, "");
+                    setPhone(value);
+                  }}
+                  placeholder="0123456789"
+                  className="w-full bg-[#F8FAFC] border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition duration-200"
+                  required
+                />
+                {phone && !malaysiaPhoneRegex.test(phone) && (
+                  <p className="mt-1 text-xs text-red-500">
+                    Please enter a valid Malaysian mobile number.
+                  </p>
+                )}
               </div>
               <div>
                 <label className="block text-xs font-semibold tracking-widest text-gray-400 uppercase mb-2">

@@ -47,30 +47,27 @@ export default function Page() {
 
   function handleChange(patch: Partial<typeof form>) {
     setForm((prev) => ({ ...prev, ...patch }));
-
-    console.log("ROOM ID : ", selectedRoomId!);
   }
 
   async function handleSubmit() {
     const user = await getUser();
-    console.log(user);
+    const roomId = selectedRoomId!;
+    const slotIds = selectedSlots;
 
     if (!user) return;
-
-    const booker = await bookerService.ensure(user.id, {
-      name: user.name,
-    });
+    const bookerId = await bookerService.ensure(user.id);
 
     try {
       await reservationService.createReservation({
-        fullName: form.fullName,
-        participants: Number(form.participants),
-        projectType: form.projectType,
-        roomId: selectedRoomId!, //ROOM ID
-        slotIds: selectedSlots, //LIST OF SLOT ID
-        bookingDate: getBookingDate(), //GET TOMOROW DATE BOOKING
+        roomId: roomId,
+        slotIds: slotIds,
+        bookerId: bookerId,
         userRole: user.role,
-        bookerId: booker.id,
+        fullName: form.fullName,
+        projectType: form.projectType,
+        projectProgress: form.progressStatus,
+        participants: Number(form.participants),
+        bookingDate: getBookingDate(),
       });
       setSuccess(true);
     } catch (err) {

@@ -4,6 +4,7 @@ type CreateReservationInput = {
   fullName: string;
   participants: number;
   projectType: string;
+  projectProgress: string;
   roomId: string;
   slotIds: string[];
   bookingDate: string;
@@ -15,7 +16,8 @@ export function toReservationInsert(input: CreateReservationInput) {
   return input.slotIds.map((slotId) => ({
     full_name: input.fullName,
     capacity: input.participants,
-    project: input.projectType,
+    project_type: input.projectType,
+    project_progress: input.projectProgress,
     room_id: input.roomId,
     slot_id: slotId,
     booking_date: input.bookingDate,
@@ -28,12 +30,10 @@ export function toReservationInsert(input: CreateReservationInput) {
 export const reservationService = {
   async createReservation(input: CreateReservationInput) {
     const payload = toReservationInsert(input);
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from("reservations")
       .insert(payload)
       .select();
-
-    if (error) throw new Error(error.message);
 
     return data;
   },
