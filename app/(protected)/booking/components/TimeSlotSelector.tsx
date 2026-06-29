@@ -28,9 +28,16 @@ export default function TimeSlotSelector({
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
       {sortedSlots.map((slot) => {
         const isBooked = bookedSlotIds.has(slot.id);
-        const isBlocked = slot.is_blocked;
-        const isDisabled = isBooked || isBlocked;
+        const isBlocked = slot.is_blocked === true;
+        const isDisabled = Boolean(isBooked || isBlocked);
         const isActive = selectedSlots.includes(slot.id);
+
+        console.log("UI CHECK", {
+          slotId: slot.id,
+          isBooked: bookedSlotIds.has(slot.id),
+          isBlocked: slot.is_blocked,
+          isDisabled: bookedSlotIds.has(slot.id) || slot.is_blocked,
+        });
 
         return (
           <button
@@ -38,20 +45,24 @@ export default function TimeSlotSelector({
             type="button"
             disabled={isDisabled}
             onClick={() => {
-              if (isDisabled) return;
+              if (bookedSlotIds.has(slot.id) || slot.is_blocked) return;
+
               onToggleSlot(slot.id);
             }}
-            title={slot.blocked_reason ?? undefined}
             className={[
-              "rounded-xl border px-4 py-3 text-sm font-medium transition-all flex items-center justify-center",
+              "rounded-xl border px-4 py-3 text-sm font-medium transition-all",
 
-              isDisabled
-                ? isBlocked
-                  ? "bg-red-100 text-red-600 border-red-300 cursor-not-allowed opacity-70"
-                  : "bg-red-50 text-red-500 cursor-not-allowed opacity-60"
-                : isActive
-                  ? "border-black bg-black text-white"
-                  : "border-neutral-200",
+              "flex items-center justify-center whitespace-nowrap",
+
+              isBooked
+                ? "bg-red-100 text-red-700 border-red-300"
+                : isBlocked
+                  ? "bg-red-50 text-red-500 border-red-200"
+                  : isActive
+                    ? "border-black bg-black text-white"
+                    : "border-neutral-200",
+
+              isDisabled ? "cursor-not-allowed" : "cursor-pointer",
             ].join(" ")}
           >
             <span>

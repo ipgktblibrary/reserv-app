@@ -20,22 +20,17 @@ function getDayOfWeek(dateStr: string): 1 | 2 | 3 | 4 | 5 {
 export const timeSlotsService = {
   async getByRoom(roomId: string, date: string): Promise<RoomTimeSlot[]> {
     const dayOfWeek = getDayOfWeek(date);
-
     const { data, error } = await supabase
       .from("room_time_slots")
       .select("*")
       .eq("room_id", roomId)
       .eq("day_of_week", dayOfWeek);
-
-    if (error) {
-      console.error(error);
-
-      return [];
-    }
-
-    return data ?? [];
+    if (error) return [];
+    return (data ?? []).map((slot) => ({
+      ...slot,
+      is_blocked: slot.is_blocked === true,
+    }));
   },
-
   // async getByRoom(roomId: string, date: string): Promise<RoomTimeSlot[]> {
   //   const dayOfWeek = getDayOfWeek(date);
   //   const { data, error } = await supabase
@@ -43,10 +38,10 @@ export const timeSlotsService = {
   //     .select("*")
   //     .eq("room_id", roomId)
   //     .eq("day_of_week", dayOfWeek);
-  //   if (error) return [];
-  //   return (data ?? []).map((slot) => ({
-  //     ...slot,
-  //     is_blocked: slot.is_blocked === true,
-  //   }));
+  //   if (error) {
+  //     console.error(error);
+  //     return [];
+  //   }
+  //   return data ?? [];
   // },
 };
