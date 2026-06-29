@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RoomList from "./components/ListRoomCard";
 import TimeSlotSelector from "./components/TimeSlotSelector";
 import BookingForm, { BookingFormState } from "./components/BookingForm";
@@ -14,6 +14,8 @@ import { getUser } from "@/lib/auth";
 import { bookerService } from "@/features/services/booker.service";
 import BookingSuccess from "./components/BookingSuccess";
 import { useRouter } from "next/navigation";
+import BookingFailed from "./components/BookingFailed";
+import SlotLimitModal from "./components/SlotLimitModal";
 
 export default function Page() {
   const { rooms } = useRooms();
@@ -22,24 +24,52 @@ export default function Page() {
   const logout = useLogout();
 
   const [confirmOpen, setConfirmOpen] = useState(false);
-  const [success, setSuccess] = useState(false);
+
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
 
   const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
   const [selectedSlots, setSelectedSlots] = useState<string[]>([]);
 
   const selectedRoom = rooms.find((r) => r.id === selectedRoomId);
 
+  // function onToggleSlot(id: string) {
+  //   setSelectedSlots((prev) => {
+  //     const exists = prev.includes(id);
+  //     if (exists) return prev.filter((s) => s !== id);
+  //     if (prev.length >= 2) return prev;
+  //     return [...prev, id];
+  //   });
+  // }
+
+  // GET NAME
+  const [name, setName] = useState<string | null>(null);
+  useEffect(() => {
+    const load = async () => {
+      const user = await getUser();
+      setName(user?.name ?? null);
+    };
+
+    load();
+  }, []);
+
+  const [slotLimitOpen, setSlotLimitOpen] = useState(false);
   function onToggleSlot(id: string) {
     setSelectedSlots((prev) => {
       const exists = prev.includes(id);
-      if (exists) return prev.filter((s) => s !== id);
-      if (prev.length >= 2) return prev;
+
+      if (exists) {
+        return prev.filter((s) => s !== id);
+      }
+
+      if (prev.length >= 2) {
+        setSlotLimitOpen(true);
+        return prev;
+      }
       return [...prev, id];
     });
   }
 
   const [form, setForm] = useState<BookingFormState>({
-    fullName: "",
     participants: "",
     projectType: "",
     progressStatus: "",
@@ -63,23 +93,23 @@ export default function Page() {
         slotIds: slotIds,
         bookerId: booker.id,
         userRole: user.role,
-        fullName: form.fullName,
+        fullName: name ?? "",
         projectType: form.projectType,
         projectProgress: form.progressStatus,
         participants: Number(form.participants),
         bookingDate: getBookingDate(),
       });
 
+      setStatus("success");
       console.log("RESULT", result);
-      setSuccess(true);
     } catch (err) {
+      setStatus("error");
       console.error(err);
     }
   }
 
   function resetForm() {
     setForm({
-      fullName: "",
       participants: "",
       projectType: "",
       progressStatus: "",
@@ -92,12 +122,23 @@ export default function Page() {
   return (
     <div className="min-h-screen bg-neutral-50 px-4 py-6 sm:py-10 flex justify-center">
       <div className="w-full max-w-2xl">
+        <SlotLimitModal
+          open={slotLimitOpen}
+          onClose={() => setSlotLimitOpen(false)}
+        />
         <BookingSuccess
-          open={success}
+          open={status === "success"}
           onClose={() => {
-            setSuccess(false);
+            setStatus("idle");
             resetForm();
             router.push("/history");
+          }}
+        />
+        <BookingFailed
+          open={status === "error"}
+          onClose={() => {
+            setStatus("idle");
+            resetForm();
           }}
         />
 
@@ -106,7 +147,9 @@ export default function Page() {
           <h1 className="text-2xl font-bold tracking-tight text-neutral-900">
             My Bookings
           </h1>
-          <p className="mt-1 text-sm text-neutral-500">Booker ID: {}</p>
+          <p className="mt-1 text-sm text-neutral-500">
+            Name: {name?.toUpperCase()}
+          </p>
         </div>
         <div className="mb-8 w-full border-b border-neutral-200">
           <nav
@@ -194,9 +237,18 @@ export default function Page() {
           <h1 className="text-2xl font-bold tracking-tight text-neutral-900">
             Confirm Your Booking
           </h1>
+
           <p className="mt-1 text-sm text-neutral-500">
-            Scheduled for tomorrow • {getTomorrowDate()}
+            Your booking is set for{" "}
+            <span className="font-medium text-neutral-700">
+              {getTomorrowDate()}
+            </span>
           </p>
+
+          <div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs text-amber-700">
+            ⚠️ Bookings are made for the next day only. Please double-check your
+            time slot before confirming.
+          </div>
         </div>
         {selectedRoomId && selectedSlots.length > 0 && (
           <BookingForm
@@ -208,9 +260,20 @@ export default function Page() {
             onSubmit={handleSubmit}
           />
         )}
-        <div className="mt-12 pt-6 border-t border-neutral-200/60 flex flex-col gap-1 text-xs text-neutral-400 font-mono">
+        {/* <div className="mt-12 pt-6 border-t border-neutral-200/60 flex flex-col gap-1 text-xs text-neutral-400 font-mono">
           <div>Selected Room: {selectedRoomId ?? "none"}</div>
           <div>Selected Time Slots: {[selectedSlots]}</div>
+        </div> */}
+
+        <div className="mt-12 pt-6 border-t border-neutral-200/60 text-xs text-neutral-400">
+          <div>Built with care by Rauf</div>
+          <a
+            href="https://instagram.com/raufsemi"
+            target="_blank"
+            className="text-[#6844C7] hover:underline"
+          >
+            Need help? Contact me on Instagram
+          </a>
         </div>
       </div>
     </div>

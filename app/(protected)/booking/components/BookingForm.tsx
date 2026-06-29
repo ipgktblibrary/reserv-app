@@ -1,8 +1,9 @@
 import { Chevron } from "@/features/misc/chevron";
 import { ProgressStatus, ProjectType } from "@/features/misc/enums";
 import { SelectBlock } from "@/features/misc/selectBloc";
+import { getUser } from "@/lib/auth";
+import { useEffect, useState } from "react";
 export type BookingFormState = {
-  fullName: string;
   participants: number | "";
   projectType: ProjectType | "";
   progressStatus: ProgressStatus | "";
@@ -32,6 +33,16 @@ export default function BookingForm({
     return Object.values(ProgressStatus).includes(value as ProgressStatus);
   }
 
+  const [name, setName] = useState<string | null>(null);
+  useEffect(() => {
+    const load = async () => {
+      const user = await getUser();
+      setName(user?.name ?? null);
+    };
+
+    load();
+  }, []);
+
   return (
     <div className="mb-10 rounded-2xl border bg-white p-5">
       <h3 className="mb-4 text-base font-semibold text-neutral-900">
@@ -46,7 +57,7 @@ export default function BookingForm({
         }}
       >
         {/* NAME */}
-        <div>
+        {/* <div>
           <label className="mb-2 block text-xs font-semibold uppercase tracking-widest text-gray-400">
             Name
           </label>
@@ -58,6 +69,17 @@ export default function BookingForm({
             onChange={(e) => onChange({ fullName: e.target.value })}
             required
           />
+        </div> */}
+
+        {/* NAME */}
+        <div>
+          <label className="mb-2 block text-xs font-semibold uppercase tracking-widest text-gray-400">
+            Name
+          </label>
+
+          <div className="w-full rounded-xl border border-gray-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-500 select-none">
+            {name ?? "-"}
+          </div>
         </div>
 
         {/* PARTICIPANTS */}
@@ -138,7 +160,7 @@ export default function BookingForm({
 
         <button
           type="submit"
-          className="mt-2 w-full rounded-xl bg-blue-600 px-4 py-3 text-sm font-medium text-white shadow-lg shadow-blue-600/10 transition hover:bg-blue-500"
+          className="mt-2 w-full rounded-xl bg-[#6844C7] px-4 py-3 text-sm font-medium text-white shadow-md shadow-[#6844C7]/20 transition hover:bg-[#5B3CC4] hover:shadow-[#6844C7]/30 active:scale-[0.99]"
         >
           Confirm Booking
         </button>

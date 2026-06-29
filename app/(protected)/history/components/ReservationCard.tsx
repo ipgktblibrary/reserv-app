@@ -1,74 +1,80 @@
-import { CalendarDays, Clock3, Users } from "lucide-react";
-import { StatusBadge } from "./StatusBadge";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
 
-type Reservation = {
-  id: string;
-  booking_date: string;
-  capacity: number;
-  project_type: string;
-  project_progress: string;
-  status: string;
-  rooms: {
-    id: string;
-    name: string;
-    label: string;
-  };
-
-  room_time_slots: {
-    start_time: string;
-    end_time: string;
-  };
+type Props = {
+  reservation: any;
+  onCancel: (id: string) => void;
 };
 
-type ReservationCardProps = {
-  reservation: Reservation;
-};
+export function ReservationCard({ reservation, onCancel }: Props) {
+  const isCancelled = reservation.status === "cancelled";
 
-export function ReservationCard({ reservation }: ReservationCardProps) {
   return (
-    <div className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm transition hover:shadow-md">
-      {/* Header */}
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <h3 className="text-base font-semibold text-neutral-900">
-            {reservation.rooms.name}
-          </h3>
-          <p className="text-xs text-neutral-500">{reservation.rooms.label}</p>
-        </div>
+    <div className="relative rounded-xl border bg-white p-4 transition">
+      {/* left accent */}
+      <div
+        className={[
+          "absolute left-0 top-0 h-full w-1 rounded-l-xl",
+          isCancelled ? "bg-red-200" : "bg-[#6844C7]",
+        ].join(" ")}
+      />
 
-        <StatusBadge status={reservation.status} />
-      </div>
+      <div className="pl-3">
+        {/* Top row */}
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <div
+              className={[
+                "text-sm font-semibold",
+                isCancelled
+                  ? "text-neutral-400 line-through"
+                  : "text-neutral-900",
+              ].join(" ")}
+            >
+              {reservation.rooms?.name}
+            </div>
 
-      {/* Meta */}
-      <div className="mt-4 space-y-2 text-sm text-neutral-600">
-        <div className="flex items-center gap-2">
-          <CalendarDays size={16} className="text-neutral-400" />
-          <span>{reservation.booking_date}</span>
-        </div>
+            <div
+              className={[
+                "text-xs mt-1",
+                isCancelled ? "text-neutral-400" : "text-neutral-500",
+              ].join(" ")}
+            >
+              {reservation.booking_date} •{" "}
+              {reservation.room_time_slots?.start_time} -{" "}
+              {reservation.room_time_slots?.end_time}
+            </div>
+          </div>
 
-        <div className="flex items-center gap-2">
-          <Clock3 size={16} className="text-neutral-400" />
-          <span>
-            {reservation.room_time_slots.start_time} -{" "}
-            {reservation.room_time_slots.end_time}
+          {/* status badge */}
+          <span
+            className={[
+              "text-[10px] px-2 py-1 rounded-full border",
+              isCancelled
+                ? "bg-red-50 text-red-500 border-red-100"
+                : "bg-green-50 text-green-600 border-green-100",
+            ].join(" ")}
+          >
+            {isCancelled ? "Cancelled" : "Active"}
           </span>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Users size={16} className="text-neutral-400" />
-          <span>{reservation.capacity} participants</span>
+        {/* meta */}
+        <div className="mt-3 text-xs text-neutral-500">
+          {reservation.project_type} • {reservation.project_progress}
         </div>
-      </div>
 
-      {/* Tags */}
-      <div className="mt-4 flex flex-wrap gap-2">
-        <span className="rounded-full bg-neutral-100 px-3 py-1 text-xs font-medium text-neutral-700">
-          {reservation.project_type}
-        </span>
-
-        <span className="rounded-full bg-neutral-100 px-3 py-1 text-xs font-medium text-neutral-700">
-          {reservation.project_progress.replaceAll("_", " ")}
-        </span>
+        {/* actions */}
+        {!isCancelled && (
+          <div className="mt-4 flex justify-end">
+            <button
+              onClick={() => onCancel(reservation.id)}
+              className="text-xs px-3 py-1.5 rounded-lg border text-red-600 hover:bg-red-50"
+            >
+              Cancel
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

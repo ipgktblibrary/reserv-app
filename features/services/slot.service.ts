@@ -31,6 +31,9 @@ export const timeSlotsService = {
       is_blocked: slot.is_blocked === true,
     }));
   },
+
+
+  
   // async getByRoom(roomId: string, date: string): Promise<RoomTimeSlot[]> {
   //   const dayOfWeek = getDayOfWeek(date);
   //   const { data, error } = await supabase

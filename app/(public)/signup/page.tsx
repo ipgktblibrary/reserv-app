@@ -13,7 +13,7 @@ export default function SignUpPage() {
 
   const [phone, setPhone] = useState<string>("");
 
-  const [role, setRole] = useState<"TEACHER" | "STUDENT">("STUDENT");
+  const [role, setRole] = useState<"teacher" | "student">("student");
 
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
@@ -146,7 +146,7 @@ export default function SignUpPage() {
                 <select
                   value={role}
                   onChange={(e) =>
-                    setRole(e.target.value as "TEACHER" | "STUDENT")
+                    setRole(e.target.value as "teacher" | "student")
                   }
                   className="w-full appearance-none rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-3 pr-10 text-sm focus:border-black focus:ring-2 focus:ring-black/10"
                   required
@@ -264,11 +264,12 @@ export default function SignUpPage() {
             </div>
 
             <h3 className="text-2xl font-semibold mb-3 tracking-tight text-gray-900">
-              Intentional Curation
+              One account for all bookings
             </h3>
 
             <p className="text-sm text-gray-500 leading-relaxed">
-              Experience an ecosystem focused entirely on execution.
+              Sign up to book rooms, manage reservations, and view your schedule
+              in one place.{" "}
             </p>
           </div>
         </div>

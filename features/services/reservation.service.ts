@@ -31,10 +31,12 @@ export const reservationService = {
   async createReservation(input: CreateReservationInput) {
     const payload = toReservationInsert(input);
     console.log("PAY LOAD", payload);
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from("reservations")
       .insert(payload)
       .select();
+
+    if (error) throw error;
 
     return data;
   },
@@ -46,6 +48,7 @@ export const reservationService = {
       .eq("room_id", roomId)
       .eq("booking_date", date)
       .eq("status", "confirmed");
+
     if (error) throw new Error(error.message);
     return new Set(data.map((r) => r.slot_id));
   },
@@ -66,6 +69,23 @@ export const reservationService = {
 
     if (error) throw error;
     console.log("DATA RESERVATION", data);
+
+    return data;
+  },
+
+  async cancelReservation(reservationId: string) {
+    const { data, error } = await supabase
+      .from("reservations")
+      .update({
+        status: "cancelled",
+        cancel_reason: "user_cancelled",
+      })
+
+      .eq("id", reservationId)
+      .select()
+      .single();
+
+    if (error) throw error;
 
     return data;
   },

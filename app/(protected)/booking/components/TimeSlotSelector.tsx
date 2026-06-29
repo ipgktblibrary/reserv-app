@@ -24,20 +24,14 @@ export default function TimeSlotSelector({
   if (!slots.length) {
     return <NoTimeSlot />;
   }
+
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+    <div className="grid grid-cols-2 gap-3">
       {sortedSlots.map((slot) => {
         const isBooked = bookedSlotIds.has(slot.id);
         const isBlocked = slot.is_blocked === true;
         const isDisabled = Boolean(isBooked || isBlocked);
         const isActive = selectedSlots.includes(slot.id);
-
-        console.log("UI CHECK", {
-          slotId: slot.id,
-          isBooked: bookedSlotIds.has(slot.id),
-          isBlocked: slot.is_blocked,
-          isDisabled: bookedSlotIds.has(slot.id) || slot.is_blocked,
-        });
 
         return (
           <button
@@ -59,7 +53,7 @@ export default function TimeSlotSelector({
                 : isBlocked
                   ? "bg-red-50 text-red-500 border-red-200"
                   : isActive
-                    ? "border-black bg-black text-white"
+                    ? "border-[#6844C7] bg-[#6844C7]/10 text-[#6844C7]"
                     : "border-neutral-200",
 
               isDisabled ? "cursor-not-allowed" : "cursor-pointer",
