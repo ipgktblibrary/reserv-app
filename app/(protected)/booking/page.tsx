@@ -141,7 +141,17 @@ export default function Page() {
             resetForm();
           }}
         />
+        <div className="mb-6 flex items-center justify-between rounded-xl border border-neutral-200/60 bg-white px-4 py-3 text-xs text-neutral-500 shadow-sm">
+          <div>Built with care ❤️ by Rauf & Faiz</div>
 
+          <a
+            href="https://instagram.com/raufsemi"
+            target="_blank"
+            className="text-[#6844C7] font-medium hover:underline"
+          >
+            Need help? Contact me here
+          </a>
+        </div>
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-2xl font-bold tracking-tight text-neutral-900">
@@ -151,6 +161,7 @@ export default function Page() {
             Name: {name?.toUpperCase()}
           </p>
         </div>
+
         <div className="mb-8 w-full border-b border-neutral-200">
           <nav
             className="-mb-px flex space-x-6 overflow-x-auto no-scrollbar scroll-smooth"
@@ -266,7 +277,7 @@ export default function Page() {
         </div> */}
 
         <div className="mt-12 pt-6 border-t border-neutral-200/60 text-xs text-neutral-400">
-          <div>Built with care by Rauf</div>
+          <div>Built with care ❤️ </div>
           <a
             href="https://instagram.com/raufsemi"
             target="_blank"
