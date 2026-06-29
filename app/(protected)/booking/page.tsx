@@ -55,13 +55,13 @@ export default function Page() {
     const slotIds = selectedSlots;
 
     if (!user) return;
-    const bookerId = await bookerService.ensure(user.id);
+    const booker = await bookerService.ensure(user.id);
 
     try {
-      await reservationService.createReservation({
+      const result = await reservationService.createReservation({
         roomId: roomId,
         slotIds: slotIds,
-        bookerId: bookerId,
+        bookerId: booker.id,
         userRole: user.role,
         fullName: form.fullName,
         projectType: form.projectType,
@@ -69,6 +69,8 @@ export default function Page() {
         participants: Number(form.participants),
         bookingDate: getBookingDate(),
       });
+
+      console.log("RESULT", result);
       setSuccess(true);
     } catch (err) {
       console.error(err);
@@ -95,7 +97,7 @@ export default function Page() {
           onClose={() => {
             setSuccess(false);
             resetForm();
-            router.replace("/history");
+            router.push("/history");
           }}
         />
 
@@ -120,7 +122,7 @@ export default function Page() {
 
             <button
               type="button"
-              onClick={() => router.replace("/history")}
+              onClick={() => router.push("/history")}
               className="border-transparent text-neutral-400 hover:border-neutral-300 hover:text-neutral-600 whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-medium transition-all duration-200"
             >
               History

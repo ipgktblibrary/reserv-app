@@ -30,6 +30,7 @@ export function toReservationInsert(input: CreateReservationInput) {
 export const reservationService = {
   async createReservation(input: CreateReservationInput) {
     const payload = toReservationInsert(input);
+    console.log("PAY LOAD", payload);
     const { data } = await supabase
       .from("reservations")
       .insert(payload)
@@ -47,5 +48,27 @@ export const reservationService = {
       .eq("status", "confirmed");
     if (error) throw new Error(error.message);
     return new Set(data.map((r) => r.slot_id));
+  },
+
+  async getMyReservations(bookerId: string) {
+    const { data, error } = await supabase
+
+      .from("reservations")
+
+      .select(
+        `
+    *,
+    room_time_slots (*),
+    rooms (*)
+
+  `,
+      )
+      .eq("booker_id", bookerId)
+      .order("booking_date", { ascending: false });
+
+    if (error) throw error;
+    console.log("DATA RESERVATION", data);
+
+    return data;
   },
 };
