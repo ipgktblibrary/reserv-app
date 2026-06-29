@@ -39,6 +39,7 @@ export default function BookingHistoryPage() {
         const booker = await bookerService.ensure(user.id);
         const result = await reservationService.getMyReservations(booker.id);
         console.log("MY RESERVATIONS", result);
+
         setReservations(result ?? []);
       } catch (error) {
         console.error(error);

@@ -36,19 +36,19 @@ export default function TimeSlotSelector({
           <button
             key={slot.id}
             type="button"
-            disabled={isBooked}
+            disabled={isDisabled}
             onClick={() => {
               if (isDisabled) return;
               onToggleSlot(slot.id);
             }}
             title={slot.blocked_reason ?? undefined}
             className={[
-              "rounded-xl border px-4 py-3 text-sm font-medium transition-all",
-
-              "flex items-center justify-center whitespace-nowrap",
+              "rounded-xl border px-4 py-3 text-sm font-medium transition-all flex items-center justify-center",
 
               isDisabled
-                ? "bg-red-50 text-red-500 cursor-not-allowed opacity-60"
+                ? isBlocked
+                  ? "bg-red-100 text-red-600 border-red-300 cursor-not-allowed opacity-70"
+                  : "bg-red-50 text-red-500 cursor-not-allowed opacity-60"
                 : isActive
                   ? "border-black bg-black text-white"
                   : "border-neutral-200",

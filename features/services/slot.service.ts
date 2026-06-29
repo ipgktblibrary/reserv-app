@@ -35,4 +35,18 @@ export const timeSlotsService = {
 
     return data ?? [];
   },
+
+  // async getByRoom(roomId: string, date: string): Promise<RoomTimeSlot[]> {
+  //   const dayOfWeek = getDayOfWeek(date);
+  //   const { data, error } = await supabase
+  //     .from("room_time_slots")
+  //     .select("*")
+  //     .eq("room_id", roomId)
+  //     .eq("day_of_week", dayOfWeek);
+  //   if (error) return [];
+  //   return (data ?? []).map((slot) => ({
+  //     ...slot,
+  //     is_blocked: slot.is_blocked === true,
+  //   }));
+  // },
 };

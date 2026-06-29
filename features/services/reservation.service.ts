@@ -21,7 +21,7 @@ export function toReservationInsert(input: CreateReservationInput) {
     room_id: input.roomId,
     slot_id: slotId,
     booking_date: input.bookingDate,
-    user_role: input.userRole,
+    user_role: normalizeRole(input.userRole),
     booker_id: input.bookerId ?? null,
     status: "confirmed",
   }));
@@ -72,3 +72,11 @@ export const reservationService = {
     return data;
   },
 };
+
+function normalizeRole(role: string) {
+  const r = role?.trim().toLowerCase();
+  if (r !== "student" && r !== "teacher") {
+    throw new Error(`Invalid userRole: ${role}`);
+  }
+  return r;
+}

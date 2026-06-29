@@ -13,7 +13,7 @@ export default function SignUpPage() {
 
   const [phone, setPhone] = useState<string>("");
 
-  const [role, setRole] = useState<"teacher" | "student">("student");
+  const [role, setRole] = useState<"TEACHER" | "STUDENT">("STUDENT");
 
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
@@ -146,7 +146,7 @@ export default function SignUpPage() {
                 <select
                   value={role}
                   onChange={(e) =>
-                    setRole(e.target.value as "teacher" | "student")
+                    setRole(e.target.value as "TEACHER" | "STUDENT")
                   }
                   className="w-full appearance-none rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-3 pr-10 text-sm focus:border-black focus:ring-2 focus:ring-black/10"
                   required

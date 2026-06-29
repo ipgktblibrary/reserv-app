@@ -20,10 +20,23 @@ export function useTimeSlots(roomId: string, date: string) {
         reservationService.getBookedSlots(roomId, date),
       ]);
 
+      console.log("🟡 RAW SLOT DATA FROM SERVICE:", slotData);
+      console.log("🟡 BOOKED SLOT IDS:", bookedData);
+
       if (!active) return;
 
       setSlots(slotData);
       setBookedSlotIds(bookedData);
+
+      console.log(
+        "🟢 STATE SLOTS BEFORE RETURN:",
+        slotData.map((s) => ({
+          id: s.id,
+          is_blocked: s.is_blocked,
+          type: typeof s.is_blocked,
+        })),
+      );
+
       setLoading(false);
     };
 
