@@ -29,13 +29,13 @@ export function getTomorrowDisplay(): { date: string; day: string } {
   date.setDate(date.getDate() + 1);
 
   const dayNames = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
+    "Ahad",
+    "Isnin",
+    "Selasa",
+    "Rabu",
+    "Khamis",
+    "Jumaat",
+    "Sabtu",
   ];
 
   return {

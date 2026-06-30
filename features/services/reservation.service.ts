@@ -28,19 +28,6 @@ export function toReservationInsert(input: CreateReservationInput) {
 }
 
 export const reservationService = {
-  // async createReservation(input: CreateReservationInput) {
-  //   const payload = toReservationInsert(input);
-  //   console.log("PAY LOAD", payload);
-  //   const { data, error } = await supabase
-  //     .from("reservations")
-  //     .insert(payload)
-  //     .select();
-
-  //   if (error) throw error;
-
-  //   return data;
-  // },
-
   async createReservation(input: CreateReservationInput) {
     const { error } = await supabase.rpc("create_reservation", {
       p_slot_ids: input.slotIds,
@@ -55,7 +42,6 @@ export const reservationService = {
     });
 
     if (error) throw error;
-
     return true;
   },
 

@@ -26,11 +26,11 @@ export default function RoomList(props: Props) {
     <>
       <div className="mb-8">
         <h1 className="text-2xl font-semibold tracking-tight text-neutral-900">
-          Select a Room
+          Pilih bilik
         </h1>
 
         <p className="mt-1 text-sm leading-6 text-neutral-500">
-          Choose an available room to continue your booking.
+          Pilih bilik yang tersedia untuk meneruskan tempahan anda.
         </p>
       </div>
 

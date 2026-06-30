@@ -33,16 +33,9 @@ export default function Page() {
   const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
   const [selectedSlots, setSelectedSlots] = useState<string[]>([]);
 
-  const selectedRoom = rooms.find((r) => r.id === selectedRoomId);
+  const [dailyLimitReached, setDailyLimitReached] = useState(false);
 
-  // function onToggleSlot(id: string) {
-  //   setSelectedSlots((prev) => {
-  //     const exists = prev.includes(id);
-  //     if (exists) return prev.filter((s) => s !== id);
-  //     if (prev.length >= 2) return prev;
-  //     return [...prev, id];
-  //   });
-  // }
+  const selectedRoom = rooms.find((r) => r.id === selectedRoomId);
 
   const tomorrow = getTomorrowDisplay();
 
@@ -56,6 +49,27 @@ export default function Page() {
 
     load();
   }, []);
+
+  useEffect(() => {
+    const checkLimit = async () => {
+      const user = await getUser();
+      if (!user) return;
+      const booker = await bookerService.ensure(user.id, {
+        name: name ?? "",
+      });
+
+      const myReservations = await reservationService.getMyReservations(
+        booker.id,
+      );
+      const today = getBookingDate();
+      const todayCount = myReservations.filter(
+        (r) => r.booking_date === today && r.status === "confirmed",
+      ).length;
+
+      setDailyLimitReached(todayCount >= 2);
+    };
+    checkLimit();
+  }, [name]);
 
   const [slotLimitOpen, setSlotLimitOpen] = useState(false);
   function onToggleSlot(id: string) {
@@ -88,6 +102,11 @@ export default function Page() {
     const user = await getUser();
     const roomId = selectedRoomId!;
     const slotIds = selectedSlots;
+
+    if (dailyLimitReached) {
+      setSlotLimitOpen(true);
+      return;
+    }
 
     if (!user) return;
     const booker = await bookerService.ensure(user.id, {
@@ -127,12 +146,13 @@ export default function Page() {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-50 px-4 py-6 sm:py-10 flex justify-center">
+    <div className="min-h-screen bg-linear-to-b from-white via-purple-50/40 to-white px-4 py-6 sm:py-10 flex justify-center">
       <div className="w-full max-w-2xl">
         <SlotLimitModal
           open={slotLimitOpen}
           onClose={() => setSlotLimitOpen(false)}
         />
+
         <BookingSuccess
           open={status === "success"}
           onClose={() => {
@@ -141,6 +161,7 @@ export default function Page() {
             router.push("/history");
           }}
         />
+
         <BookingFailed
           open={status === "error"}
           onClose={() => {
@@ -148,150 +169,180 @@ export default function Page() {
             resetForm();
           }}
         />
-        <div className="mb-6 flex items-center justify-between rounded-xl border border-neutral-200/60 bg-white px-4 py-3 text-xs text-neutral-500 shadow-sm">
-          <div>Built with care ❤️ by Rauf & Faiz</div>
+
+        {/* Top info bar */}
+        <div className="mb-6 flex items-center justify-between rounded-2xl border border-purple-100 bg-white px-4 py-3 text-xs text-gray-600 shadow-sm">
+          <div className="font-medium">Ada masalah atau perlukan bantuan?</div>
 
           <a
             href="https://instagram.com/raufsemi"
             target="_blank"
-            className="text-[#6844C7] font-medium hover:underline"
+            className="text-[#6844C7] font-semibold hover:underline"
           >
-            Need help? Contact me here
+            Hubungi kami
           </a>
         </div>
+
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold tracking-tight text-neutral-900">
-            My Bookings
-          </h1>
-          <p className="mt-1 text-sm text-neutral-500">
-            Name: {name?.toUpperCase()}
-          </p>
+        <div className="mb-8 rounded-2xl border border-purple-100 bg-linear-to-r from-white to-purple-50/40 p-5 shadow-sm">
+          <div className="flex items-start justify-between gap-4">
+            {/* Left */}
+            <div>
+              <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-gray-900">
+                Sistem Tempahan Pustakaan Za’ba
+              </h1>
+
+              <p className="mt-1 text-sm text-gray-500">
+                Selamat datang,{" "}
+                <span className="font-semibold text-[#6844C7]">
+                  {name?.toUpperCase()}
+                </span>
+              </p>
+            </div>
+
+            {/* Right badge */}
+            <div className="hidden sm:flex items-center gap-2 rounded-full border border-purple-100 bg-white px-3 py-1 text-xs text-gray-600 shadow-sm">
+              <span className="h-2 w-2 rounded-full bg-[#6844C7]" />
+              Aktif
+            </div>
+          </div>
         </div>
 
-        <div className="mb-8 w-full border-b border-neutral-200">
-          <nav
-            className="-mb-px flex space-x-6 overflow-x-auto no-scrollbar scroll-smooth"
-            aria-label="Tabs"
-          >
+        {/* Tabs */}
+        <div className="mb-8 w-full border-b border-purple-100">
+          <nav className="-mb-px flex space-x-6 overflow-x-auto no-scrollbar scroll-smooth">
             <button
               type="button"
-              className="border-neutral-900 text-neutral-900 whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-semibold tracking-tight transition-all duration-200"
+              className="border-[#6844C7] text-[#6844C7] whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-semibold tracking-tight"
             >
-              My Bookings
+              Tempahan Saya
             </button>
 
             <button
               type="button"
               onClick={() => router.push("/history")}
-              className="border-transparent text-neutral-400 hover:border-neutral-300 hover:text-neutral-600 whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-medium transition-all duration-200"
+              className="border-transparent text-gray-400 hover:text-[#6844C7] whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-medium transition"
             >
-              History
+              Sejarah
             </button>
 
             <button
               type="button"
               onClick={() => setConfirmOpen(true)}
-              className="border-transparent text-neutral-400 hover:border-neutral-300 hover:text-neutral-600 whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-medium transition-all duration-200"
+              className="border-transparent text-gray-400 hover:text-red-500 whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-medium transition"
             >
-              Log Out
+              Log Keluar
             </button>
-            {confirmOpen && (
-              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-                <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl">
-                  <h2 className="text-base font-semibold text-neutral-900">
-                    Confirm logout
-                  </h2>
-
-                  <p className="mt-2 text-sm text-neutral-500">
-                    You’ll be signed out of your account on this device.
-                  </p>
-
-                  <div className="mt-6 flex gap-3">
-                    <button
-                      onClick={() => setConfirmOpen(false)}
-                      className="flex-1 rounded-xl border border-neutral-200 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50"
-                    >
-                      Cancel
-                    </button>
-
-                    <button
-                      onClick={async () => {
-                        setConfirmOpen(false);
-                        await logout();
-                      }}
-                      className="flex-1 rounded-xl bg-black py-2 text-sm font-medium text-white hover:bg-neutral-800"
-                    >
-                      Log out
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
           </nav>
         </div>
 
-        <RoomList
-          selectedRoomId={selectedRoomId}
-          onSelect={setSelectedRoomId}
-        />
+        {/* Logout modal */}
+        {confirmOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+            <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl border border-purple-100">
+              <h2 className="text-base font-semibold text-gray-900">
+                Log keluar?
+              </h2>
 
-        <div className="mb-8 mt-8">
-          <h1 className="text-2xl font-bold tracking-tight text-neutral-900">
-            Choose Your Time Slot
+              <p className="mt-2 text-sm text-gray-500">
+                Anda akan keluar dari akaun ini pada peranti ini.
+              </p>
+
+              <div className="mt-6 flex gap-3">
+                <button
+                  onClick={() => setConfirmOpen(false)}
+                  className="flex-1 rounded-xl border border-gray-200 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                >
+                  Batal
+                </button>
+
+                <button
+                  onClick={async () => {
+                    setConfirmOpen(false);
+                    await logout();
+                  }}
+                  className="flex-1 rounded-xl bg-[#6844C7] py-2 text-sm font-medium text-white hover:bg-purple-500"
+                >
+                  Log keluar
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Room list */}
+        <div className="rounded-2xl bg-white border border-purple-100 shadow-sm p-4">
+          <RoomList
+            selectedRoomId={selectedRoomId}
+            onSelect={setSelectedRoomId}
+          />
+        </div>
+
+        {/* Time slot */}
+        <div className="mb-8 mt-10">
+          <h1 className="text-xl font-bold tracking-tight text-gray-900">
+            Pilih Masa
           </h1>
-          <p className="mt-1 text-sm text-neutral-500">
-            You can select up to 2 time slots per booking
+          <p className="mt-1 text-sm text-gray-500">
+            Anda boleh pilih sehingga 2 slot masa
           </p>
         </div>
 
         {selectedRoomId && (
-          <TimeSlotSelector
-            roomId={selectedRoomId}
-            selectedSlots={selectedSlots}
-            onToggleSlot={onToggleSlot}
-          />
+          <div className="rounded-2xl bg-white border border-purple-100 shadow-sm p-4">
+            <TimeSlotSelector
+              roomId={selectedRoomId}
+              selectedSlots={selectedSlots}
+              onToggleSlot={onToggleSlot}
+            />
+          </div>
         )}
-        <div className="mb-8 mt-8">
-          <h1 className="text-2xl font-bold tracking-tight text-neutral-900">
-            Confirm Your Booking
+
+        {/* Confirm section */}
+        <div className="mb-8 mt-10">
+          <h1 className="text-xl font-bold tracking-tight text-gray-900">
+            Sahkan Tempahan
           </h1>
 
-          <div className="mt-2 inline-flex items-center gap-2 rounded-lg border border-neutral-200 bg-neutral-50 px-3 py-2 text-sm text-neutral-600">
-            <span className="h-2 w-2 rounded-full bg-blue-500" />
-            Booking set for:
-            <span className="font-medium text-neutral-900">
+          <div className="mt-3 inline-flex items-center gap-2 rounded-xl border border-purple-100 bg-purple-50 px-3 py-2 text-sm text-gray-700">
+            <span className="h-2 w-2 rounded-full bg-[#6844C7]" />
+            Tempahan untuk:
+            <span className="font-semibold text-gray-900">
               {tomorrow.day}, {tomorrow.date}
             </span>
           </div>
-          <div className="mt-3 rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-600">
-            Bookings are scheduled for the next day. Please review your selected
-            time slot before confirming.
+
+          <div className="mt-3 rounded-xl border border-purple-100 bg-white px-4 py-3 text-sm text-gray-600">
+            Sila semak semula slot masa sebelum membuat tempahan.
           </div>
         </div>
-        {selectedRoomId && selectedSlots.length > 0 && (
-          <BookingForm
-            form={form}
-            capacity={selectedRoom?.capacity ?? 0}
-            projectTypes={Object.values(ProjectType)}
-            progressStatuses={Object.values(ProgressStatus)}
-            onChange={handleChange}
-            onSubmit={handleSubmit}
-          />
-        )}
-        {/* <div className="mt-12 pt-6 border-t border-neutral-200/60 flex flex-col gap-1 text-xs text-neutral-400 font-mono">
-          <div>Selected Room: {selectedRoomId ?? "none"}</div>
-          <div>Selected Time Slots: {[selectedSlots]}</div>
-        </div> */}
 
-        <div className="mt-12 pt-6 border-t border-neutral-200/60 text-xs text-neutral-400">
-          <div>Built with care ❤️ </div>
+        {/* Form */}
+        {selectedRoomId && selectedSlots.length > 0 && (
+          <div className="rounded-2xl bg-white border border-purple-100 shadow-sm p-4">
+            <BookingForm
+              form={form}
+              capacity={selectedRoom?.capacity ?? 0}
+              projectTypes={Object.values(ProjectType)}
+              progressStatuses={Object.values(ProgressStatus)}
+              onChange={handleChange}
+              onSubmit={handleSubmit}
+            />
+          </div>
+        )}
+
+        {/* Footer */}
+        <div className="mt-12 pt-6 border-t border-purple-100 text-xs text-gray-500 text-center space-y-2">
+          <div>© Pustakaan Za’ba</div>
+
+          <div className="text-gray-400">Built with ❤️</div>
+
           <a
             href="https://instagram.com/raufsemi"
             target="_blank"
-            className="text-[#6844C7] hover:underline"
+            className="text-[#6844C7] hover:underline font-medium"
           >
-            Need help? Contact me on Instagram
+            @raufsemi
           </a>
         </div>
       </div>

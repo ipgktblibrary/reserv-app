@@ -30,7 +30,7 @@ export default function SlotLimitModal({ open, onClose }: Props) {
         </h2>
 
         <p className="mt-1 text-sm text-neutral-500">
-          You can only select a maximum of 2 time slots.
+          You can only select a maximum of 2 time slots per day.
         </p>
 
         <button

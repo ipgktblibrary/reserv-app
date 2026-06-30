@@ -17,7 +17,7 @@ export default function SignInPage() {
     const check = async () => {
       const { data } = await supabase.auth.getUser();
       if (data.user) {
-        router.replace("/");
+        router.replace("/booking");
         return;
       }
       setChecking(false);
@@ -34,8 +34,6 @@ export default function SignInPage() {
       password,
     });
 
-    console.log("AUTH DATA:", data);
-    console.log("AUTH ERROR:", authError);
     if (authError) {
       setError(authError.message);
 

@@ -82,58 +82,60 @@ export default function BookingHistoryPage() {
   }, [reservations]);
 
   return (
-    <div className="min-h-screen bg-neutral-50 flex justify-center px-4 py-8">
+    <div className="min-h-screen bg-gradient-to-b from-white via-purple-50/30 to-white flex justify-center px-4 py-8">
       <div className="w-full max-w-2xl">
         {/* TABS */}
-
-        <div className="mb-6 border-b border-neutral-200">
+        <div className="mb-6 border-b border-purple-100">
           <nav className="flex space-x-6">
             <button
               onClick={() => router.push("/booking")}
-              className="text-neutral-400 pb-4 text-sm hover:text-neutral-600"
+              className="text-gray-400 pb-4 text-sm font-medium hover:text-[#6844C7] transition"
             >
-              Bookings
+              Tempahan
             </button>
 
-            <button className="border-b-2 border-black pb-4 text-sm font-semibold">
-              History
+            <button className="border-b-2 border-[#6844C7] pb-4 text-sm font-semibold text-[#6844C7]">
+              Sejarah
             </button>
           </nav>
         </div>
+
         {/* HEADER */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-neutral-900">
-            Booking History
+          <h1 className="text-2xl font-bold tracking-tight text-gray-900">
+            Sejarah Tempahan
           </h1>
-          <p className="text-sm text-neutral-500">
-            Timeline of your reservations
+
+          <p className="mt-1 text-sm text-gray-500">
+            Senarai semua tempahan anda, termasuk yang aktif dan telah
+            dibatalkan
           </p>
         </div>
 
         {/* LOADING */}
         {loading && (
-          <div className="rounded-xl border bg-white p-4 text-sm text-neutral-500">
-            Loading timeline...
+          <div className="rounded-2xl border border-purple-100 bg-white p-4 text-sm text-gray-500 shadow-sm">
+            Memuatkan rekod tempahan...
           </div>
         )}
 
         {/* EMPTY */}
         {!loading && reservations.length === 0 && (
-          <div className="rounded-xl border bg-white p-6 text-sm text-neutral-500">
-            No history yet
+          <div className="rounded-2xl border border-purple-100 bg-white p-6 text-sm text-gray-500 shadow-sm">
+            Tiada sejarah tempahan lagi
           </div>
         )}
 
         {/* TIMELINE */}
         {!loading && reservations.length > 0 && (
           <div className="space-y-10">
-            {/* ACTIVE SECTION */}
+            {/* ACTIVE */}
             <div>
-              <div className="mb-3 text-xs font-semibold text-neutral-400 uppercase tracking-widest">
-                Active
+              <div className="mb-3 text-xs font-semibold text-gray-400 uppercase tracking-widest">
+                Aktif
               </div>
 
-              <div className="space-y-3 border-l border-neutral-200 pl-4">
+              <div className="space-y-3 border-l border-purple-100 pl-4">
                 {timeline.active.map((r) => (
                   <ReservationCard
                     key={r.id}
@@ -144,13 +146,13 @@ export default function BookingHistoryPage() {
               </div>
             </div>
 
-            {/* CANCELLED SECTION */}
+            {/* CANCELLED */}
             <div>
-              <div className="mb-3 text-xs font-semibold text-neutral-400 uppercase tracking-widest">
-                Cancelled
+              <div className="mb-3 text-xs font-semibold text-gray-400 uppercase tracking-widest">
+                Dibatalkan
               </div>
 
-              <div className="space-y-3 border-l border-neutral-200 pl-4">
+              <div className="space-y-3 border-l border-purple-100 pl-4">
                 {timeline.cancelled.map((r) => (
                   <ReservationCard
                     key={r.id}
@@ -165,27 +167,29 @@ export default function BookingHistoryPage() {
 
         {/* CANCEL MODAL */}
         {cancelId && (
-          <div className="fixed inset-0 bg-black/40 flex items-center justify-center px-4">
-            <div className="w-full max-w-sm bg-white rounded-2xl p-6">
-              <h2 className="font-semibold text-lg">Cancel reservation?</h2>
+          <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center px-4">
+            <div className="w-full max-w-sm bg-white rounded-2xl p-6 border border-purple-100 shadow-xl">
+              <h2 className="font-semibold text-lg text-gray-900">
+                Batalkan tempahan?
+              </h2>
 
-              <p className="text-sm text-neutral-500 mt-1">
-                This will move it to cancelled history.
+              <p className="text-sm text-gray-500 mt-1">
+                Tempahan ini akan dipindahkan ke bahagian sejarah dibatalkan.
               </p>
 
               <div className="flex gap-2 mt-5">
                 <button
                   onClick={() => setCancelId(null)}
-                  className="flex-1 border rounded-xl py-2 text-sm"
+                  className="flex-1 border border-gray-200 rounded-xl py-2 text-sm hover:bg-gray-50"
                 >
-                  Keep
+                  Kembali
                 </button>
 
                 <button
                   onClick={confirmCancel}
-                  className="flex-1 bg-red-600 text-white rounded-xl py-2 text-sm"
+                  className="flex-1 bg-[#6844C7] text-white rounded-xl py-2 text-sm hover:bg-purple-500"
                 >
-                  Cancel
+                  Batalkan
                 </button>
               </div>
             </div>
