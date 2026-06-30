@@ -9,7 +9,11 @@ import { ProgressStatus, ProjectType } from "@/features/misc/enums";
 import { useLogout } from "@/features/hooks/useLogout";
 
 import { reservationService } from "@/features/services/reservation.service";
-import { getBookingDate, getTomorrowDate } from "@/features/misc/booking-date";
+import {
+  getBookingDate,
+  getTomorrowDate,
+  getTomorrowDisplay,
+} from "@/features/misc/booking-date";
 import { getUser } from "@/lib/auth";
 import { bookerService } from "@/features/services/booker.service";
 import BookingSuccess from "./components/BookingSuccess";
@@ -40,6 +44,8 @@ export default function Page() {
   //     return [...prev, id];
   //   });
   // }
+
+  const tomorrow = getTomorrowDisplay();
 
   // GET NAME
   const [name, setName] = useState<string | null>(null);
@@ -223,6 +229,7 @@ export default function Page() {
             )}
           </nav>
         </div>
+
         <RoomList
           selectedRoomId={selectedRoomId}
           onSelect={setSelectedRoomId}
@@ -249,15 +256,15 @@ export default function Page() {
             Confirm Your Booking
           </h1>
 
-          <p className="mt-1 text-sm text-neutral-500">
-            Your booking is set for{" "}
-            <span className="font-medium text-neutral-700">
-              {getTomorrowDate()}
+          <div className="mt-2 inline-flex items-center gap-2 rounded-lg border border-neutral-200 bg-neutral-50 px-3 py-2 text-sm text-neutral-600">
+            <span className="h-2 w-2 rounded-full bg-blue-500" />
+            Booking set for:
+            <span className="font-medium text-neutral-900">
+              {tomorrow.day}, {tomorrow.date}
             </span>
-          </p>
-
-          <div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs text-amber-700">
-            ⚠️ Bookings are made for the next day only. Please double-check your
+          </div>
+          <div className="mt-3 rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-600">
+            Bookings are scheduled for the next day. Please review your selected
             time slot before confirming.
           </div>
         </div>

@@ -28,17 +28,35 @@ export function toReservationInsert(input: CreateReservationInput) {
 }
 
 export const reservationService = {
+  // async createReservation(input: CreateReservationInput) {
+  //   const payload = toReservationInsert(input);
+  //   console.log("PAY LOAD", payload);
+  //   const { data, error } = await supabase
+  //     .from("reservations")
+  //     .insert(payload)
+  //     .select();
+
+  //   if (error) throw error;
+
+  //   return data;
+  // },
+
   async createReservation(input: CreateReservationInput) {
-    const payload = toReservationInsert(input);
-    console.log("PAY LOAD", payload);
-    const { data, error } = await supabase
-      .from("reservations")
-      .insert(payload)
-      .select();
+    const { error } = await supabase.rpc("create_reservation", {
+      p_slot_ids: input.slotIds,
+      p_room_id: input.roomId,
+      p_booking_date: input.bookingDate,
+      p_full_name: input.fullName,
+      p_user_role: input.userRole,
+      p_capacity: input.participants,
+      p_project_type: input.projectType,
+      p_project_progress: input.projectProgress,
+      p_booker_id: input.bookerId ?? null,
+    });
 
     if (error) throw error;
 
-    return data;
+    return true;
   },
 
   async getBookedSlots(roomId: string, date: string) {
