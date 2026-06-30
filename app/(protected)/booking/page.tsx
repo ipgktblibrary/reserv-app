@@ -11,7 +11,6 @@ import { useLogout } from "@/features/hooks/useLogout";
 import { reservationService } from "@/features/services/reservation.service";
 import {
   getBookingDate,
-  getTomorrowDate,
   getTomorrowDisplay,
 } from "@/features/misc/booking-date";
 import { getUser } from "@/lib/auth";
@@ -91,7 +90,9 @@ export default function Page() {
     const slotIds = selectedSlots;
 
     if (!user) return;
-    const booker = await bookerService.ensure(user.id);
+    const booker = await bookerService.ensure(user.id, {
+      name: name ?? "",
+    });
 
     try {
       const result = await reservationService.createReservation({

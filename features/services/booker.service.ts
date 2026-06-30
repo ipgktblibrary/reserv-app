@@ -43,9 +43,33 @@ export const bookerService = {
   /**
    * Ensure booker exists (MAIN ENTRY POINT)
    */
-  async ensure(profileId: string, payload?: { name?: string; role?: string }) {
+  // async ensure(profileId: string, payload?: { name?: string }) {
+  //   const existing = await this.getByProfileId(profileId);
+
+  //   if (existing) {
+  //     return existing;
+  //   }
+
+  //   return this.create(profileId, payload);
+  // },
+
+  async ensure(profileId: string, payload?: { name?: string }) {
     const existing = await this.getByProfileId(profileId);
+
     if (existing) {
+      const needsUpdate = payload?.name && !existing.name;
+
+      if (needsUpdate) {
+        const { data, error } = await supabase
+          .from("bookers")
+          .update({ name: payload.name })
+          .eq("profile_id", profileId)
+          .select()
+          .single();
+        if (error) throw error;
+        return data;
+      }
+
       return existing;
     }
 
