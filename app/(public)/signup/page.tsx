@@ -52,8 +52,8 @@ export default function SignUpPage() {
   const malaysiaPhoneRegex = /^01\d{8,9}$/;
   return (
     <div className="bg-[#F8FAFC] text-gray-900 min-h-screen flex items-center justify-center p-6 relative overflow-hidden font-sans">
-      <div className="absolute -top-20 -right-20 w-100 h-100 bg-blue-600/3 blur-[120px] pointer-events-none select-none" />
-      <div className="absolute -bottom-20 -left-20 w-100 h-100 bg-blue-500/3 blur-[120px] pointer-events-none select-none" />
+      <div className="absolute -top-20 -right-20 w-100 h-100 bg-purple-600/3 blur-[120px] pointer-events-none select-none" />
+      <div className="absolute -bottom-20 -left-20 w-100 h-100 bg-purple-500/3 blur-[120px] pointer-events-none select-none" />
 
       <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-12 gap-6 relative z-10">
         {/* LEFT */}
@@ -100,7 +100,7 @@ export default function SignUpPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@example.com"
-                  className="w-full bg-[#F8FAFC] border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition duration-200"
+                  className="w-full bg-[#F8FAFC] border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition duration-200"
                   required
                 />
               </div>
@@ -114,7 +114,7 @@ export default function SignUpPage() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Raufsemi"
-                  className="w-full bg-[#F8FAFC] border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition duration-200"
+                  className="w-full bg-[#F8FAFC] border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition duration-200"
                   required
                 />
               </div>
@@ -132,7 +132,7 @@ export default function SignUpPage() {
                     setPhone(value);
                   }}
                   placeholder="0123456789"
-                  className="w-full bg-[#F8FAFC] border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition duration-200"
+                  className="w-full bg-[#F8FAFC] border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition duration-200"
                   required
                 />
                 {phone && !malaysiaPhoneRegex.test(phone) && (
@@ -167,7 +167,7 @@ export default function SignUpPage() {
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-[#F8FAFC] border border-gray-200 rounded-xl px-4 py-3 pr-10 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition duration-200"
+                  className="w-full bg-[#F8FAFC] border border-gray-200 rounded-xl px-4 py-3 pr-10 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition duration-200"
                   required
                 />
 
@@ -216,7 +216,7 @@ export default function SignUpPage() {
 
               <button
                 type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-500 text-white font-medium text-sm py-3 px-4 rounded-xl shadow-lg shadow-blue-600/10 transition duration-200 mt-2"
+                className="w-full bg-purple-600 hover:bg-purple-500 text-white font-medium text-sm py-3 px-4 rounded-xl shadow-lg shadow-purple-600/10 transition duration-200 mt-2"
               >
                 Sign Up
               </button>
@@ -229,7 +229,7 @@ export default function SignUpPage() {
               Already have an account?{" "}
               <a
                 href="/signin"
-                className="font-medium text-blue-600 hover:text-blue-500 transition-colors"
+                className="font-medium text-purple-600 hover:text-purple-500 transition-colors"
               >
                 Sign in
               </a>
@@ -243,10 +243,10 @@ export default function SignUpPage() {
             01
           </div>
 
-          <div className="absolute inset-0 bg-linear-to-br from-blue-500/3 via-transparent to-transparent opacity-60 pointer-events-none" />
+          <div className="absolute inset-0 bg-linear-to-br from-purple-500/3 via-transparent to-transparent opacity-60 pointer-events-none" />
 
           <div className="relative z-10 max-w-md">
-            <div className="text-blue-600 mb-6">
+            <div className="text-purple-600 mb-6">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

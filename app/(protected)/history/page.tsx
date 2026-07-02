@@ -82,7 +82,7 @@ export default function BookingHistoryPage() {
   }, [reservations]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white via-purple-50/30 to-white flex justify-center px-4 py-8">
+    <div className="min-h-screen bg-linear-to-b from-white via-purple-50/30 to-white flex justify-center px-4 py-8">
       <div className="w-full max-w-2xl">
         {/* TABS */}
         <div className="mb-6 border-b border-purple-100">
