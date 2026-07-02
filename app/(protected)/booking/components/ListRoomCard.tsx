@@ -58,18 +58,18 @@ export default function RoomList(props: Props) {
                   active ? "text-[#6844C7]" : "text-neutral-900",
                 ].join(" ")}
               >
-                Room {room.name}
+                {room.name}
               </div>
 
               {/* Meta */}
               <div className="mt-1 text-xs text-neutral-500">
-                Max capacity {room.capacity}
+                Max. kapasiti {room.capacity}
               </div>
 
               {/* Badge */}
               {room.teacher_only && (
                 <div className="mt-3 inline-flex rounded-full bg-neutral-100 px-2 py-0.5 text-[10px] font-medium text-neutral-600">
-                  Teachers only
+                  Pensyarah Sahaja
                 </div>
               )}
 
