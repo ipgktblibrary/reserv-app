@@ -13,6 +13,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+  },
   title: "Tempahan Bilik | IPGKTB",
   description:
     "Tempah bilik pembelajaran, makmal dan kemudahan di IPGKTB dengan mudah. Pilih bilik, tarikh dan slot masa yang tersedia secara dalam talian.",
