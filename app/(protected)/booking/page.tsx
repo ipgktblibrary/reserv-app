@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -5,7 +6,7 @@ import RoomList from "./components/ListRoomCard";
 import TimeSlotSelector from "./components/TimeSlotSelector";
 import BookingForm, { BookingFormState } from "./components/BookingForm";
 import { useRooms } from "@/features/hooks/useRooms";
-import { ProgressStatus, ProjectType } from "@/features/misc/enums";
+import { ProjectType } from "@/features/misc/enums";
 import { useLogout } from "@/features/hooks/useLogout";
 
 import { reservationService } from "@/features/services/reservation.service";
@@ -32,8 +33,13 @@ export default function Page() {
 
   const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
   const [selectedSlots, setSelectedSlots] = useState<string[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
-  const [dailyLimitReached, setDailyLimitReached] = useState(false);
+  useEffect(() => {
+    if (!selectedRoomId) return;
+    setSelectedSlots([]);
+    setError(null);
+  }, [selectedRoomId]);
 
   const selectedRoom = rooms.find((r) => r.id === selectedRoomId);
 
@@ -50,28 +56,8 @@ export default function Page() {
     load();
   }, []);
 
-  useEffect(() => {
-    const checkLimit = async () => {
-      const user = await getUser();
-      if (!user) return;
-      const booker = await bookerService.ensure(user.id, {
-        name: name ?? "",
-      });
-
-      const myReservations = await reservationService.getMyReservations(
-        booker.id,
-      );
-      const today = getBookingDate();
-      const todayCount = myReservations.filter(
-        (r) => r.booking_date === today && r.status === "confirmed",
-      ).length;
-
-      setDailyLimitReached(todayCount >= 2);
-    };
-    checkLimit();
-  }, [name]);
-
   const [slotLimitOpen, setSlotLimitOpen] = useState(false);
+
   function onToggleSlot(id: string) {
     setSelectedSlots((prev) => {
       const exists = prev.includes(id);
@@ -103,18 +89,13 @@ export default function Page() {
     const roomId = selectedRoomId!;
     const slotIds = selectedSlots;
 
-    if (dailyLimitReached) {
-      setSlotLimitOpen(true);
-      return;
-    }
-
     if (!user) return;
     const booker = await bookerService.ensure(user.id, {
       name: name ?? "",
     });
 
     try {
-      const result = await reservationService.createReservation({
+      await reservationService.createReservation({
         roomId: roomId,
         slotIds: slotIds,
         bookerId: booker.id,
@@ -127,7 +108,6 @@ export default function Page() {
       });
 
       setStatus("success");
-      console.log("RESULT", result);
     } catch (err) {
       setStatus("error");
       console.error(err);
@@ -324,7 +304,7 @@ export default function Page() {
               form={form}
               capacity={selectedRoom?.capacity ?? 0}
               projectTypes={Object.values(ProjectType)}
-              progressStatuses={Object.values(ProgressStatus)}
+              // progressStatuses={Object.values(ProgressStatus)}
               onChange={handleChange}
               onSubmit={handleSubmit}
             />
@@ -333,8 +313,6 @@ export default function Page() {
 
         {/* Footer */}
         <div className="mt-12 pt-6 border-t border-purple-100 text-xs text-gray-500 text-center space-y-2">
-          <div>© Pustakaan Za’ba</div>
-
           <div className="text-gray-400">Built with ❤️</div>
 
           <a
@@ -343,6 +321,16 @@ export default function Page() {
             className="text-[#6844C7] hover:underline font-medium"
           >
             @raufsemi
+          </a>
+
+          <a> | </a>
+
+          <a
+            href="https://instagram.com/faizlatiff__"
+            target="_blank"
+            className="text-[#6844C7] hover:underline font-medium"
+          >
+            @faizlatiff__
           </a>
         </div>
       </div>

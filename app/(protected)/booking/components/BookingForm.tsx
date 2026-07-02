@@ -12,7 +12,7 @@ type Props = {
   form: BookingFormState;
   capacity: number;
   projectTypes: ProjectType[];
-  progressStatuses: ProgressStatus[];
+  // progressStatuses: ProgressStatus[];
   onChange: (patch: Partial<BookingFormState>) => void;
   onSubmit: () => void;
 };
@@ -21,7 +21,7 @@ export default function BookingForm({
   form,
   capacity,
   projectTypes,
-  progressStatuses,
+  // progressStatuses,
   onChange,
   onSubmit,
 }: Props) {
@@ -29,9 +29,9 @@ export default function BookingForm({
     return Object.values(ProjectType).includes(value as ProjectType);
   }
 
-  function isProgressStatus(value: string): value is ProgressStatus {
-    return Object.values(ProgressStatus).includes(value as ProgressStatus);
-  }
+  // function isProgressStatus(value: string): value is ProgressStatus {
+  //   return Object.values(ProgressStatus).includes(value as ProgressStatus);
+  // }
 
   const [name, setName] = useState<string | null>(null);
   useEffect(() => {
@@ -136,7 +136,7 @@ export default function BookingForm({
         </SelectBlock>
 
         {/* STATUS */}
-        <SelectBlock label="Progress Status">
+        {/* <SelectBlock label="Progress Status">
           <select
             className="w-full appearance-none rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-3 pr-10 text-sm focus:border-black focus:ring-2 focus:ring-black/10"
             value={form.progressStatus}
@@ -156,7 +156,7 @@ export default function BookingForm({
           </select>
 
           <Chevron />
-        </SelectBlock>
+        </SelectBlock> */}
 
         <button
           type="submit"

@@ -114,25 +114,27 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-gray-100 bg-white py-8 text-center text-sm text-gray-500">
-        Built with ❤️ by{"  "}
+      <div className="mb-5 mt-12 pt-6 border-t border-purple-100 text-xs text-gray-500 text-center space-y-2">
+        <div className="text-gray-400">Built with ❤️</div>
+
         <a
           href="https://instagram.com/raufsemi"
           target="_blank"
-          rel="noopener noreferrer"
-          className="font-medium text-gray-700 hover:text-purple-700"
+          className="text-[#6844C7] hover:underline font-medium"
         >
-          @raufsemi{"  "}
+          @raufsemi
         </a>
+
+        <a> | </a>
+
         <a
-          href="https://instagram.com/"
+          href="https://instagram.com/faizlatiff__"
           target="_blank"
-          rel="noopener noreferrer"
-          className="font-medium text-gray-700 hover:text-purple-700"
+          className="text-[#6844C7] hover:underline font-medium"
         >
-          and @faiz
+          @faizlatiff__
         </a>
-      </footer>
+      </div>
     </main>
   );
 }

@@ -100,6 +100,39 @@ export default function BookingHistoryPage() {
           </nav>
         </div>
 
+        <div className="rounded-xl border border-yellow-200 bg-yellow-50 p-4 mb-5">
+          {/* title */}
+          <div className="font-semibold text-yellow-800">Notis penting</div>
+
+          {/* message */}
+          <div className="mt-1 text-sm text-yellow-700 leading-relaxed">
+            Sila pastikan hadir tepat pada waktu tempahan. Jika terdapat
+            sebarang isu atau laporan berkaitan sistem tempahan, sila hubungi
+            pihak pentadbiran dengan segera.
+          </div>
+
+          {/* actions */}
+          <div className="mt-3 flex flex-col sm:flex-row gap-2">
+            {/* Google Form button */}
+            <a
+              href="https://forms.gle/TYvA78S2HC5FGACAA"
+              target="_blank"
+              className="inline-flex items-center justify-center rounded-lg bg-yellow-500 px-3 py-2 text-sm font-semibold text-white hover:bg-yellow-600 transition"
+            >
+              Hantar Laporan
+            </a>
+
+            {/* fallback contact */}
+            <a
+              href="https://instagram.com/raufsemi"
+              target="_blank"
+              className="inline-flex items-center justify-center rounded-lg border border-yellow-300 bg-white px-3 py-2 text-sm font-semibold text-yellow-700 hover:bg-yellow-100 transition"
+            >
+              Hubungi Kami
+            </a>
+          </div>
+        </div>
+
         {/* HEADER */}
         <div className="mb-8">
           <h1 className="text-2xl font-bold tracking-tight text-gray-900">
