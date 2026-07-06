@@ -1,5 +1,15 @@
 import { supabase } from "@/lib/supabase/client";
 
+type BookedSlotRow = {
+  slot_id: string;
+};
+
+type GetBookedSlotsArgs = {
+  p_room_id: string;
+
+  p_date: string;
+};
+
 type CreateReservationInput = {
   fullName: string;
   participants: number;
@@ -45,16 +55,26 @@ export const reservationService = {
     return true;
   },
 
-  async getBookedSlots(roomId: string, date: string) {
-    const { data, error } = await supabase
-      .from("reservations")
-      .select("slot_id")
-      .eq("room_id", roomId)
-      .eq("booking_date", date)
-      .eq("status", "confirmed");
+  // async getBookedSlots(roomId: string, date: string) {
+  //   const { data, error } = await supabase
+  //     .from("reservations")
+  //     .select("slot_id")
+  //     .eq("room_id", roomId)
+  //     .eq("booking_date", date)
+  //     .eq("status", "confirmed");
 
-    if (error) throw new Error(error.message);
-    return new Set(data.map((r) => r.slot_id));
+  //   if (error) throw new Error(error.message);
+  //   return new Set(data.map((r) => r.slot_id));
+  // },
+
+  async getBookedSlots(roomId: string, date: string) {
+    const { data, error } = await supabase.rpc("get_booked_slots", {
+      p_room_id: roomId,
+      p_date: date.slice(0, 10),
+    });
+    if (error) throw error;
+    const rows = (data ?? []) as { slot_id: string }[];
+    return new Set(rows.map((r) => r.slot_id));
   },
 
   async getMyReservations(bookerId: string) {

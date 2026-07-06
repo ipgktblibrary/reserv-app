@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
@@ -108,7 +109,17 @@ export default function Page() {
       });
 
       setStatus("success");
-    } catch (err) {
+    } catch (err: any) {
+      const message = err?.message || err?.error?.message;
+      const isSlotLimitError =
+        message?.includes("Daily booking limit exceeded") ||
+        err?.code === "P0001";
+
+      if (isSlotLimitError) {
+        setSlotLimitOpen(true);
+        return;
+      }
+
       setStatus("error");
       console.error(err);
     }
@@ -304,7 +315,6 @@ export default function Page() {
               form={form}
               capacity={selectedRoom?.capacity ?? 0}
               projectTypes={Object.values(ProjectType)}
-              // progressStatuses={Object.values(ProgressStatus)}
               onChange={handleChange}
               onSubmit={handleSubmit}
             />

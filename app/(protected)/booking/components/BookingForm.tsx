@@ -12,7 +12,6 @@ type Props = {
   form: BookingFormState;
   capacity: number;
   projectTypes: ProjectType[];
-  // progressStatuses: ProgressStatus[];
   onChange: (patch: Partial<BookingFormState>) => void;
   onSubmit: () => void;
 };
@@ -21,17 +20,12 @@ export default function BookingForm({
   form,
   capacity,
   projectTypes,
-  // progressStatuses,
   onChange,
   onSubmit,
 }: Props) {
   function isProjectType(value: string): value is ProjectType {
     return Object.values(ProjectType).includes(value as ProjectType);
   }
-
-  // function isProgressStatus(value: string): value is ProgressStatus {
-  //   return Object.values(ProgressStatus).includes(value as ProgressStatus);
-  // }
 
   const [name, setName] = useState<string | null>(null);
   useEffect(() => {
@@ -56,21 +50,6 @@ export default function BookingForm({
           onSubmit();
         }}
       >
-        {/* NAME */}
-        {/* <div>
-          <label className="mb-2 block text-xs font-semibold uppercase tracking-widest text-gray-400">
-            Name
-          </label>
-
-          <input
-            className="w-full rounded-xl border border-gray-200 bg-[#F8FAFC] px-4 py-3 text-sm text-gray-900 transition focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-            value={form.fullName}
-            placeholder="Enter name"
-            onChange={(e) => onChange({ fullName: e.target.value })}
-            required
-          />
-        </div> */}
-
         {/* NAME */}
         <div>
           <label className="mb-2 block text-xs font-semibold uppercase tracking-widest text-gray-400">
@@ -134,29 +113,6 @@ export default function BookingForm({
 
           <Chevron />
         </SelectBlock>
-
-        {/* STATUS */}
-        {/* <SelectBlock label="Progress Status">
-          <select
-            className="w-full appearance-none rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-3 pr-10 text-sm focus:border-black focus:ring-2 focus:ring-black/10"
-            value={form.progressStatus}
-            onChange={(e) => {
-              if (isProgressStatus(e.target.value)) {
-                onChange({ progressStatus: e.target.value });
-              }
-            }}
-            required
-          >
-            <option value="">Progress status</option>
-            {progressStatuses.map((type) => (
-              <option key={type} value={type}>
-                {type}
-              </option>
-            ))}
-          </select>
-
-          <Chevron />
-        </SelectBlock> */}
 
         <button
           type="submit"
