@@ -30,8 +30,18 @@ export function formatTime(time?: string): string {
   return `${normalizedHour.toString().padStart(2, "0")}:${m} ${ampm}`;
 }
 
+function isPastBookingDate(date: string) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const bookingDate = new Date(date);
+  bookingDate.setHours(0, 0, 0, 0);
+  return bookingDate < today;
+}
+
 export function ReservationCard({ reservation, onCancel }: Props) {
   const isCancelled = reservation.status === "cancelled";
+
+  const isPastDate = isPastBookingDate(reservation.booking_date);
 
   return (
     <div className="relative rounded-xl border bg-white p-4 transition">
@@ -109,7 +119,19 @@ export function ReservationCard({ reservation, onCancel }: Props) {
         </div>
 
         {/* ACTION */}
-        {!isCancelled && (
+        {/* {!isCancelled && (
+          <div className="flex justify-end pt-2">
+            <button
+              onClick={() => onCancel(reservation.id)}
+              className="text-xs px-3 py-1.5 rounded-lg border text-red-600 hover:bg-red-50"
+            >
+              Cancel
+            </button>
+          </div>
+        )} */}
+
+        {/* ACTION */}
+        {!isCancelled && !isPastDate && (
           <div className="flex justify-end pt-2">
             <button
               onClick={() => onCancel(reservation.id)}

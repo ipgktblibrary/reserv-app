@@ -78,37 +78,6 @@ export default function SignUpPage() {
     router.replace("/booking");
   }
 
-  // async function handleSignup(e: React.SubmitEvent<HTMLFormElement>) {
-  //   e.preventDefault();
-  //   setError(null);
-
-  //   const { data, error: authError } = await supabase.auth.signUp({
-  //     email: email,
-  //     password: password,
-  //   });
-
-  //   const user = data.user;
-
-  //   if (user) {
-  //     const results = await supabase.rpc("create_profile", {
-  //       user_id: user.id,
-  //       user_email: email,
-  //       user_role: role,
-  //       user_name: name,
-  //       user_phone_number: phone,
-  //     });
-
-  //     console.log("USER", results);
-  //   }
-
-  //   if (authError) {
-  //     setError(authError.message);
-  //     return;
-  //   }
-
-  //   router.replace("/booking");
-  // }
-
   const malaysiaPhoneRegex = /^01\d{8,9}$/;
   return (
     <div className="bg-[#F8FAFC] text-gray-900 min-h-screen flex items-center justify-center p-6 relative overflow-hidden font-sans">

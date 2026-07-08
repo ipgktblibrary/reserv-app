@@ -15,6 +15,8 @@ export default function TimeSlotSelector({
   onToggleSlot,
 }: Props) {
   const bookingDate = getBookingDate();
+
+  
   const { slots, bookedSlotIds } = useTimeSlots(roomId, bookingDate);
 
   const sortedSlots = [...slots].sort((a, b) =>

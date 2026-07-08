@@ -26,13 +26,13 @@ export default function SlotLimitModal({ open, onClose }: Props) {
         </div>
 
         <h2 className="text-base font-semibold text-neutral-900">
-          Slot Maksimum
+          Slot Tidak Tersedia
         </h2>
 
         <p className="mt-1 text-sm text-neutral-500">
-          Anda hanya boleh memilih 2 slot masa sahaja setiap hari
+          Anda telah mencapai had maksimum 2 slot sehari atau slot yang dipilih
+          telah disekat oleh Admin.
         </p>
-
         <button
           onClick={() => onClose?.()}
           className="mt-5 w-full rounded-xl bg-[#6844C7] py-2 text-sm text-white"
