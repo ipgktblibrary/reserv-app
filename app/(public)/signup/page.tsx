@@ -91,10 +91,10 @@ export default function SignUpPage() {
             {/* Header */}
             <div className="mb-8">
               <h2 className="text-2xl font-semibold tracking-tight text-gray-900 mb-2">
-                Create account
+                Daftar Akaun
               </h2>
               <p className="text-sm text-gray-500">
-                Start your journey in seconds.
+                Daftar akaun anda dengan mudah.
               </p>
             </div>
 
@@ -122,7 +122,7 @@ export default function SignUpPage() {
             <form onSubmit={handleSignup} className="space-y-5">
               <div>
                 <label className="block text-xs font-semibold tracking-widest text-gray-400 uppercase mb-2">
-                  Email Address
+                  Alamat E-mel
                 </label>
                 <input
                   type="email"
@@ -136,13 +136,13 @@ export default function SignUpPage() {
 
               <div>
                 <label className="block text-xs font-semibold tracking-widest text-gray-400 uppercase mb-2">
-                  Name
+                  Nama
                 </label>
                 <input
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Raufsemi"
+                  placeholder="John Doe"
                   className="w-full bg-[#F8FAFC] border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition duration-200"
                   required
                 />
@@ -150,7 +150,7 @@ export default function SignUpPage() {
 
               <div>
                 <label className="block text-xs font-semibold tracking-widest text-gray-400 uppercase mb-2">
-                  Phone Number
+                  Nombor Telefon
                 </label>
                 <input
                   type="tel"
@@ -171,7 +171,7 @@ export default function SignUpPage() {
                 )}
               </div>
 
-              <SelectBlock label="Select Account Type">
+              <SelectBlock label="Pilih Jenis Akaun">
                 <select
                   value={role}
                   onChange={(e) =>
@@ -181,10 +181,10 @@ export default function SignUpPage() {
                   required
                 >
                   <option value="" disabled hidden>
-                    Select your role
+                    Pilih Jenis Akaun
                   </option>
                   <option value="student">Pelajar</option>
-                  <option value="teacher">Pensyarah</option>
+                  <option value="teacher">Pensyarah/Staff</option>
                 </select>
                 <Chevron />
               </SelectBlock>
@@ -247,7 +247,7 @@ export default function SignUpPage() {
                 type="submit"
                 className="w-full bg-purple-600 hover:bg-purple-500 text-white font-medium text-sm py-3 px-4 rounded-xl shadow-lg shadow-purple-600/10 transition duration-200 mt-2"
               >
-                Sign Up
+                Daftar
               </button>
             </form>
           </div>
@@ -255,34 +255,44 @@ export default function SignUpPage() {
           {/* Footer */}
           <div className="mt-10 pt-6 border-t border-gray-100 text-center md:text-left">
             <p className="text-sm text-gray-500">
-              Already have an account?{" "}
+              Sudah mempunyai akaun?
               <a
                 href="/signin"
                 className="font-medium text-purple-600 hover:text-purple-500 transition-colors"
               >
-                Sign in
+                {" "}
+                Log Masuk
               </a>
             </p>
           </div>
         </div>
 
         {/* RIGHT */}
-        <div className="md:col-span-7 bg-white p-8 md:p-12 flex flex-col justify-end min-h-112.5 relative overflow-hidden group rounded-2xl border border-gray-200/80 shadow-xl shadow-gray-100">
-          <div className="absolute top-0 right-0 p-6 opacity-[0.03] font-bold text-[220px] pointer-events-none select-none text-gray-900 leading-none">
-            01
-          </div>
+        <div className="relative overflow-hidden rounded-2xl border border-gray-200/80 shadow-xl md:col-span-7 min-h-112.5">
+          {/* Background Image */}
+          <div
+            className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+            style={{
+              backgroundImage: "url('/images/library-hero.png')",
+            }}
+          />
 
-          <div className="absolute inset-0 bg-linear-to-br from-purple-500/3 via-transparent to-transparent opacity-60 pointer-events-none" />
+          {/* Dark Overlay */}
+          <div className="absolute inset-0 bg-black/60" />
 
-          <div className="relative z-10 max-w-md">
-            <div className="text-purple-600 mb-6">
+          {/* Purple Overlay */}
+          <div className="absolute inset-0 bg-linear-to-br from-[#6844C7]/50 via-[#6844C7]/20 to-black/50" />
+
+          {/* Content */}
+          <div className="relative z-10 flex h-full flex-col justify-end p-8 md:p-12">
+            <div className="mb-6 text-white">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className="w-8 h-8"
+                className="h-8 w-8"
               >
                 <path
                   strokeLinecap="round"
@@ -292,14 +302,16 @@ export default function SignUpPage() {
               </svg>
             </div>
 
-            <h3 className="text-2xl font-semibold mb-3 tracking-tight text-gray-900">
-              One account for all bookings
-            </h3>
+            <div className="max-w-md">
+              <h3 className="mb-3 text-3xl font-semibold tracking-tight text-white">
+                Satu Akaun untuk Semua Tempahan
+              </h3>
 
-            <p className="text-sm text-gray-500 leading-relaxed">
-              Sign up to book rooms, manage reservations, and view your schedule
-              in one place.{" "}
-            </p>
+              <p className="text-sm leading-relaxed text-white/80">
+                Daftar sekali untuk membuat tempahan bilik, mengurus tempahan,
+                dan melihat sejarah tempahan anda dalam satu sistem.
+              </p>
+            </div>
           </div>
         </div>
       </div>

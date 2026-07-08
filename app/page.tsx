@@ -21,36 +21,48 @@ export default function HomePage() {
 
       {/* Hero */}
       <section className="relative overflow-hidden">
-        {/* background glow */}
-        <div className="absolute inset-0 bg-linear-to-br from-purple-50 via-white to-white" />
-        <div className="absolute -top-32 left-1/2 h-96 w-96 -translate-x-1/2 rounded-full bg-purple-200 blur-3xl opacity-40" />
+        {/* Background Image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage:
+              "url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=2000&q=80')",
+          }}
+        />
+
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-black/55" />
+
+        {/* Optional Purple Gradient */}
+        <div className="absolute inset-0 bg-linear-to-br from-purple-900/40 via-transparent to-black/40" />
 
         <div className="relative mx-auto flex max-w-7xl flex-col items-center px-6 py-28 text-center">
-          <span className="mb-5 rounded-full bg-purple-100 px-4 py-1 text-sm font-medium text-purple-700">
-            Sistem Tempahan Bilik Perpustakaan
+          <span className="mb-5 rounded-full bg-white/10 backdrop-blur px-4 py-1 text-sm font-medium text-white">
+            Sistem Tempahan Perpustakaan Za&#39;ba IPGKTB
           </span>
 
-          <h2 className="max-w-3xl text-5xl font-bold tracking-tight">
+          <h2 className="max-w-3xl text-5xl font-bold tracking-tight text-white">
             Tempah bilik <br />
             dengan lebih mudah
           </h2>
 
-          <p className="mt-6 max-w-2xl text-lg text-gray-600">
-            Gunakan sistem Pustakaan Za’ba untuk semak bilik kosong, buat
+          <p className="mt-6 max-w-2xl text-lg text-gray-200">
+            Gunakan sistem Perpustakaan Za’ba untuk semak bilik kosong, buat
             tempahan, dan elakkan tempahan bertindih — semuanya dalam satu
             tempat.
           </p>
+
           <div className="mt-10 flex gap-4">
             <Link
               href="/signup"
-              className="rounded-xl bg-purple-600 px-6 py-3 font-medium text-white shadow-sm transition hover:bg-purple-500 hover:shadow-md"
+              className="rounded-xl bg-purple-600 px-6 py-3 font-medium text-white shadow-sm transition hover:bg-purple-500"
             >
               Daftar Sekarang
             </Link>
 
             <Link
               href="/signin"
-              className="rounded-xl border border-gray-200 bg-white px-6 py-3 font-medium transition hover:border-purple-300 hover:bg-purple-50 hover:text-purple-700"
+              className="rounded-xl border border-white/30 bg-white/10 backdrop-blur px-6 py-3 font-medium text-white transition hover:bg-white/20"
             >
               Log Masuk
             </Link>
@@ -100,7 +112,7 @@ export default function HomePage() {
           <h2 className="text-4xl font-bold tracking-tight">Tempah sekarang</h2>
 
           <p className="mt-4 max-w-xl text-gray-600">
-            Akses sistem Pustakaan Za’ba dan urus tempahan bilik dengan lebih
+            Akses sistem Perpustakaan Za’ba dan urus tempahan bilik dengan lebih
             efisien.
           </p>
 

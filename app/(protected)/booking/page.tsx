@@ -175,25 +175,39 @@ export default function Page() {
         </div>
 
         {/* Header */}
-        <div className="mb-8 rounded-2xl border border-purple-100 bg-linear-to-r from-white to-purple-50/40 p-5 shadow-sm">
-          <div className="flex items-start justify-between gap-4">
+        <div className="relative mb-8 overflow-hidden rounded-2xl shadow-lg">
+          {/* Background Image */}
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{
+              backgroundImage: "url('/images/library-hero.png')",
+            }}
+          />
+
+          {/* Dark Overlay */}
+          <div className="absolute inset-0 bg-black/55" />
+
+          {/* Purple Tint */}
+          <div className="absolute inset-0 bg-linear-to-r from-[#6844C7]/60 via-[#6844C7]/20 to-transparent" />
+
+          <div className="relative flex items-start justify-between gap-4 p-6">
             {/* Left */}
             <div>
-              <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-gray-900">
-                Sistem Tempahan Pustakaan Za’ba
+              <h1 className="text-2xl font-bold tracking-tight text-white">
+                Sistem Tempahan Perpustakaan Za’ba
               </h1>
 
-              <p className="mt-1 text-sm text-gray-500">
+              <p className="mt-2 text-sm text-white/80">
                 Selamat datang,{" "}
-                <span className="font-semibold text-[#6844C7]">
+                <span className="font-semibold text-white">
                   {name?.toUpperCase()}
                 </span>
               </p>
             </div>
 
-            {/* Right badge */}
-            <div className="hidden sm:flex items-center gap-2 rounded-full border border-purple-100 bg-white px-3 py-1 text-xs text-gray-600 shadow-sm">
-              <span className="h-2 w-2 rounded-full bg-[#6844C7]" />
+            {/* Right Badge */}
+            <div className="hidden sm:flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs text-white backdrop-blur-md">
+              <span className="h-2 w-2 rounded-full bg-green-400" />
               Aktif
             </div>
           </div>

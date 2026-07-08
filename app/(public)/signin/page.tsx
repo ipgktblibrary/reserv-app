@@ -68,10 +68,10 @@ export default function SignInPage() {
             {/* Header */}
             <div className="mb-8">
               <h2 className="text-2xl font-semibold tracking-tight text-gray-900 mb-2">
-                Welcome back
+                Selamat Kembali
               </h2>
               <p className="text-sm text-gray-500">
-                Enter your credentials to access your portal.
+                Masukkan maklumat akaun anda untuk log masuk ke sistem.
               </p>
             </div>
 
@@ -102,7 +102,7 @@ export default function SignInPage() {
                   htmlFor="email"
                   className="block text-xs font-semibold tracking-widest text-gray-400 uppercase mb-2"
                 >
-                  Email Address
+                  Alamat E-mel
                 </label>
                 <input
                   type="email"
@@ -171,7 +171,7 @@ export default function SignInPage() {
                 type="submit"
                 className="w-full bg-purple-600 hover:bg-purple-500 text-white font-medium text-sm py-3 px-4 rounded-xl shadow-lg shadow-purple-600/10 transition duration-200 mt-2"
               >
-                Sign In
+                Log Masuk
               </button>
             </form>
           </div>
@@ -179,29 +179,39 @@ export default function SignInPage() {
           {/* Footer Integration */}
           <div className="mt-10 pt-6 border-t border-gray-100 text-center md:text-left">
             <p className="text-sm text-gray-500">
-              Dont have an account?
+              Belum mempunyai akaun?
               <a
                 href="/signup"
                 className="font-medium text-purple-600 hover:text-purple-500 transition-colors"
               >
-                {""} Sign up
+                {""} Daftar sekarang
               </a>
             </p>
           </div>
         </div>
 
         {/* Right Side: Structural Branding Block */}
-        <div className="md:col-span-7 bg-white p-8 md:p-12 flex flex-col justify-end min-h-112.5 relative overflow-hidden rounded-2xl border border-gray-200/80 shadow-xl shadow-gray-100">
-          {/* Background Number */}
-          <div className="absolute top-0 right-0 p-6 opacity-[0.03] font-bold text-[220px] pointer-events-none select-none text-gray-900 leading-none">
-            📚
-          </div>
+        <div className="relative overflow-hidden rounded-2xl border border-gray-200/80 shadow-xl md:col-span-7 min-h-[450px]">
+          {/* Background Image */}
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{
+              backgroundImage: "url('/images/library-hero.png')",
+            }}
+          />
 
-          {/* Soft Accent */}
-          <div className="absolute inset-0 bg-linear-to-br from-purple-500/5 via-transparent to-transparent pointer-events-none" />
+          {/* Dark Overlay */}
+          <div className="absolute inset-0 bg-black/60" />
 
-          <div className="relative z-10 max-w-md">
-            <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-purple-50 text-purple-600">
+          {/* Purple Gradient */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[#6844C7]/55 via-[#6844C7]/20 to-black/60" />
+
+          {/* Decorative Blur */}
+          <div className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-purple-400/20 blur-3xl" />
+
+          {/* Content */}
+          <div className="relative z-10 flex h-full flex-col justify-end p-8 md:p-12">
+            <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 backdrop-blur text-white">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -218,30 +228,31 @@ export default function SignInPage() {
               </svg>
             </div>
 
-            <h3 className="text-3xl font-semibold tracking-tight text-gray-900">
-              Reserve Library Spaces with Ease
-            </h3>
+            <div className="max-w-md">
+              <h3 className="text-3xl font-semibold tracking-tight text-white">
+                Tempah Bilik Perpustakaan
+              </h3>
 
-            <p className="mt-4 text-sm leading-7 text-gray-500">
-              Book study rooms and collaborative spaces in just a few clicks.
-              Check real-time availability, manage your reservations, and focus
-              on what matters most—your learning.
-            </p>
+              <p className="mt-4 text-sm leading-7 text-white/80">
+                Semak kekosongan bilik, buat tempahan dengan mudah, dan urus
+                tempahan anda dalam satu sistem.
+              </p>
 
-            <div className="mt-8 space-y-3 text-sm text-gray-600">
-              <div className="flex items-center gap-3">
-                <span className="text-purple-600">✓</span>
-                Real-time room availability
-              </div>
+              <div className="mt-8 space-y-3 text-sm text-white/90">
+                <div className="flex items-center gap-3">
+                  <span className="text-green-400">✓</span>
+                  Semak bilik yang tersedia
+                </div>
 
-              <div className="flex items-center gap-3">
-                <span className="text-purple-600">✓</span>
-                Fast and secure reservations
-              </div>
+                <div className="flex items-center gap-3">
+                  <span className="text-green-400">✓</span>
+                  Tempahan yang cepat dan mudah
+                </div>
 
-              <div className="flex items-center gap-3">
-                <span className="text-purple-600">✓</span>
-                Access your booking history anytime
+                <div className="flex items-center gap-3">
+                  <span className="text-green-400">✓</span>
+                  Lihat sejarah tempahan anda
+                </div>
               </div>
             </div>
           </div>
