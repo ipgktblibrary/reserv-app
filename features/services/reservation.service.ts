@@ -70,7 +70,7 @@ export const reservationService = {
       .order("booking_date", { ascending: false });
 
     if (error) throw error;
-    console.log("DATA RESERVATION", data);
+    // console.log("DATA RESERVATION", data);
 
     return data;
   },

@@ -14,13 +14,13 @@ export const bookerService = {
    * Get booker linked to a profile
    */
   async getByProfileId(profileId: string): Promise<Booker | null> {
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from("bookers")
       .select("*")
       .eq("profile_id", profileId)
       .maybeSingle();
 
-    console.log("[bookerService.getByProfileId] result:", { data, error });
+    // console.log("[bookerService.getByProfileId] result:", { data, error });
     return data;
   },
 
@@ -28,7 +28,7 @@ export const bookerService = {
    * Create booker for a profile (first-time user)
    */
   async create(profileId: string, payload?: { name?: string }) {
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from("bookers")
       .insert({
         profile_id: profileId,
@@ -36,7 +36,7 @@ export const bookerService = {
       })
       .select()
       .single();
-    console.log("[bookerService.create] result:", { data, error });
+    // console.log("[bookerService.create] result:", { data, error });
     return data;
   },
 
