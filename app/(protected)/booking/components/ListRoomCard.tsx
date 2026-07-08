@@ -63,7 +63,7 @@ export default function RoomList(props: Props) {
 
               {/* Meta */}
               <div className="mt-1 text-xs text-neutral-500">
-                Max. kapasiti {room.capacity}
+                Maks. kapasiti {room.capacity}
               </div>
 
               {/* Badge */}

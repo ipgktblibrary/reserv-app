@@ -53,18 +53,18 @@ export default function BookingForm({
         {/* NAME */}
         <div>
           <label className="mb-2 block text-xs font-semibold uppercase tracking-widest text-gray-400">
-            Name
+            Nama
           </label>
 
           <div className="w-full rounded-xl border border-gray-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-500 select-none">
-            {name ?? "-"}
+            {(name ?? "-").toUpperCase()}
           </div>
         </div>
 
         {/* PARTICIPANTS */}
         <div>
           <label className="mb-2 block text-xs font-semibold uppercase tracking-widest text-gray-400">
-            Participants
+            Peserta
           </label>
 
           <div className="relative w-full">
@@ -78,11 +78,11 @@ export default function BookingForm({
               }
               required
             >
-              <option value="">Select participants</option>
+              <option value="">Pilih bilangan peserta</option>
 
               {Array.from({ length: capacity }, (_, i) => i + 1).map((num) => (
                 <option key={num} value={num}>
-                  {num} {num === 1 ? "participant" : "participants"}
+                  {num} {num === 1 ? "Bilangan Peserta" : "Bilangan Peserta"}
                 </option>
               ))}
             </select>
@@ -92,7 +92,7 @@ export default function BookingForm({
         </div>
 
         {/* PROJECT TYPE */}
-        <SelectBlock label="Project Type">
+        <SelectBlock label="Tujuan Penggunaan Bilik">
           <select
             className="w-full appearance-none rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-3 pr-10 text-sm focus:border-black focus:ring-2 focus:ring-black/10"
             value={form.projectType}
@@ -103,7 +103,7 @@ export default function BookingForm({
             }}
             required
           >
-            <option value="">Select project type</option>
+            <option value="">Pilih tujuan penggunaan bilik</option>
             {projectTypes.map((type) => (
               <option key={type} value={type}>
                 {type}
@@ -118,7 +118,7 @@ export default function BookingForm({
           type="submit"
           className="mt-2 w-full rounded-xl bg-[#6844C7] px-4 py-3 text-sm font-medium text-white shadow-md shadow-[#6844C7]/20 transition hover:bg-[#5B3CC4] hover:shadow-[#6844C7]/30 active:scale-[0.99]"
         >
-          Confirm Booking
+          Tempah Sekarang
         </button>
       </form>
     </div>

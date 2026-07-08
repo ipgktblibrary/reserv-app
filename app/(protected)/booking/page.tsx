@@ -274,9 +274,23 @@ export default function Page() {
           <h1 className="text-xl font-bold tracking-tight text-gray-900">
             Pilih Masa
           </h1>
-          <p className="mt-1 text-sm text-gray-500">
+          {/* <p className="mt-1 text-sm text-gray-500">
             Anda boleh pilih sehingga 2 slot masa
-          </p>
+          </p> */}
+          <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-4">
+            <h3 className="text-sm font-semibold text-blue-900">Maklumat</h3>
+            <ul className="mt-2 space-y-1 text-sm text-blue-800">
+              <li>
+                • Anda boleh memilih sehingga <strong>2 slot masa</strong>.
+              </li>
+              <li>
+                • Slot berwarna{" "}
+                <span className="font-semibold text-red-600">merah</span> telah
+                ditempah dan tidak boleh dipilih.
+              </li>
+              <li>• Sila pilih slot lain yang masih tersedia.</li>
+            </ul>
+          </div>
         </div>
 
         {selectedRoomId && (

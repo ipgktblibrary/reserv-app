@@ -19,11 +19,11 @@ export function NoTimeSlot() {
       </div>
 
       <h3 className="text-sm font-medium text-neutral-900">
-        No booking available
+        Tiada Tempahan Tersedia
       </h3>
 
       <p className="mt-1 max-w-sm text-xs text-neutral-500">
-        Bookings cannot be made on Saturday and Sunday.
+        Tempahan tidak boleh dibuat pada hari Sabtu dan Ahad.
       </p>
     </div>
   );

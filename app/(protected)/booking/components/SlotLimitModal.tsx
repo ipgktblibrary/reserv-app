@@ -26,11 +26,11 @@ export default function SlotLimitModal({ open, onClose }: Props) {
         </div>
 
         <h2 className="text-base font-semibold text-neutral-900">
-          Slot Limit Reached
+          Slot Maksimum
         </h2>
 
         <p className="mt-1 text-sm text-neutral-500">
-          You can only select a maximum of 2 time slots per day.
+          Anda hanya boleh memilih 2 slot masa sahaja setiap hari
         </p>
 
         <button

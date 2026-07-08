@@ -24,30 +24,90 @@ export default function SignUpPage() {
     e.preventDefault();
     setError(null);
 
-    const { data, error: authError } = await supabase.auth.signUp({
-      email: email,
-      password: password,
-    });
+    // 1. Check duplicate first
+    const { data: validation, error: validationError } = await supabase.rpc(
+      "check_signup_available",
+      {
+        p_email: email,
+        p_phone_number: phone,
+      },
+    );
 
-    const user = data.user;
-
-    if (user) {
-      await supabase.rpc("create_profile", {
-        user_id: user.id,
-        user_email: email,
-        user_role: role,
-        user_name: name,
-        user_phone_number: phone,
-      });
+    if (validationError) {
+      setError(validationError.message);
+      return;
     }
+
+    if (!validation.available) {
+      setError(validation.message);
+      return;
+    }
+
+    // 2. Create auth only after validation passes
+    const { data, error: authError } = await supabase.auth.signUp({
+      email,
+      password,
+    });
 
     if (authError) {
       setError(authError.message);
       return;
     }
 
+    const user = data.user;
+
+    if (!user) {
+      setError("Account creation failed.");
+      return;
+    }
+
+    // 3. Create profile
+    const { error: profileError } = await supabase.rpc("create_profile", {
+      user_id: user.id,
+      user_email: email,
+      user_role: role,
+      user_name: name,
+      user_phone_number: phone,
+    });
+
+    if (profileError) {
+      setError(profileError.message);
+      return;
+    }
+
     router.replace("/booking");
   }
+
+  // async function handleSignup(e: React.SubmitEvent<HTMLFormElement>) {
+  //   e.preventDefault();
+  //   setError(null);
+
+  //   const { data, error: authError } = await supabase.auth.signUp({
+  //     email: email,
+  //     password: password,
+  //   });
+
+  //   const user = data.user;
+
+  //   if (user) {
+  //     const results = await supabase.rpc("create_profile", {
+  //       user_id: user.id,
+  //       user_email: email,
+  //       user_role: role,
+  //       user_name: name,
+  //       user_phone_number: phone,
+  //     });
+
+  //     console.log("USER", results);
+  //   }
+
+  //   if (authError) {
+  //     setError(authError.message);
+  //     return;
+  //   }
+
+  //   router.replace("/booking");
+  // }
 
   const malaysiaPhoneRegex = /^01\d{8,9}$/;
   return (
@@ -154,8 +214,8 @@ export default function SignUpPage() {
                   <option value="" disabled hidden>
                     Select your role
                   </option>
-                  <option value="student">Student</option>
-                  <option value="teacher">Teacher</option>
+                  <option value="student">Pelajar</option>
+                  <option value="teacher">Pensyarah</option>
                 </select>
                 <Chevron />
               </SelectBlock>
