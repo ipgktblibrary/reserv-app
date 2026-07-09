@@ -124,7 +124,7 @@ export default function BookingHistoryPage() {
 
             {/* fallback contact */}
             <a
-              href="https://instagram.com/raufsemi"
+              href="https://wa.me/601127374120"
               target="_blank"
               className="inline-flex items-center justify-center rounded-lg border border-yellow-300 bg-white px-3 py-2 text-sm font-semibold text-yellow-700 hover:bg-yellow-100 transition"
             >

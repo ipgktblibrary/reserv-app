@@ -166,7 +166,7 @@ export default function Page() {
           <div className="font-medium">Ada masalah atau perlukan bantuan?</div>
 
           <a
-            href="https://instagram.com/raufsemi"
+            href="https://wa.me/601127374120"
             target="_blank"
             className="text-[#6844C7] font-semibold hover:underline"
           >

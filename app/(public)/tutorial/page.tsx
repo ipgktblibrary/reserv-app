@@ -76,7 +76,7 @@ export default function TutorialGatePage() {
               <p className="text-sm text-neutral-500">
                 Jika ada masalah pendaftaran atau penggunaan, hubungi{" "}
                 <a
-                  href="https://instagram.com/raufsemi"
+                  href="https://wa.me/601127374120"
                   className="text-purple-600 hover:underline"
                 >
                   @raufsemi
