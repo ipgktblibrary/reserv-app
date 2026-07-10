@@ -1,10 +1,11 @@
 import { useTimeSlots } from "@/features/hooks/useTimeSlots";
 import { formatTimeTo12h } from "@/features/misc/time";
-import { getBookingDate } from "@/features/misc/booking-date";
+// import { getBookingDate } from "@/features/misc/booking-date";
 import { NoTimeSlot } from "./NoTimeSlot";
 
 type Props = {
   roomId: string;
+  bookingDate: string;
   selectedSlots: string[];
   onToggleSlot: (id: string) => void;
 };
@@ -12,11 +13,11 @@ type Props = {
 export default function TimeSlotSelector({
   roomId,
   selectedSlots,
+  bookingDate,
   onToggleSlot,
 }: Props) {
-  const bookingDate = getBookingDate();
+  // const bookingDate = getBookingDate();
 
-  
   const { slots, bookedSlotIds } = useTimeSlots(roomId, bookingDate);
 
   const sortedSlots = [...slots].sort((a, b) =>

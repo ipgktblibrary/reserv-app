@@ -24,6 +24,20 @@ export function isAllowedBookingDate(date: string): boolean {
   return date === getTomorrowDate();
 }
 
+export function getTodayDisplay() {
+  const today = new Date();
+
+  return {
+    day: today.toLocaleDateString("ms-MY", {
+      weekday: "long",
+    }),
+    date: today.toLocaleDateString("ms-MY", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }),
+  };
+}
 export function getTomorrowDisplay(): { date: string; day: string } {
   const date = new Date();
   date.setDate(date.getDate() + 1);

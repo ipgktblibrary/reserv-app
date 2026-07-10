@@ -13,6 +13,7 @@ import { useLogout } from "@/features/hooks/useLogout";
 import { reservationService } from "@/features/services/reservation.service";
 import {
   getBookingDate,
+  getTodayDisplay,
   getTomorrowDisplay,
 } from "@/features/misc/booking-date";
 import { getUser } from "@/lib/auth";
@@ -35,6 +36,8 @@ export default function Page() {
   const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
   const [selectedSlots, setSelectedSlots] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
+
+  const [bookingDate, setBookingDate] = useState(getBookingDate());
 
   useEffect(() => {
     if (!selectedRoomId) return;
@@ -105,7 +108,8 @@ export default function Page() {
         projectType: form.projectType,
         projectProgress: form.progressStatus,
         participants: Number(form.participants),
-        bookingDate: getBookingDate(),
+        // bookingDate: getBookingDate(),
+        bookingDate: bookingDate,
       });
 
       setStatus("success");
@@ -136,6 +140,7 @@ export default function Page() {
     setSelectedRoomId(null);
   }
 
+  const today = getTodayDisplay();
   return (
     <div className="min-h-screen bg-linear-to-b from-white via-purple-50/40 to-white px-4 py-6 sm:py-10 flex justify-center">
       <div className="w-full max-w-2xl">
@@ -283,6 +288,52 @@ export default function Page() {
           />
         </div>
 
+        <div className="mb-8 mt-10">
+          <h2 className="text-xl font-bold tracking-tight text-gray-900">
+            Pilih Tarikh Tempahan
+          </h2>
+
+          <p className="mt-1 text-sm text-gray-500">
+            Anda boleh membuat tempahan untuk hari ini atau esok.
+          </p>
+
+          <div className="mt-4 grid grid-cols-2 gap-4">
+            <button
+              type="button"
+              onClick={() =>
+                setBookingDate(new Date().toISOString().split("T")[0])
+              }
+              className={`rounded-2xl border p-4 text-left transition ${
+                bookingDate === new Date().toISOString().split("T")[0]
+                  ? "border-[#6844C7] bg-purple-50"
+                  : "border-gray-200 hover:border-[#6844C7]"
+              }`}
+            >
+              <p className="font-semibold text-gray-900">Hari Ini</p>
+
+              <p className="mt-1 text-sm text-gray-500">
+                {today.day}, {today.date}
+              </p>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setBookingDate(getBookingDate())}
+              className={`rounded-2xl border p-4 text-left transition ${
+                bookingDate === getBookingDate()
+                  ? "border-[#6844C7] bg-purple-50"
+                  : "border-gray-200 hover:border-[#6844C7]"
+              }`}
+            >
+              <p className="font-semibold text-gray-900">Esok</p>
+
+              <p className="mt-1 text-sm text-gray-500">
+                {tomorrow.day}, {tomorrow.date}
+              </p>
+            </button>
+          </div>
+        </div>
+
         {/* Time slot */}
         <div className="mb-8 mt-10">
           <h1 className="text-xl font-bold tracking-tight text-gray-900">
@@ -309,8 +360,15 @@ export default function Page() {
 
         {selectedRoomId && (
           <div className="rounded-2xl bg-white border border-purple-100 shadow-sm p-4">
+            {/* <TimeSlotSelector
+              roomId={selectedRoomId}
+              selectedSlots={selectedSlots}
+              onToggleSlot={onToggleSlot}
+            /> */}
+
             <TimeSlotSelector
               roomId={selectedRoomId}
+              bookingDate={bookingDate}
               selectedSlots={selectedSlots}
               onToggleSlot={onToggleSlot}
             />
@@ -323,13 +381,13 @@ export default function Page() {
             Sahkan Tempahan
           </h1>
 
-          <div className="mt-3 inline-flex items-center gap-2 rounded-xl border border-purple-100 bg-purple-50 px-3 py-2 text-sm text-gray-700">
+          {/* <div className="mt-3 inline-flex items-center gap-2 rounded-xl border border-purple-100 bg-purple-50 px-3 py-2 text-sm text-gray-700">
             <span className="h-2 w-2 rounded-full bg-[#6844C7]" />
             Tempahan untuk:
             <span className="font-semibold text-gray-900">
               {tomorrow.day}, {tomorrow.date}
             </span>
-          </div>
+          </div> */}
 
           <div className="mt-3 rounded-xl border border-purple-100 bg-white px-4 py-3 text-sm text-gray-600">
             Sila semak semula slot masa sebelum membuat tempahan.

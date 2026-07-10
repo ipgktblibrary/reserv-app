@@ -23,7 +23,7 @@ export function useTimeSlots(roomId: string, date: string) {
       if (!active) return;
 
       setSlots(slotData);
-      setBookedSlotIds(new Set(bookedData)); // ensure immutability safety
+      setBookedSlotIds(new Set(bookedData));
       setLoading(false);
     };
 
