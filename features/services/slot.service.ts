@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase/client";
+import { supabaseClient } from "@/lib/supabase/client";
 
 export type RoomTimeSlot = {
   id: string;
@@ -20,7 +20,7 @@ function getDayOfWeek(dateStr: string): 1 | 2 | 3 | 4 | 5 {
 export const timeSlotsService = {
   async getByRoom(roomId: string, date: string): Promise<RoomTimeSlot[]> {
     const dayOfWeek = getDayOfWeek(date);
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
       .from("room_time_slots")
       .select("*")
       .eq("room_id", roomId)

@@ -1,5 +1,5 @@
 import { useRooms } from "@/features/hooks/useRooms";
-import { getUser } from "@/lib/auth";
+import { getUserProfile } from "@/lib/auth";
 import { useEffect, useState } from "react";
 
 type Props = {
@@ -7,20 +7,27 @@ type Props = {
   selectedRoomId: string | null;
 };
 
-export default function RoomList(props: Props) {
+export default function RoomSelector(props: Props) {
   const { onSelect, selectedRoomId } = props;
   const { rooms } = useRooms();
 
-  const [user, setUser] = useState<Awaited<ReturnType<typeof getUser>> | null>(
-    null,
-  );
+  const [user, setUser] = useState<Awaited<
+    ReturnType<typeof getUserProfile>
+  > | null>(null);
+
   useEffect(() => {
-    getUser().then(setUser);
+    getUserProfile().then(setUser);
   }, []);
 
   const visibleRooms = rooms.filter(
     (room) => !room.teacher_only || user?.role === "teacher",
   );
+
+  useEffect(() => {
+    if (visibleRooms.length > 0 && !selectedRoomId) {
+      onSelect(visibleRooms[0].id);
+    }
+  }, [visibleRooms, selectedRoomId, onSelect]);
 
   return (
     <>

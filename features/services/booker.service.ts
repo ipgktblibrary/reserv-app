@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase/client";
+import { supabaseClient } from "@/lib/supabase/client";
 
 export type Booker = {
   id: string;
@@ -14,7 +14,7 @@ export const bookerService = {
    * Get booker linked to a profile
    */
   async getByProfileId(profileId: string): Promise<Booker | null> {
-    const { data } = await supabase
+    const { data } = await supabaseClient
       .from("bookers")
       .select("*")
       .eq("profile_id", profileId)
@@ -28,7 +28,7 @@ export const bookerService = {
    * Create booker for a profile (first-time user)
    */
   async create(profileId: string, payload?: { name?: string }) {
-    const { data } = await supabase
+    const { data } = await supabaseClient
       .from("bookers")
       .insert({
         profile_id: profileId,
@@ -60,7 +60,7 @@ export const bookerService = {
       const needsUpdate = payload?.name && !existing.name;
 
       if (needsUpdate) {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
           .from("bookers")
           .update({ name: payload.name })
           .eq("profile_id", profileId)

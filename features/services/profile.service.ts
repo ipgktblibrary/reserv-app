@@ -1,7 +1,7 @@
-import { supabase } from "@/lib/supabase/client";
+import { supabaseClient } from "@/lib/supabase/client";
 
 export const profileService = {
   async getProfile() {
-    await supabase.from("profiles").select("*").single();
+    await supabaseClient.from("profiles").select("*").single();
   },
 };

@@ -1,18 +1,18 @@
-import { supabase } from "./supabase/client";
+import { supabaseClient } from "./supabase/client";
 
-export async function getUser() {
-  const { data } = await supabase.auth.getUser();
+export async function getUserProfile() {
+  const { data } = await supabaseClient.auth.getUser();
 
   if (!data.user) return null;
 
-  const { data: profile } = await supabase
+  const { data: profile } = await supabaseClient
     .from("profiles")
     .select("role, name, email, phone_number")
     .eq("id", data.user.id)
     .maybeSingle();
 
   if (!profile) {
-    await supabase.auth.signOut();
+    await supabaseClient.auth.signOut();
     return null;
   }
 

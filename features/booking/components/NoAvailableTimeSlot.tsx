@@ -1,7 +1,6 @@
-export function NoTimeSlot() {
+export function NoAvailableTimeSlot() {
   return (
     <div className="col-span-full flex flex-col items-center justify-center py-16 text-center">
-      {/* Icon */}
       <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-neutral-100">
         <svg
           className="h-7 w-7 text-neutral-400"

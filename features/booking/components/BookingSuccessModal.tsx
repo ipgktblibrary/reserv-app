@@ -9,7 +9,7 @@ type Props = {
   onClose?: () => void;
 };
 
-export default function BookingFailed({ open, onClose }: Props) {
+export default function BookingSuccessModal({ open, onClose }: Props) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -19,22 +19,22 @@ export default function BookingFailed({ open, onClose }: Props) {
   if (!open || !mounted) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/40 px-4">
+    <div className="fixed inset-0 z-99999 flex items-center justify-center bg-black/40 px-4">
       <div className="w-full max-w-sm rounded-2xl bg-white p-6 text-center shadow-xl">
-        <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-red-100 text-red-600">
-          ✕
+        <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-green-600">
+          ✓
         </div>
 
         <h2 className="text-base font-semibold text-neutral-900">
-          Booking Failed
+          Booking Successful
         </h2>
 
         <p className="mt-1 text-sm text-neutral-500">
-          Something went wrong. Please try again.
+          Your reservation has been confirmed.
         </p>
 
         <button
-          onClick={() => onClose?.()}
+          onClick={onClose}
           className="mt-5 w-full rounded-xl bg-black py-2 text-sm text-white"
         >
           OK

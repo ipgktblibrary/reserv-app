@@ -2,7 +2,7 @@
 
 import { bookerService } from "@/features/services/booker.service";
 import { reservationService } from "@/features/services/reservation.service";
-import { getUser } from "@/lib/auth";
+import { getUserProfile } from "@/lib/auth";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { ReservationCard } from "./components/ReservationCard";
@@ -35,7 +35,7 @@ export default function BookingHistoryPage() {
   useEffect(() => {
     (async () => {
       try {
-        const user = await getUser();
+        const user = await getUserProfile();
         if (!user) return;
 
         const booker = await bookerService.ensure(user.id);

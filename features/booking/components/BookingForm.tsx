@@ -1,7 +1,7 @@
 import { Chevron } from "@/features/misc/chevron";
 import { ProgressStatus, ProjectType } from "@/features/misc/enums";
 import { SelectBlock } from "@/features/misc/selectBloc";
-import { getUser } from "@/lib/auth";
+import { getUserProfile } from "@/lib/auth";
 import { useEffect, useState } from "react";
 export type BookingFormState = {
   participants: number | "";
@@ -30,7 +30,7 @@ export default function BookingForm({
   const [name, setName] = useState<string | null>(null);
   useEffect(() => {
     const load = async () => {
-      const user = await getUser();
+      const user = await getUserProfile();
       setName(user?.name ?? null);
     };
 

@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase/client";
+import { supabaseClient } from "@/lib/supabase/client";
 
 type CreateReservationInput = {
   fullName: string;
@@ -29,7 +29,7 @@ export function toReservationInsert(input: CreateReservationInput) {
 
 export const reservationService = {
   async createReservation(input: CreateReservationInput) {
-    const { error } = await supabase.rpc("create_reservation", {
+    const { error } = await supabaseClient.rpc("create_reservation", {
       p_slot_ids: input.slotIds,
       p_room_id: input.roomId,
       p_booking_date: input.bookingDate,
@@ -46,7 +46,7 @@ export const reservationService = {
   },
 
   async getBookedSlots(roomId: string, date: string) {
-    const { data, error } = await supabase.rpc("get_booked_slots", {
+    const { data, error } = await supabaseClient.rpc("get_booked_slots", {
       p_room_id: roomId,
       p_date: date.slice(0, 10),
     });
@@ -56,7 +56,7 @@ export const reservationService = {
   },
 
   async getMyReservations(bookerId: string) {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
       .from("reservations")
       .select(
         `
@@ -76,7 +76,7 @@ export const reservationService = {
   },
 
   async cancelReservation(reservationId: string) {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
       .from("reservations")
       .update({
         status: "cancelled",

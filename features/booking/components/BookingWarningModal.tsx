@@ -9,7 +9,7 @@ type Props = {
   onClose?: () => void;
 };
 
-export default function SlotLimitModal({ open, onClose }: Props) {
+export default function BookingWarningModal({ open, onClose }: Props) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {

@@ -1,7 +1,6 @@
 import { useTimeSlots } from "@/features/hooks/useTimeSlots";
 import { formatTimeTo12h } from "@/features/misc/time";
-// import { getBookingDate } from "@/features/misc/booking-date";
-import { NoTimeSlot } from "./NoTimeSlot";
+import { NoAvailableTimeSlot } from "./NoAvailableTimeSlot";
 
 type Props = {
   roomId: string;
@@ -16,8 +15,6 @@ export default function TimeSlotSelector({
   bookingDate,
   onToggleSlot,
 }: Props) {
-  // const bookingDate = getBookingDate();
-
   const { slots, bookedSlotIds } = useTimeSlots(roomId, bookingDate);
 
   const sortedSlots = [...slots].sort((a, b) =>
@@ -25,7 +22,7 @@ export default function TimeSlotSelector({
   );
 
   if (!slots.length) {
-    return <NoTimeSlot />;
+    return <NoAvailableTimeSlot />;
   }
 
   return (
@@ -41,11 +38,7 @@ export default function TimeSlotSelector({
             key={slot.id}
             type="button"
             disabled={isDisabled}
-            onClick={() => {
-              if (bookedSlotIds.has(slot.id) || slot.is_blocked) return;
-
-              onToggleSlot(slot.id);
-            }}
+            onClick={() => onToggleSlot(slot.id)}
             className={[
               "rounded-xl border px-4 py-3 text-sm font-medium transition-all",
 

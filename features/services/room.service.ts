@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase/client";
+import { supabaseClient } from "@/lib/supabase/client";
 
 export type Room = {
   id: string;
@@ -11,7 +11,7 @@ export type Room = {
 
 export const roomService = {
   async getRooms(): Promise<Room[]> {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
       .from("rooms")
       .select("*")
       .order("id", { ascending: true });

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getUser } from "@/lib/auth";
+import { getUserProfile } from "@/lib/auth";
 
 export default function ProtectedLayout({
   children,
@@ -14,7 +14,7 @@ export default function ProtectedLayout({
 
   useEffect(() => {
     async function checkAuth() {
-      const user = await getUser();
+      const user = await getUserProfile();
 
       if (!user) {
         router.replace("/signin");
