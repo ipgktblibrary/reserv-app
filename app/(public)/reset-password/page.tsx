@@ -48,19 +48,39 @@ export default function ResetPasswordPage() {
       const params = new URLSearchParams(window.location.search);
       const code = params.get("code");
 
-      if (!code) {
+      if (code) {
+        const { error } =
+          await supabaseClient.auth.exchangeCodeForSession(code);
+
+        if (!error) {
+          setReady(true);
+          return;
+        }
+
+        // retry once after Supabase finishes loading
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
+        const { error: retryError } =
+          await supabaseClient.auth.exchangeCodeForSession(code);
+
+        if (!retryError) {
+          setReady(true);
+          return;
+        }
+
         setMessage("Pautan reset password tidak sah atau telah tamat tempoh.");
         return;
       }
 
-      const { error } = await supabaseClient.auth.exchangeCodeForSession(code);
+      const {
+        data: { session },
+      } = await supabaseClient.auth.getSession();
 
-      if (error) {
+      if (session) {
+        setReady(true);
+      } else {
         setMessage("Pautan reset password tidak sah atau telah tamat tempoh.");
-        return;
       }
-
-      setReady(true);
     }
 
     verifyRecovery();
