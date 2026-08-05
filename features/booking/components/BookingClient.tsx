@@ -94,7 +94,7 @@ export default function BookingClient() {
         <h1 className="text-xl font-bold tracking-tight text-gray-900">
           Pilih Masa
         </h1>
-        <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-4">
+        <div className="mt-4 rounded-lg border border-purple-100 bg-[blue-50] p-4">
           <h3 className="text-sm font-semibold text-blue-900">Maklumat</h3>
           <ul className="mt-2 space-y-1 text-sm text-blue-800">
             <li>
@@ -102,7 +102,7 @@ export default function BookingClient() {
             </li>
             <li>
               • Slot berwarna
-              <span className="font-semibold text-red-600">merah</span> telah
+              <span className="font-semibold text-red-600"> merah</span> telah
               ditempah dan tidak boleh dipilih.
             </li>
             <li>• Sila pilih slot lain yang masih tersedia.</li>

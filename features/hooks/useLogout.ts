@@ -13,7 +13,7 @@ export function useLogout() {
       return;
     }
 
-    router.replace("/signin");
+    router.replace("/");
     router.refresh();
   }, [router]);
 

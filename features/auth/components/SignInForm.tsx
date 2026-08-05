@@ -109,7 +109,7 @@ export default function SignInForm() {
                   id="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="rauf@gmail.com"
+                  placeholder="johndoe@gmail.com"
                   className="w-full bg-[#F8FAFC] border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition duration-200"
                   required
                 />
@@ -190,7 +190,7 @@ export default function SignInForm() {
 
               <a
                 href="/forgot-password"
-                className="font-medium text-gray-600 transition-colors hover:text-[#6844C7]"
+                className="font-medium text-red-500 transition-colors hover:text-[#6844C7]"
               >
                 Lupa kata laluan?
               </a>
@@ -229,28 +229,28 @@ export default function SignInForm() {
 
             <div className="max-w-md">
               <h3 className="text-3xl font-semibold tracking-tight text-white">
-                Tempah Bilik Perpustakaan
+                Tempah Bilik Dengan Mudah
               </h3>
 
               <p className="mt-4 text-sm leading-7 text-white/80">
-                Semak kekosongan bilik, buat tempahan dengan mudah, dan urus
-                tempahan anda dalam satu sistem.
+                Semak bilik yang tersedia, pilih masa sesuai, dan buat tempahan
+                dengan cepat.
               </p>
 
               <div className="mt-8 space-y-3 text-sm text-white/90">
                 <div className="flex items-center gap-3">
                   <span className="text-green-400">✓</span>
-                  Semak bilik yang tersedia
+                  Semak ketersediaan bilik
                 </div>
 
                 <div className="flex items-center gap-3">
                   <span className="text-green-400">✓</span>
-                  Tempahan yang cepat dan mudah
+                  Tempahan lebih teratur
                 </div>
 
                 <div className="flex items-center gap-3">
                   <span className="text-green-400">✓</span>
-                  Lihat sejarah tempahan anda
+                  Akses rekod tempahan
                 </div>
               </div>
             </div>

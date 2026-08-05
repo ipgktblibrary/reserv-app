@@ -111,9 +111,7 @@ export default function BookingHistoryPage() {
             pihak pentadbiran dengan segera.
           </div>
 
-          {/* actions */}
-          <div className="mt-3 flex flex-col sm:flex-row gap-2">
-            {/* Google Form button */}
+          {/* <div className="mt-3 flex flex-col sm:flex-row gap-2">
             <a
               href="https://forms.gle/TYvA78S2HC5FGACAA"
               target="_blank"
@@ -121,8 +119,6 @@ export default function BookingHistoryPage() {
             >
               Hantar Laporan
             </a>
-
-            {/* fallback contact */}
             <a
               href="https://wa.me/601127374120"
               target="_blank"
@@ -130,7 +126,7 @@ export default function BookingHistoryPage() {
             >
               Hubungi Kami
             </a>
-          </div>
+          </div> */}
         </div>
 
         {/* HEADER */}

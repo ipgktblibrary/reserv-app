@@ -92,7 +92,7 @@ export default function SignUpPage() {
                 Daftar Akaun
               </h2>
               <p className="text-sm text-gray-500">
-                Daftar akaun anda dengan mudah.
+                Masukkan maklumat pendaftaran dengan tepat
               </p>
             </div>
 
@@ -126,7 +126,7 @@ export default function SignUpPage() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="name@example.com"
+                  placeholder="johndoe@gmail.com"
                   className="w-full bg-[#F8FAFC] border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition duration-200"
                   required
                 />
@@ -302,12 +302,12 @@ export default function SignUpPage() {
 
             <div className="max-w-md">
               <h3 className="mb-3 text-3xl font-semibold tracking-tight text-white">
-                Satu Akaun untuk Semua Tempahan
+                Urus Tempahan Dengan Mudah
               </h3>
 
               <p className="text-sm leading-relaxed text-white/80">
-                Daftar sekali untuk membuat tempahan bilik, mengurus tempahan,
-                dan melihat sejarah tempahan anda dalam satu sistem.
+                Satu akaun untuk tempah bilik, semak status, dan lihat rekod
+                tempahan.
               </p>
             </div>
           </div>

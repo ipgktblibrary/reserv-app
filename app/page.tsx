@@ -1,3 +1,4 @@
+import { PublicFooter } from "@/features/shared/PublicFooter";
 import Link from "next/link";
 
 export default function HomePage() {
@@ -29,13 +30,10 @@ export default function HomePage() {
               "url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=2000&q=80')",
           }}
         />
-
         {/* Dark Overlay */}
         <div className="absolute inset-0 bg-black/55" />
-
         {/* Optional Purple Gradient */}
         <div className="absolute inset-0 bg-linear-to-br from-purple-900/40 via-transparent to-black/40" />
-
         <div className="relative mx-auto flex max-w-7xl flex-col items-center px-6 py-28 text-center">
           <span className="mb-5 rounded-full bg-white/10 backdrop-blur px-4 py-1 text-sm font-medium text-white">
             Sistem Tempahan Perpustakaan Za&#39;ba IPGKTB
@@ -71,7 +69,7 @@ export default function HomePage() {
       </section>
 
       {/* Features */}
-      <section className="mx-auto grid max-w-7xl gap-6 px-6 pb-28 md:grid-cols-3">
+      <section className="mx-auto mt-6 grid max-w-7xl gap-4 px-6 pb-28 md:grid-cols-3">
         {[
           {
             title: "Tempahan mudah",
@@ -91,21 +89,20 @@ export default function HomePage() {
         ].map((item) => (
           <div
             key={item.title}
-            className="group rounded-2xl border border-gray-100 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:border-purple-200 hover:shadow-lg"
+            className="rounded-xl border border-gray-200 bg-white p-6 transition-colors hover:border-purple-200"
           >
-            <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-purple-50 text-2xl">
+            <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-purple-50 text-xl">
               {item.icon}
             </div>
 
-            <h3 className="text-xl font-semibold group-hover:text-purple-700">
+            <h3 className="text-base font-medium text-gray-900">
               {item.title}
             </h3>
 
-            <p className="mt-3 text-sm leading-6 text-gray-500">{item.desc}</p>
+            <p className="mt-2 text-sm leading-6 text-gray-600">{item.desc}</p>
           </div>
         ))}
       </section>
-
       {/* CTA */}
       <section className="border-t border-gray-100 bg-linear-to-b from-white to-purple-50">
         <div className="mx-auto flex max-w-7xl flex-col items-center px-6 py-24 text-center">
@@ -125,28 +122,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <div className="mb-5 mt-12 pt-6 border-t border-purple-100 text-xs text-gray-500 text-center space-y-2">
-        <div className="text-gray-400">Built with ❤️</div>
-
-        <a
-          href="https://instagram.com/raufsemi"
-          target="_blank"
-          className="text-[#6844C7] hover:underline font-medium"
-        >
-          @raufsemi
-        </a>
-
-        <a> | </a>
-
-        <a
-          href="https://instagram.com/faizlatiff__"
-          target="_blank"
-          className="text-[#6844C7] hover:underline font-medium"
-        >
-          @faizlatiff__
-        </a>
-      </div>
+      <PublicFooter />
     </main>
   );
 }
