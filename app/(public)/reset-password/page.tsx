@@ -10,27 +10,37 @@ export default function ResetPasswordPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    async function checkSession() {
-      const { data } = await supabaseClient.auth.getSession();
+    async function verifyRecovery() {
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get("code");
 
-      if (data.session) {
+      if (code) {
+        const { error } =
+          await supabaseClient.auth.exchangeCodeForSession(code);
+
+        if (error) {
+          setMessage(
+            "Pautan reset password tidak sah atau telah tamat tempoh.",
+          );
+          return;
+        }
+
         setReady(true);
+        return;
+      }
+
+      const {
+        data: { session },
+      } = await supabaseClient.auth.getSession();
+
+      if (session) {
+        setReady(true);
+      } else {
+        setMessage("Pautan reset password tidak sah atau telah tamat tempoh.");
       }
     }
 
-    checkSession();
-
-    const {
-      data: { subscription },
-    } = supabaseClient.auth.onAuthStateChange((event, session) => {
-      if ((event === "PASSWORD_RECOVERY" || event === "SIGNED_IN") && session) {
-        setReady(true);
-      }
-    });
-
-    return () => {
-      subscription.unsubscribe();
-    };
+    verifyRecovery();
   }, []);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -45,6 +55,9 @@ export default function ResetPasswordPage() {
       setMessage("Password berjaya ditukar.");
 
       setPassword("");
+      setTimeout(() => {
+        window.location.href = "/signin";
+      }, 1500);
     } catch (error) {
       setMessage((error as Error).message);
     } finally {

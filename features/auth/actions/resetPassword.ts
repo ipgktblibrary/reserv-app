@@ -12,4 +12,5 @@ export async function resetPassword(password: string) {
   if (error) {
     throw new Error(error.message);
   }
+  await supabase.auth.signOut();
 }
