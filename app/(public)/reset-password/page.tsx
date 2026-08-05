@@ -1,5 +1,4 @@
 "use client";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { supabaseClient } from "@/lib/supabase/client";
 import { resetPassword } from "@/features/auth/actions/resetPassword";
@@ -10,20 +9,24 @@ export default function ResetPasswordPage() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const router = useRouter();
-
   useEffect(() => {
-    async function verifyRecovery() {
-      const { data } = await supabaseClient.auth.getSession();
-
-      if (data.session) {
+    const {
+      data: { subscription },
+    } = supabaseClient.auth.onAuthStateChange((event, session) => {
+      if ((event === "PASSWORD_RECOVERY" || event === "SIGNED_IN") && session) {
         setReady(true);
-        return;
       }
-      router.replace("/reset-password/invalid");
-    }
-    verifyRecovery();
-  }, [router]);
+    });
+
+    const timeout = setTimeout(() => {
+      setMessage("Pautan reset password tidak sah atau telah tamat tempoh.");
+    }, 8000);
+
+    return () => {
+      subscription.unsubscribe();
+      clearTimeout(timeout);
+    };
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
