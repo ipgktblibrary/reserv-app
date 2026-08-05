@@ -29,6 +29,12 @@ export default function ResetPasswordPage() {
     };
   }, []);
 
+  useEffect(() => {
+    console.log("href", window.location.href);
+    console.log("search", window.location.search);
+    console.log("hash", window.location.hash);
+  }, []);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
