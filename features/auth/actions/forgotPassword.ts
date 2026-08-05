@@ -14,14 +14,30 @@ export async function forgotPassword(
 
   const normalizedEmail = email.trim().toLowerCase();
 
-  const { error } = await supabase.auth.resetPasswordForEmail(normalizedEmail, {
-    redirectTo: "https://ipgktb-library.vercel.app/reset-password",
-  });
+  const { data, error } = await supabase.auth.resetPasswordForEmail(
+    normalizedEmail,
+    {
+      redirectTo: "https://ipgktb-library.vercel.app/reset-password",
+    },
+  );
+
+  console.log("data:", data);
+
+  console.log("error:", error);
+
+  console.log("name:", error?.name);
+
+  console.log("status:", error?.status);
+
+  console.log("code:", error?.code);
+
+  console.log("message:", error?.message);
 
   if (error) {
     return {
       success: false,
-      message: "Tidak dapat menghantar pautan reset password.",
+      // message: "Tidak dapat menghantar pautan reset password.",
+      message: error.message,
     };
   }
 

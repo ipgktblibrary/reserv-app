@@ -5,24 +5,34 @@ import { supabaseClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { SelectBlock } from "@/features/misc/selectBloc";
 import { Chevron } from "@/features/misc/chevron";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function SignUpPage() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [name, setName] = useState<string>("");
-
   const [phone, setPhone] = useState<string>("");
-
   const [role, setRole] = useState<"teacher" | "student">("student");
-
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
-
   const router = useRouter();
 
   async function handleSignup(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
     setError(null);
+
+    const cleanName = name.toLowerCase().replace(/[^a-z]/g, "");
+
+    if (!cleanName) {
+      setError("Nama tidak boleh kosong.");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("Kata laluan tidak sepadan.");
+      return;
+    }
 
     // 1. Check duplicate first
     const { data: validation, error: validationError } =
@@ -64,7 +74,7 @@ export default function SignUpPage() {
       user_id: user.id,
       user_email: email,
       user_role: role,
-      user_name: name,
+      user_name: cleanName,
       user_phone_number: phone,
     });
 
@@ -72,7 +82,6 @@ export default function SignUpPage() {
       setError(profileError.message);
       return;
     }
-
     router.replace("/booking");
   }
 
@@ -139,8 +148,14 @@ export default function SignUpPage() {
                 <input
                   type="text"
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="John Doe"
+                  maxLength={20}
+                  onChange={(e) => {
+                    const value = e.target.value
+                      .toLowerCase()
+                      .replace(/[^a-z]/g, "");
+                    setName(value);
+                  }}
+                  placeholder="Nama pendek (contoh: ahmad)"
                   className="w-full bg-[#F8FAFC] border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition duration-200"
                   required
                 />
@@ -187,6 +202,10 @@ export default function SignUpPage() {
                 <Chevron />
               </SelectBlock>
 
+              <label className="block text-xs font-semibold tracking-widest text-gray-400 uppercase mb-2">
+                Kata laluan
+              </label>
+
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
@@ -205,40 +224,26 @@ export default function SignUpPage() {
                   aria-label="Toggle password visibility"
                 >
                   {showPassword ? (
-                    /* eye-off */
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="w-5 h-5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
-                        d="M3 3l18 18M10.58 10.58A3 3 0 0013.41 13.41M9.88 4.13A10.94 10.94 0 0112 4c7 0 10 8 10 8a18.45 18.45 0 01-3.23 4.5M6.52 6.52A18.45 18.45 0 002 12s3 8 10 8a10.94 10.94 0 005.87-1.69"
-                      />
-                    </svg>
+                    <EyeOff className="w-5 h-5" />
                   ) : (
-                    /* eye */
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="w-5 h-5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
-                        d="M2 12s3.5-8 10-8 10 8 10 8-3.5 8-10 8-10-8-10-8z"
-                      />
-                      <circle cx="12" cy="12" r="3" strokeWidth={1.5} />
-                    </svg>
+                    <Eye className="w-5 h-5" />
                   )}
                 </button>
+              </div>
+
+              <label className="block text-xs font-semibold tracking-widest text-gray-400 uppercase mb-2 mt-5">
+                Sahkan kata laluan
+              </label>
+
+              <div className="relative">
+                <input
+                  type="password"
+                  placeholder="••••••••"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="w-full bg-[#F8FAFC] border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition duration-200"
+                  required
+                />
               </div>
 
               <button
@@ -258,30 +263,21 @@ export default function SignUpPage() {
                 href="/signin"
                 className="font-medium text-purple-600 hover:text-purple-500 transition-colors"
               >
-                {" "}
                 Log Masuk
               </a>
             </p>
           </div>
         </div>
 
-        {/* RIGHT */}
         <div className="relative overflow-hidden rounded-2xl border border-gray-200/80 shadow-xl md:col-span-7 min-h-112.5">
-          {/* Background Image */}
           <div
             className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
             style={{
               backgroundImage: "url('/images/library-hero.png')",
             }}
           />
-
-          {/* Dark Overlay */}
           <div className="absolute inset-0 bg-black/60" />
-
-          {/* Purple Overlay */}
           <div className="absolute inset-0 bg-linear-to-br from-[#6844C7]/50 via-[#6844C7]/20 to-black/50" />
-
-          {/* Content */}
           <div className="relative z-10 flex h-full flex-col justify-end p-8 md:p-12">
             <div className="mb-6 text-white">
               <svg
