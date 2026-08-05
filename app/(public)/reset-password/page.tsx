@@ -9,81 +9,30 @@ export default function ResetPasswordPage() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // useEffect(() => {
-  //   async function verifyRecovery() {
-  //     const params = new URLSearchParams(window.location.search);
-  //     const code = params.get("code");
-
-  //     if (code) {
-  //       const { error } =
-  //         await supabaseClient.auth.exchangeCodeForSession(code);
-
-  //       if (error) {
-  //         setMessage(
-  //           "Pautan reset password tidak sah atau telah tamat tempoh.",
-  //         );
-  //         return;
-  //       }
-
-  //       setReady(true);
-  //       return;
-  //     }
-
-  //     const {
-  //       data: { session },
-  //     } = await supabaseClient.auth.getSession();
-
-  //     if (session) {
-  //       setReady(true);
-  //     } else {
-  //       setMessage("Pautan reset password tidak sah atau telah tamat tempoh.");
-  //     }
-  //   }
-
-  //   verifyRecovery();
-  // }, []);
-
   useEffect(() => {
-    async function verifyRecovery() {
-      const params = new URLSearchParams(window.location.search);
-      const code = params.get("code");
-
-      if (code) {
-        const { error } =
-          await supabaseClient.auth.exchangeCodeForSession(code);
-
-        if (!error) {
-          setReady(true);
-          return;
-        }
-
-        // retry once after Supabase finishes loading
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-
-        const { error: retryError } =
-          await supabaseClient.auth.exchangeCodeForSession(code);
-
-        if (!retryError) {
-          setReady(true);
-          return;
-        }
-
-        setMessage("Pautan reset password tidak sah atau telah tamat tempoh.");
-        return;
+    const {
+      data: { subscription },
+    } = supabaseClient.auth.onAuthStateChange((event) => {
+      if (event === "PASSWORD_RECOVERY" || event === "SIGNED_IN") {
+        setReady(true);
       }
+    });
 
-      const {
-        data: { session },
-      } = await supabaseClient.auth.getSession();
-
+    supabaseClient.auth.getSession().then(({ data: { session } }) => {
       if (session) {
         setReady(true);
-      } else {
-        setMessage("Pautan reset password tidak sah atau telah tamat tempoh.");
       }
-    }
+    });
 
-    verifyRecovery();
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    console.log("href", window.location.href);
+    console.log("search", window.location.search);
+    console.log("hash", window.location.hash);
   }, []);
 
   async function handleSubmit(e: React.FormEvent) {
