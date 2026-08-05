@@ -10,6 +10,16 @@ export default function ResetPasswordPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    async function checkSession() {
+      const { data } = await supabaseClient.auth.getSession();
+
+      if (data.session) {
+        setReady(true);
+      }
+    }
+
+    checkSession();
+
     const {
       data: { subscription },
     } = supabaseClient.auth.onAuthStateChange((event, session) => {
@@ -18,13 +28,8 @@ export default function ResetPasswordPage() {
       }
     });
 
-    const timeout = setTimeout(() => {
-      setMessage("Pautan reset password tidak sah atau telah tamat tempoh.");
-    }, 8000);
-
     return () => {
       subscription.unsubscribe();
-      clearTimeout(timeout);
     };
   }, []);
 
