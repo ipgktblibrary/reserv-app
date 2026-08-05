@@ -9,35 +9,58 @@ export default function ResetPasswordPage() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // useEffect(() => {
+  //   async function verifyRecovery() {
+  //     const params = new URLSearchParams(window.location.search);
+  //     const code = params.get("code");
+
+  //     if (code) {
+  //       const { error } =
+  //         await supabaseClient.auth.exchangeCodeForSession(code);
+
+  //       if (error) {
+  //         setMessage(
+  //           "Pautan reset password tidak sah atau telah tamat tempoh.",
+  //         );
+  //         return;
+  //       }
+
+  //       setReady(true);
+  //       return;
+  //     }
+
+  //     const {
+  //       data: { session },
+  //     } = await supabaseClient.auth.getSession();
+
+  //     if (session) {
+  //       setReady(true);
+  //     } else {
+  //       setMessage("Pautan reset password tidak sah atau telah tamat tempoh.");
+  //     }
+  //   }
+
+  //   verifyRecovery();
+  // }, []);
+
   useEffect(() => {
     async function verifyRecovery() {
       const params = new URLSearchParams(window.location.search);
       const code = params.get("code");
 
-      if (code) {
-        const { error } =
-          await supabaseClient.auth.exchangeCodeForSession(code);
-
-        if (error) {
-          setMessage(
-            "Pautan reset password tidak sah atau telah tamat tempoh.",
-          );
-          return;
-        }
-
-        setReady(true);
+      if (!code) {
+        setMessage("Pautan reset password tidak sah atau telah tamat tempoh.");
         return;
       }
 
-      const {
-        data: { session },
-      } = await supabaseClient.auth.getSession();
+      const { error } = await supabaseClient.auth.exchangeCodeForSession(code);
 
-      if (session) {
-        setReady(true);
-      } else {
+      if (error) {
         setMessage("Pautan reset password tidak sah atau telah tamat tempoh.");
+        return;
       }
+
+      setReady(true);
     }
 
     verifyRecovery();
