@@ -6,6 +6,7 @@ import { getUserProfile } from "@/lib/auth";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { ReservationCard } from "./components/ReservationCard";
+import { PublicFooter } from "@/features/shared/PublicFooter";
 
 type Reservation = {
   id: string;
@@ -224,6 +225,8 @@ export default function BookingHistoryPage() {
             </div>
           </div>
         )}
+
+        <PublicFooter />
       </div>
     </div>
   );

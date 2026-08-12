@@ -1,6 +1,7 @@
 import BookingClient from "@/features/booking/components/BookingClient";
 import BookingHeader from "@/features/booking/components/BookingHeader";
 import BookingTabs from "@/features/booking/components/BookingTabs";
+import { PublicFooter } from "@/features/shared/PublicFooter";
 
 export default function BookingPage() {
   return (
@@ -9,6 +10,7 @@ export default function BookingPage() {
         <BookingHeader />
         <BookingTabs />
         <BookingClient />
+        <PublicFooter />
       </div>
     </div>
   );

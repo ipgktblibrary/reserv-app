@@ -1,6 +1,7 @@
 import { Chevron } from "@/features/misc/chevron";
 import { ProgressStatus, ProjectType } from "@/features/misc/enums";
 import { SelectBlock } from "@/features/misc/selectBloc";
+import { PublicFooter } from "@/features/shared/PublicFooter";
 import { getUserProfile } from "@/lib/auth";
 import { useEffect, useState } from "react";
 export type BookingFormState = {
@@ -42,7 +43,6 @@ export default function BookingForm({
       <h3 className="mb-4 text-base font-semibold text-neutral-900">
         Confirm Booking
       </h3>
-
       <form
         className="space-y-5"
         onSubmit={(e) => {
