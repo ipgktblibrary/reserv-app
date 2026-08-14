@@ -92,3 +92,28 @@ export function generateTodayTomorrowBookingDates(): BookingDate[] {
     createBookingDate(tomorrow, "Esok"),
   ];
 }
+
+export function generateBookingDates(): BookingDate[] {
+  const today = new Date();
+  const day = today.getDay();
+
+  // Friday, Saturday, Sunday
+  if (day === 5 || day === 6 || day === 0) {
+    const monday = new Date(today);
+
+    const daysUntilMonday = day === 5 ? 3 : day === 6 ? 2 : 1;
+
+    monday.setDate(today.getDate() + daysUntilMonday);
+
+    return [createBookingDate(today, "Hari ini"), createBookingDate(monday)];
+  }
+
+  // Monday - Thursday
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
+
+  return [
+    createBookingDate(today, "Hari ini"),
+    createBookingDate(tomorrow, "Esok"),
+  ];
+}

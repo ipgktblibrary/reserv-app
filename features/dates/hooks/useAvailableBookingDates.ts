@@ -2,14 +2,12 @@
 
 import { useState } from "react";
 import {
-  generateTodayTomorrowBookingDates,
+  generateBookingDates,
   type BookingDate,
 } from "../utils/generateBookingDates";
 
 export function useAvailableBookingDates() {
-  const [dates] = useState<BookingDate[]>(() =>
-    generateTodayTomorrowBookingDates(),
-  );
+  const [dates] = useState<BookingDate[]>(() => generateBookingDates());
   return {
     dates,
     loading: false,
