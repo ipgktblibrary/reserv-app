@@ -11,24 +11,13 @@ export type RoomTimeSlot = {
   day_of_week: 1 | 2 | 3 | 4 | 5;
 };
 
-function getDayOfWeek(dateStr: string): 1 | 2 | 3 | 4 | 5 {
-  const jsDay = new Date(dateStr).getDay();
-  const mapped = jsDay === 0 ? 7 : jsDay;
-  return mapped as 1 | 2 | 3 | 4 | 5;
-}
-
 export const timeSlotsService = {
   async getByRoom(roomId: string, date: string): Promise<RoomTimeSlot[]> {
-    const dayOfWeek = getDayOfWeek(date);
-    const { data, error } = await supabaseClient
-      .from("room_time_slots")
-      .select("*")
-      .eq("room_id", roomId)
-      .eq("day_of_week", dayOfWeek);
-    if (error) return [];
-    return (data ?? []).map((slot) => ({
-      ...slot,
-      is_blocked: slot.is_blocked === true,
-    }));
+    const { data } = await supabaseClient.rpc("get_room_time_slots_for_date", {
+      p_room_id: roomId,
+      p_date: date.slice(0, 10),
+    });
+
+    return (data ?? []) as RoomTimeSlot[];
   },
 };

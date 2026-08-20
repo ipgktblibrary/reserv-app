@@ -20,7 +20,6 @@ export const bookerService = {
       .eq("profile_id", profileId)
       .maybeSingle();
 
-    // console.log("[bookerService.getByProfileId] result:", { data, error });
     return data;
   },
 
@@ -36,7 +35,6 @@ export const bookerService = {
       })
       .select()
       .single();
-    // console.log("[bookerService.create] result:", { data, error });
     return data;
   },
 

@@ -16,18 +16,34 @@ import BookingForm from "./BookingForm";
 import { ProjectType } from "@/features/misc/enums";
 import { useBooking } from "../hooks/useBooking";
 
-export default function BookingClient() {
+import type { BookingSettings } from "@/features/booking-dates/bookingDate";
+import { Surface } from "@heroui/react";
+
+export default function BookingClient({
+  bookingSettings,
+}: {
+  bookingSettings: BookingSettings;
+}) {
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const { rooms } = useRooms();
+
+  const [user, setUser] = useState<Awaited<
+    ReturnType<typeof getUserProfile>
+  > | null>(null);
+
+  useEffect(() => {
+    getUserProfile().then(setUser);
+  }, []);
+
   const router = useRouter();
 
-  const booking = useBooking();
+  const booking = useBooking(bookingSettings.max_slots_per_user_per_day);
 
-  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const selectedRoom = rooms.find((room) => room.id === booking.selectedRoomId);
 
   async function handleSubmit() {
     try {
       const user = await getUserProfile();
-
       if (!user || !booking.selectedRoomId) return;
 
       const booker = await bookerService.ensure(user.id);
@@ -46,15 +62,11 @@ export default function BookingClient() {
       });
 
       setStatus("success");
-    } catch (error) {
-      console.error(error);
+    } catch {
       booking.setSlotLimitOpen(true);
       setStatus("error");
-      console.error(error);
     }
   }
-
-  const selectedRoom = rooms.find((room) => room.id === booking.selectedRoomId);
 
   return (
     <>
@@ -78,60 +90,33 @@ export default function BookingClient() {
         }}
       />
 
-      <div className="rounded-2xl bg-white border border-purple-100 shadow-sm p-4">
+      <Surface
+        variant="default"
+        className="rounded-2xl border border-accent/10 bg-linear-to-br from-accent/10 via-surface to-surface-secondary p-5 shadow-sm"
+      >
         <RoomSelector
+          rooms={rooms}
+          userRole={user?.role ?? null}
           selectedRoomId={booking.selectedRoomId}
           onSelect={booking.setSelectedRoomId}
         />
-      </div>
 
-      <BookingDateSelector
-        bookingDate={booking.bookingDate}
-        setBookingDate={booking.setBookingDate}
-      />
+        <BookingDateSelector
+          bookingDate={booking.bookingDate}
+          setBookingDate={booking.setBookingDate}
+          settings={bookingSettings}
+        />
 
-      <div className="mb-8 mt-10">
-        <h1 className="text-xl font-bold tracking-tight text-gray-900">
-          Pilih Masa
-        </h1>
-        <div className="mt-4 rounded-lg border border-purple-100 bg-[blue-50] p-4">
-          <h3 className="text-sm font-semibold text-blue-900">Maklumat</h3>
-          <ul className="mt-2 space-y-1 text-sm text-blue-800">
-            <li>
-              • Anda boleh memilih sehingga <strong>2 slot masa</strong>.
-            </li>
-            <li>
-              • Slot berwarna
-              <span className="font-semibold text-red-600"> merah</span> telah
-              ditempah dan tidak boleh dipilih.
-            </li>
-            <li>• Sila pilih slot lain yang masih tersedia.</li>
-          </ul>
-        </div>
-      </div>
-
-      {booking.selectedRoomId && (
-        <div className="rounded-2xl bg-white border border-purple-100 shadow-sm p-4">
+        {booking.selectedRoomId && (
           <TimeSlotSelector
             roomId={booking.selectedRoomId}
             bookingDate={booking.bookingDate}
             selectedSlots={booking.selectedSlots}
             onToggleSlot={booking.toggleSlot}
           />
-        </div>
-      )}
+        )}
 
-      <div className="mb-8 mt-10">
-        <h1 className="text-xl font-bold tracking-tight text-gray-900">
-          Sahkan Tempahan
-        </h1>
-        <div className="mt-3 rounded-xl border border-purple-100 bg-white px-4 py-3 text-sm text-gray-600">
-          Sila semak semula slot masa sebelum membuat tempahan.
-        </div>
-      </div>
-
-      {booking.selectedRoomId && booking.selectedSlots.length > 0 && (
-        <div className="rounded-2xl bg-white border border-purple-100 shadow-sm p-4">
+        {booking.selectedRoomId && booking.selectedSlots.length > 0 && (
           <BookingForm
             form={booking.form}
             capacity={selectedRoom?.capacity ?? 0}
@@ -139,8 +124,8 @@ export default function BookingClient() {
             onChange={booking.updateForm}
             onSubmit={handleSubmit}
           />
-        </div>
-      )}
+        )}
+      </Surface>
     </>
   );
 }

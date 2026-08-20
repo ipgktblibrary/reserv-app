@@ -1,15 +1,18 @@
 "use client";
 
-import { useAvailableBookingDates } from "@/features/dates/hooks/useAvailableBookingDates";
+import type { BookingSettings } from "@/features/booking-dates/bookingDate";
+import { useAvailableBookingDates } from "@/features/booking-dates/useAvailableBookingDates";
 
 export default function BookingDateSelector({
   bookingDate,
   setBookingDate,
+  settings,
 }: {
   bookingDate: string;
   setBookingDate: (date: string) => void;
+  settings: BookingSettings;
 }) {
-  const { dates, loading } = useAvailableBookingDates();
+  const { dates, loading } = useAvailableBookingDates(settings);
 
   if (loading) {
     return <div className="mt-8">Loading dates...</div>;
@@ -31,14 +34,12 @@ export default function BookingDateSelector({
             key={item.value}
             type="button"
             onClick={() => setBookingDate(item.value)}
-            className={`
-          rounded-2xl border p-4 text-left transition
-          ${
-            bookingDate === item.value
-              ? "border-[#6844C7] bg-purple-50"
-              : "border-gray-200 hover:border-[#6844C7]"
-          }
-          `}
+            className={[
+              "rounded-2xl border p-4 text-left transition-all",
+              bookingDate === item.value
+                ? "border-accent bg-accent/10 shadow-sm"
+                : "border-default-200 bg-white hover:border-accent/40",
+            ].join(" ")}
           >
             <p className="font-semibold text-gray-900 capitalize">
               {item.label}

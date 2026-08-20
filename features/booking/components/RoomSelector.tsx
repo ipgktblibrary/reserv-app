@@ -1,26 +1,21 @@
-import { useRooms } from "@/features/hooks/useRooms";
-import { getUserProfile } from "@/lib/auth";
-import { useEffect, useState } from "react";
+import type { Room } from "@/features/services/room.service";
+import { useEffect } from "react";
 
 type Props = {
-  onSelect: (id: string) => void;
+  rooms: Room[];
+  userRole: "student" | "teacher" | null;
   selectedRoomId: string | null;
+  onSelect: (id: string) => void;
 };
 
-export default function RoomSelector(props: Props) {
-  const { onSelect, selectedRoomId } = props;
-  const { rooms } = useRooms();
-
-  const [user, setUser] = useState<Awaited<
-    ReturnType<typeof getUserProfile>
-  > | null>(null);
-
-  useEffect(() => {
-    getUserProfile().then(setUser);
-  }, []);
-
+export default function RoomSelector({
+  rooms,
+  userRole,
+  selectedRoomId,
+  onSelect,
+}: Props) {
   const visibleRooms = rooms.filter(
-    (room) => !room.teacher_only || user?.role === "teacher",
+    (room) => !room.teacher_only || userRole === "teacher",
   );
 
   useEffect(() => {
@@ -32,11 +27,9 @@ export default function RoomSelector(props: Props) {
   return (
     <>
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold tracking-tight text-neutral-900">
-          Pilih bilik
-        </h1>
+        <h1 className="text-2xl font-semibold">Pilih bilik</h1>
 
-        <p className="mt-1 text-sm leading-6 text-neutral-500">
+        <p className="mt-1 text-sm">
           Pilih bilik yang tersedia untuk meneruskan tempahan anda.
         </p>
       </div>
@@ -51,38 +44,38 @@ export default function RoomSelector(props: Props) {
               onClick={() => onSelect(room.id)}
               className={[
                 "relative rounded-xl border p-5 text-left transition-all",
-                "focus:outline-none  focus:ring-[#6844C7]/30",
+                // "focus:outline-  focus:ring-[#6844C7]/30",
 
                 active
-                  ? "border-[#6844C7] bg-[#6844C7]/5 shadow-sm"
-                  : "border-neutral-200 bg-white hover:border-neutral-300",
+                  ? "border-accent bg-accent/10 shadow-sm"
+                  : "border-default-200 bg-white hover:border-accent/40",
               ].join(" ")}
             >
               {/* Title */}
               <div
                 className={[
                   "text-sm font-semibold",
-                  active ? "text-[#6844C7]" : "text-neutral-900",
+                  active ? "text-primary" : "text-foreground",
                 ].join(" ")}
               >
                 {room.name}
               </div>
 
               {/* Meta */}
-              <div className="mt-1 text-xs text-neutral-500">
+              <div className="mt-1 text-xs text-default-500">
                 Maks. kapasiti {room.capacity}
               </div>
 
               {/* Badge */}
               {room.teacher_only && (
-                <div className="mt-3 inline-flex rounded-full bg-neutral-100 px-2 py-0.5 text-[10px] font-medium text-neutral-600">
+                <div className="mt-3 inline-flex rounded-full bg-default-100 px-2 py-0.5 text-[10px] font-medium text-default-600">
                   Pensyarah Sahaja
                 </div>
               )}
 
               {/* Active indicator */}
               {active && (
-                <div className="absolute right-3 top-3 h-2 w-2 rounded-full bg-[#6844C7]" />
+                <div className="absolute right-3 top-3 h-2 w-2 rounded-full bg-accent" />
               )}
             </button>
           );

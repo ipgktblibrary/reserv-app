@@ -30,8 +30,8 @@ export default function BookingWarningModal({ open, onClose }: Props) {
         </h2>
 
         <p className="mt-1 text-sm text-neutral-500">
-          Anda telah mencapai had maksimum 2 slot sehari atau slot yang dipilih
-          telah disekat oleh Admin.
+          Anda telah mencapai had maksimum slot untuk hari ini atau slot yang
+          dipilih telah disekat oleh Admin.
         </p>
         <button
           onClick={() => onClose?.()}

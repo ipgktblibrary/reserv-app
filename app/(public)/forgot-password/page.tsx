@@ -22,13 +22,6 @@ export default function ForgotPasswordPage() {
     } finally {
       setLoading(false);
     }
-
-    console.log(
-      [...email].map((c) => ({
-        char: c,
-        code: c.charCodeAt(0),
-      })),
-    );
   }
 
   return (

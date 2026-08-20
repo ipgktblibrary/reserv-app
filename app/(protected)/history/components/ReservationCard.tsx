@@ -119,18 +119,6 @@ export function ReservationCard({ reservation, onCancel }: Props) {
         </div>
 
         {/* ACTION */}
-        {/* {!isCancelled && (
-          <div className="flex justify-end pt-2">
-            <button
-              onClick={() => onCancel(reservation.id)}
-              className="text-xs px-3 py-1.5 rounded-lg border text-red-600 hover:bg-red-50"
-            >
-              Cancel
-            </button>
-          </div>
-        )} */}
-
-        {/* ACTION */}
         {!isCancelled && !isPastDate && (
           <div className="flex justify-end pt-2">
             <button

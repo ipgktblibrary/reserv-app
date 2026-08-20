@@ -3,13 +3,10 @@
 import { useState } from "react";
 import type { BookingFormState } from "../components/BookingForm";
 
-export function useBooking() {
+export function useBooking(maxSlotsPerUserPerDay: number) {
   const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
-
   const [selectedSlots, setSelectedSlots] = useState<string[]>([]);
-
   const [slotLimitOpen, setSlotLimitOpen] = useState(false);
-
   const [bookingDate, setBookingDate] = useState("");
 
   const initialForm: BookingFormState = {
@@ -32,7 +29,7 @@ export function useBooking() {
         return prev.filter((slot) => slot !== id);
       }
 
-      if (prev.length >= 2) {
+      if (prev.length >= maxSlotsPerUserPerDay) {
         setSlotLimitOpen(true);
         return prev;
       }
