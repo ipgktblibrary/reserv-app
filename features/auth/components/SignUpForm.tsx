@@ -71,6 +71,7 @@ export default function SignUpPage() {
 
     // 3. Create profile
     const { error: profileError } = await supabaseClient.rpc("profile_create", {
+      user_id: user.id,
       user_email: email,
       user_role: role,
       user_name: cleanName,
