@@ -40,92 +40,103 @@ function isPastBookingDate(date: string) {
 
 export function ReservationCard({ reservation, onCancel }: Props) {
   const isCancelled = reservation.status === "cancelled";
-
   const isPastDate = isPastBookingDate(reservation.booking_date);
 
   return (
-    <div className="relative rounded-xl border bg-white p-4 transition">
-      {/* left accent */}
-      <div
-        className={[
-          "absolute left-0 top-0 h-full w-1 rounded-l-xl",
-          isCancelled ? "bg-red-200" : "bg-accent",
-        ].join(" ")}
-      />
+    <div className="overflow-hidden rounded-2xl border border-neutral-200 bg-white">
+      <div className="flex flex-col sm:flex-row">
+        {/* DATE */}
+        <div
+          className={[
+            "flex shrink-0 items-center gap-3 border-b px-4 py-3 sm:w-32 sm:flex-col sm:items-start sm:justify-center sm:border-b-0 sm:border-r sm:px-5",
+            isCancelled
+              ? "bg-red-50/50 text-neutral-400"
+              : "bg-neutral-50/70 text-neutral-900",
+          ].join(" ")}
+        >
+          <div className="text-xs font-medium text-neutral-400">Tarikh</div>
 
-      <div className="pl-3 space-y-3">
-        {/* HEADER ROW */}
-        <div className="flex items-start justify-between gap-3">
-          <div className="space-y-1">
-            <div
-              className={[
-                "text-sm font-semibold",
-                isCancelled
-                  ? "text-neutral-400 line-through"
-                  : "text-neutral-900",
-              ].join(" ")}
-            >
-              {reservation.rooms?.name}
-            </div>
-
-            {/* DATE + TIME (primary context) */}
-            <div
-              className={[
-                "text-xs",
-                isCancelled ? "text-neutral-400" : "text-neutral-500",
-              ].join(" ")}
-            >
-              {formatDatePretty(reservation.booking_date)}
-            </div>
-
-            <div
-              className={[
-                "text-xs font-medium",
-                isCancelled ? "text-neutral-400" : "text-neutral-700",
-              ].join(" ")}
-            >
-              {formatTime(reservation.room_time_slots?.start_time)} -{" "}
-              {formatTime(reservation.room_time_slots?.end_time)}
-            </div>
-          </div>
-
-          {/* STATUS */}
-          <span
+          <div
             className={[
-              "text-[10px] px-2 py-1 rounded-full border whitespace-nowrap",
+              "text-sm font-semibold",
               isCancelled
-                ? "bg-red-50 text-red-500 border-red-100"
-                : "bg-green-50 text-green-600 border-green-100",
+                ? "text-neutral-400 line-through"
+                : "text-neutral-900",
             ].join(" ")}
           >
-            {isCancelled ? "Cancelled" : "Active"}
-          </span>
+            {formatDatePretty(reservation.booking_date)}
+          </div>
         </div>
 
-        {/* DIVIDER */}
-        <div className="border-t" />
+        {/* BOOKING INFO */}
+        <div className="min-w-0 flex-1 p-4 sm:px-5">
+          <div className="flex items-start justify-between gap-4">
+            <div className="min-w-0">
+              <div
+                className={[
+                  "truncate text-base font-semibold",
+                  isCancelled
+                    ? "text-neutral-400 line-through"
+                    : "text-neutral-900",
+                ].join(" ")}
+              >
+                {reservation.rooms?.name}
+              </div>
 
-        {/* DETAILS GRID */}
-        <div className="grid grid-cols-1 gap-1 text-xs">
-          <div className="text-neutral-500">
-            <span className="font-medium text-neutral-600">Nama:</span>{" "}
-            {reservation.full_name}
+              <div
+                className={[
+                  "mt-1 text-sm font-medium",
+                  isCancelled ? "text-neutral-400" : "text-neutral-700",
+                ].join(" ")}
+              >
+                {formatTime(reservation.room_time_slots?.start_time)} -{" "}
+                {formatTime(reservation.room_time_slots?.end_time)}
+              </div>
+            </div>
+
+            {/* STATUS */}
+            <span
+              className={[
+                "shrink-0 rounded-full px-2.5 py-1 text-[10px] font-semibold",
+                isCancelled
+                  ? "bg-red-100 text-red-600"
+                  : "bg-green-100 text-green-700",
+              ].join(" ")}
+            >
+              {isCancelled ? "Cancelled" : "Active"}
+            </span>
           </div>
 
-          <div className="text-neutral-500">
-            <span className="font-medium text-neutral-600">Jenis Projek:</span>{" "}
-            {reservation.project_type}
+          {/* DETAILS */}
+          <div className="mt-4 grid grid-cols-2 gap-x-6 gap-y-3 border-t border-neutral-100 pt-4">
+            <div className="min-w-0">
+              <div className="text-[10px] font-medium uppercase tracking-wide text-neutral-400">
+                Nama
+              </div>
+              <div className="mt-0.5 truncate text-xs font-medium text-neutral-700">
+                {reservation.full_name.toUpperCase()}
+              </div>
+            </div>
+
+            <div className="min-w-0">
+              <div className="text-[10px] font-medium uppercase tracking-wide text-neutral-400">
+                Tujuan
+              </div>
+              <div className="mt-0.5 truncate text-xs font-medium text-neutral-700">
+                {reservation.project_type}
+              </div>
+            </div>
           </div>
         </div>
 
         {/* ACTION */}
         {!isCancelled && !isPastDate && (
-          <div className="flex justify-end pt-2">
+          <div className="flex items-center border-t border-neutral-100 px-4 py-3 sm:border-l sm:border-t-0 sm:px-5">
             <button
               onClick={() => onCancel(reservation.id)}
-              className="text-xs px-3 py-1.5 rounded-lg border text-red-600 hover:bg-red-50"
+              className="w-full rounded-lg border border-red-200 px-3 py-2 text-xs font-medium text-red-600 transition hover:bg-red-50 sm:w-auto"
             >
-              Cancel
+              Batal Tempahan
             </button>
           </div>
         )}

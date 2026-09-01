@@ -1,6 +1,8 @@
 "use client";
 
 import { useLogout } from "@/features/hooks/useLogout";
+import { ThemeSwitcher } from "@/themes/ThemeSwitcher";
+
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -27,6 +29,16 @@ export default function BookingTabs() {
           Sejarah
         </button>
 
+        {/* MASUKKAAN LINK GOOLGE DRIVE ATAU MAKLUMAT YANG BERKENAAN */}
+        <a
+          href="https://google.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="whitespace-nowrap border-b-2 border-transparent px-1 pb-4 text-sm font-medium text-gray-400 transition hover:text-accent"
+        >
+          Info
+        </a>
+
         <button
           type="button"
           onClick={() => setConfirmOpen(true)}
@@ -34,6 +46,8 @@ export default function BookingTabs() {
         >
           Log Keluar
         </button>
+
+        <ThemeSwitcher />
       </nav>
 
       {confirmOpen && (

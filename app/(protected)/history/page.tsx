@@ -159,7 +159,6 @@ export default function BookingHistoryPage() {
         {/* TIMELINE */}
         {!loading && reservations.length > 0 && (
           <div className="space-y-10">
-            {/* ACTIVE */}
             <div>
               <div className="mb-3 text-xs font-semibold text-gray-400 uppercase tracking-widest">
                 Aktif

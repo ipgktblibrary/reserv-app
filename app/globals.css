@@ -1,5 +1,8 @@
 @import "tailwindcss";
 @import "@heroui/styles";
+
+@import "../themes/orange.css";
+
 /*
  * HeroUI Theme Customization
  * Add this to your global.css after importing @heroui/styles
@@ -7,7 +10,7 @@
  * @see https://heroui.com/docs/react/getting-started/theming
  */
 
-:root,
+:root:not([data-theme]),
 .light,
 .default,
 [data-theme="light"],
@@ -89,4 +92,20 @@
   --surface-tertiary-foreground: oklch(99.11% 0.002 262.87);
   --warning: oklch(82.03% 0.1394 77.42);
   --warning-foreground: oklch(21.03% 0.0059 77.42);
+}
+
+html,
+body,
+button,
+a,
+input,
+textarea,
+select,
+[data-theme] {
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    fill 180ms ease,
+    stroke 180ms ease;
 }
