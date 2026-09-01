@@ -127,7 +127,7 @@ export default function BookingForm({
 
           <button
             type="submit"
-            className="mt-2 w-full rounded-xl bg-[#6844C7] px-4 py-3 text-sm font-medium text-white shadow-md shadow-[#6844C7]/20 transition hover:bg-[#5B3CC4] hover:shadow-[#6844C7]/30 active:scale-[0.99]"
+            className="mt-2 w-full rounded-xl bg-accent px-4 py-3 text-sm font-medium text-white shadow-md shadow-accent/20 transition hover:bg-[#5B3CC4] hover:shadow-accent/30 active:scale-[0.99]"
           >
             Tempah Sekarang
           </button>

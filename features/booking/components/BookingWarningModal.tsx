@@ -35,7 +35,7 @@ export default function BookingWarningModal({ open, onClose }: Props) {
         </p>
         <button
           onClick={() => onClose?.()}
-          className="mt-5 w-full rounded-xl bg-[#6844C7] py-2 text-sm text-white"
+          className="mt-5 w-full rounded-xl bg-accent py-2 text-sm text-white"
         >
           OK
         </button>

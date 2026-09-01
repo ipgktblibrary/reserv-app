@@ -45,14 +45,14 @@ export default function ForgotPasswordPage() {
 
           <button
             disabled={loading}
-            className="w-full rounded-2xl bg-[#6844C7] py-3 text-white"
+            className="w-full rounded-2xl bg-accent py-3 text-white"
           >
             {loading ? "Menghantar..." : "Hantar Pautan Ke Email"}
           </button>
 
           <Link
             href="/signin"
-            className="block w-full rounded-2xl bg-[#6844C7] py-3 text-center text-white mt-2"
+            className="block w-full rounded-2xl bg-accent py-3 text-center text-white mt-2"
           >
             Kembali
           </Link>

@@ -14,7 +14,7 @@ export default function BookingTabs() {
       <nav className="-mb-px flex space-x-6 overflow-x-auto no-scrollbar scroll-smooth">
         <button
           type="button"
-          className="border-[#6844C7] text-[#6844C7] whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-semibold tracking-tight"
+          className="border-accent text-accent whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-semibold tracking-tight"
         >
           Tempahan Saya
         </button>
@@ -22,7 +22,7 @@ export default function BookingTabs() {
         <button
           type="button"
           onClick={() => router.push("/history")}
-          className="border-transparent text-gray-400 hover:text-[#6844C7] whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-medium transition"
+          className="border-transparent text-gray-400 hover:text-accent whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-medium transition"
         >
           Sejarah
         </button>
@@ -60,7 +60,7 @@ export default function BookingTabs() {
                   setConfirmOpen(false);
                   await logout();
                 }}
-                className="flex-1 rounded-xl bg-[#6844C7] py-2 text-sm font-medium text-white hover:bg-purple-500"
+                className="flex-1 rounded-xl bg-accent py-2 text-sm font-medium text-white hover:bg-accent-hover"
               >
                 Log keluar
               </button>

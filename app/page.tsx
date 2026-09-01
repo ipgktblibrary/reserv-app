@@ -8,7 +8,7 @@ export default function HomePage() {
       {/* Navbar */}
       <header className="border-b border-gray-100 bg-white/80 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-          <Typography type="h5"> PERPUSTAKAAN ZAABA</Typography>
+          <Typography type="h5"> SISTEM TEMPAHAN </Typography>
 
           <Button>
             <Link href="/signin">Log Masuk</Link>
@@ -31,7 +31,7 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-linear-to-br from-purple-900/40 via-transparent to-black/40" />
         <div className="relative mx-auto flex max-w-7xl flex-col items-center px-6 py-28 text-center">
           <span className="mb-5 rounded-full bg-white/10 backdrop-blur px-4 py-1 text-sm font-medium text-white">
-            Sistem Tempahan Perpustakaan Za&#39;ba IPGKTB
+            Sistem Tempahan
           </span>
 
           <h2 className="max-w-3xl text-5xl font-bold tracking-tight text-white">
@@ -40,9 +40,8 @@ export default function HomePage() {
           </h2>
 
           <p className="mt-6 max-w-2xl text-lg text-gray-200">
-            Gunakan sistem Perpustakaan Za’ba untuk semak bilik kosong, buat
-            tempahan, dan elakkan tempahan bertindih — semuanya dalam satu
-            tempat.
+            Gunakan sistem untuk semak bilik kosong, buat tempahan, dan elakkan
+            tempahan bertindih — semuanya dalam satu tempat.
           </p>
 
           <div className="mt-10 flex gap-4">
@@ -104,8 +103,7 @@ export default function HomePage() {
           <h2 className="text-4xl font-bold tracking-tight">Tempah sekarang</h2>
 
           <p className="mt-4 max-w-xl text-gray-600">
-            Akses sistem Perpustakaan Za’ba dan urus tempahan bilik dengan lebih
-            efisien.
+            Akses sistem dan urus tempahan bilik dengan lebih efisien.
           </p>
 
           <Link

@@ -5,9 +5,6 @@ import { PublicFooter } from "@/features/shared/PublicFooter";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function BookingPage() {
-
-
-  
   const supabase = await createClient();
   const { data: bookingSettings, error } = await supabase
     .from("booking_settings")

@@ -8,7 +8,7 @@ export function BookingTopInfoBar() {
         href="https://wa.me/60195426768"
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex shrink-0 items-center gap-2 font-semibold text-[#6844C7] hover:underline"
+        className="inline-flex shrink-0 items-center gap-2 font-semibold text-accent hover:underline"
       >
         <FaWhatsapp className="text-[#25D366]" size={20} />
         <span>Puan Diana</span>

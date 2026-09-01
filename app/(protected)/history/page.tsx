@@ -90,12 +90,12 @@ export default function BookingHistoryPage() {
           <nav className="flex space-x-6">
             <button
               onClick={() => router.push("/booking")}
-              className="text-gray-400 pb-4 text-sm font-medium hover:text-[#6844C7] transition"
+              className="text-gray-400 pb-4 text-sm font-medium hover:text-accent transition"
             >
               Tempahan
             </button>
 
-            <button className="border-b-2 border-[#6844C7] pb-4 text-sm font-semibold text-[#6844C7]">
+            <button className="border-b-2 border-accent pb-4 text-sm font-semibold text-accent">
               Sejarah
             </button>
           </nav>
@@ -217,7 +217,7 @@ export default function BookingHistoryPage() {
 
                 <button
                   onClick={confirmCancel}
-                  className="flex-1 bg-[#6844C7] text-white rounded-xl py-2 text-sm hover:bg-purple-500"
+                  className="flex-1 bg-accent text-white rounded-xl py-2 text-sm hover:bg-purple-500"
                 >
                   Batalkan
                 </button>

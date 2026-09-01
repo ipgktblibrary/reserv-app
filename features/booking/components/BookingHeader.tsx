@@ -15,11 +15,11 @@ export default function BookingHeader() {
       />
 
       <div className="absolute inset-0 bg-black/55" />
-      <div className="absolute inset-0 bg-linear-to-r from-[#6844C7]/60 via-[#6844C7]/20 to-transparent" />
+      <div className="absolute inset-0 bg-linear-to-r from-accent/60 via-[#6844C7]/20 to-transparent" />
       <div className="relative flex items-start justify-between gap-4 p-6">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-white">
-            Sistem Tempahan Perpustakaan Za’ba
+            Sistem Tempahan
           </h1>
 
           <p className="mt-2 text-sm text-white/80">

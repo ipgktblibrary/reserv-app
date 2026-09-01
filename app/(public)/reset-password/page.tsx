@@ -79,7 +79,7 @@ export default function ResetPasswordPage() {
 
           <button
             disabled={loading}
-            className="w-full rounded-xl bg-[#6844C7] py-3 text-white mt-3"
+            className="w-full rounded-xl bg-accent py-3 text-white mt-3"
           >
             {loading ? "Menyimpan..." : "Tukar Password"}
           </button>

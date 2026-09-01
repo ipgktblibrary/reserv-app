@@ -106,7 +106,7 @@ export default function TutorialGatePage() {
 
         {/* Footer */}
         <p className="text-center text-xs text-neutral-400 pb-2.5">
-          <div>© Perpustakaan Za’ba IPG Kampus Tuanku Bainun</div>
+          <div>© IPG Kampus Tuanku Bainun</div>
         </p>
       </div>
     </div>

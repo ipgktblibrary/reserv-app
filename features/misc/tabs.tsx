@@ -24,7 +24,7 @@ export function Tabs() {
             className={[
               "pb-3 text-sm font-medium border-b-2 transition",
               active
-                ? "border-[#6844C7] text-[#6844C7]"
+                ? "border-accent text-accent"
                 : "border-transparent text-neutral-400 hover:text-neutral-700",
             ].join(" ")}
           >

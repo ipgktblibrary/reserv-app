@@ -13,7 +13,7 @@ export default function InvalidResetPage() {
 
         <Link
           href="/forgot-password"
-          className="block w-full rounded-2xl bg-[#6844C7] py-3 text-center text-white mt-5"
+          className="block w-full rounded-2xl bg-accent py-3 text-center text-white mt-5"
         >
           Klik
         </Link>

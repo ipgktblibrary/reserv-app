@@ -49,7 +49,7 @@ export function ReservationCard({ reservation, onCancel }: Props) {
       <div
         className={[
           "absolute left-0 top-0 h-full w-1 rounded-l-xl",
-          isCancelled ? "bg-red-200" : "bg-[#6844C7]",
+          isCancelled ? "bg-red-200" : "bg-accent",
         ].join(" ")}
       />
 

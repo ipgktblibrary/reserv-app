@@ -44,8 +44,6 @@ export default function RoomSelector({
               onClick={() => onSelect(room.id)}
               className={[
                 "relative rounded-xl border p-5 text-left transition-all",
-                // "focus:outline-  focus:ring-[#6844C7]/30",
-
                 active
                   ? "border-accent bg-accent/10 shadow-sm"
                   : "border-default-200 bg-white hover:border-accent/40",
