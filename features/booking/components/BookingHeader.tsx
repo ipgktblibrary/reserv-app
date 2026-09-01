@@ -1,6 +1,6 @@
 "use client";
 
-import { useUserProfile } from "@/features/profile/hooks/useProfile";
+import { useUserProfile } from "@/features/profile/useProfile";
 
 export default function BookingHeader() {
   const { name } = useUserProfile();

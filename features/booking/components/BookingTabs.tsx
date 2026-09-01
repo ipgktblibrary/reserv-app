@@ -13,7 +13,7 @@ export default function BookingTabs() {
 
   return (
     <div className="mb-8 w-full border-b border-purple-100">
-      <nav className="-mb-px flex space-x-6 overflow-x-auto no-scrollbar scroll-smooth">
+      <nav className="-mb-px flex items-end space-x-6 overflow-x-auto no-scrollbar scroll-smooth">
         <button
           type="button"
           className="border-accent text-accent whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-semibold tracking-tight"
