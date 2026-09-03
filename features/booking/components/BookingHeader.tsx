@@ -19,7 +19,7 @@ export default function BookingHeader() {
       <div className="relative flex items-start justify-between gap-4 p-6">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-white">
-            Sistem Tempahan
+            Perpustakaan Zaaba
           </h1>
 
           <p className="mt-2 text-sm text-white/80">
