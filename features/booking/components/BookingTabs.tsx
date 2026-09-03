@@ -31,7 +31,7 @@ export default function BookingTabs() {
 
         {/* MASUKKAAN LINK GOOLGE DRIVE ATAU MAKLUMAT YANG BERKENAAN */}
         <a
-          href="https://google.com"
+          href="https://wa.me/60195426768/?text=Hai,Puan Diana"
           target="_blank"
           rel="noopener noreferrer"
           className="whitespace-nowrap border-b-2 border-transparent px-1 pb-4 text-sm font-medium text-gray-400 transition hover:text-accent"

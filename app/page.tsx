@@ -8,7 +8,9 @@ export default function HomePage() {
       {/* Navbar */}
       <header className="border-b border-gray-100 bg-white/80 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-          <Typography type="h5"> SISTEM TEMPAHAN </Typography>
+          <Typography type="h3" weight="bold">
+            PERPUSTAKAAN ZAABA{" "}
+          </Typography>
 
           <Button>
             <Link href="/signin">Log Masuk</Link>
@@ -31,7 +33,7 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-linear-to-br from-purple-900/40 via-transparent to-black/40" />
         <div className="relative mx-auto flex max-w-7xl flex-col items-center px-6 py-28 text-center">
           <span className="mb-5 rounded-full bg-white/10 backdrop-blur px-4 py-1 text-sm font-medium text-white">
-            Sistem Tempahan
+            Sistem Tempahan Perpustakaan Zaaba
           </span>
 
           <h2 className="max-w-3xl text-5xl font-bold tracking-tight text-white">
