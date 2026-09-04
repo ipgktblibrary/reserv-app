@@ -15,7 +15,7 @@ export async function forgotPassword(
   const normalizedEmail = email.trim().toLowerCase();
 
   const { error } = await supabase.auth.resetPasswordForEmail(normalizedEmail, {
-    redirectTo: "https://ipgktblib.vercel.app/reset-password",
+    redirectTo: "https://ipgktblib.vercel.app/auth/callback",
   });
 
   if (error) {

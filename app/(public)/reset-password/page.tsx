@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import { supabaseClient } from "@/lib/supabase/client";
 import { resetPassword } from "@/features/auth/actions/resetPassword";
@@ -10,23 +11,19 @@ export default function ResetPasswordPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const {
-      data: { subscription },
-    } = supabaseClient.auth.onAuthStateChange((event) => {
-      if (event === "PASSWORD_RECOVERY" || event === "SIGNED_IN") {
-        setReady(true);
-      }
-    });
+    const checkSession = async () => {
+      const {
+        data: { session },
+      } = await supabaseClient.auth.getSession();
 
-    supabaseClient.auth.getSession().then(({ data: { session } }) => {
       if (session) {
         setReady(true);
+      } else {
+        window.location.href = "/reset-password/invalid";
       }
-    });
-
-    return () => {
-      subscription.unsubscribe();
     };
+
+    checkSession();
   }, []);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -39,8 +36,8 @@ export default function ResetPasswordPage() {
       await resetPassword(password);
 
       setMessage("Password berjaya ditukar.");
-
       setPassword("");
+
       setTimeout(() => {
         window.location.href = "/signin";
       }, 1500);
@@ -53,15 +50,15 @@ export default function ResetPasswordPage() {
 
   if (!ready) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="flex min-h-screen items-center justify-center">
         {message || "Loading..."}
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
-      <div className="w-full max-w-md rounded-2xl bg-white border p-6">
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 p-6">
+      <div className="w-full max-w-md rounded-2xl border bg-white p-6">
         <h1 className="text-xl font-semibold">Reset Password</h1>
 
         <p className="mt-2 text-sm text-gray-500">Masukkan password baru</p>
@@ -78,8 +75,9 @@ export default function ResetPasswordPage() {
           />
 
           <button
+            type="submit"
             disabled={loading}
-            className="w-full rounded-xl bg-accent py-3 text-white mt-3"
+            className="mt-3 w-full rounded-xl bg-accent py-3 text-white"
           >
             {loading ? "Menyimpan..." : "Tukar Password"}
           </button>
