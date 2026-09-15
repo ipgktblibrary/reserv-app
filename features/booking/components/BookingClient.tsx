@@ -26,18 +26,47 @@ export default function BookingClient({
 }) {
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const { rooms } = useRooms();
+  const router = useRouter();
 
   const [user, setUser] = useState<Awaited<
     ReturnType<typeof getUserProfile>
   > | null>(null);
 
+  const [bookedSlotCount, setBookedSlotCount] = useState(0);
+  const booking = useBooking(
+    bookingSettings.max_slots_per_user_per_day,
+    bookedSlotCount,
+  );
+
   useEffect(() => {
     getUserProfile().then(setUser);
   }, []);
 
-  const router = useRouter();
+  useEffect(() => {
+    async function loadBookedSlotCount() {
+      if (!user?.id || !booking.bookingDate) {
+        setBookedSlotCount(0);
 
-  const booking = useBooking(bookingSettings.max_slots_per_user_per_day);
+        return;
+      }
+
+      const booker = await bookerService.ensure(user.id);
+
+      const reservations = await reservationService.getMyReservations(
+        booker.id,
+      );
+
+      const count = reservations.filter(
+        (reservation) =>
+          reservation.booking_date === booking.bookingDate &&
+          reservation.status === "confirmed",
+      ).length;
+
+      setBookedSlotCount(count);
+    }
+
+    loadBookedSlotCount();
+  }, [user?.id, booking.bookingDate]);
 
   const selectedRoom = rooms.find((room) => room.id === booking.selectedRoomId);
 
