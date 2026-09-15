@@ -70,13 +70,18 @@ export default function TimeSlotSelector({
 
           <ul className="mt-2 space-y-1 text-sm text-default-600">
             <li>
-              • Anda boleh memilih sehingga <strong>2 slot masa</strong>.
+              • Anda boleh memilih sehingga <strong>2 slot masa sehari</strong>.
             </li>
 
             <li>
               • Slot berwarna{" "}
               <span className="font-semibold text-danger">merah</span> telah
               ditempah dan tidak boleh dipilih.
+            </li>
+
+            <li>
+              • Menukar <strong>bilik</strong> atau <strong>tarikh</strong> akan
+              mengosongkan slot yang telah dipilih.
             </li>
 
             <li>• Sila pilih slot lain yang masih tersedia.</li>

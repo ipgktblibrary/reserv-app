@@ -98,12 +98,12 @@ export default function BookingClient({
           rooms={rooms}
           userRole={user?.role ?? null}
           selectedRoomId={booking.selectedRoomId}
-          onSelect={booking.setSelectedRoomId}
+          onSelect={booking.changeRoom}
         />
 
         <BookingDateSelector
           bookingDate={booking.bookingDate}
-          setBookingDate={booking.setBookingDate}
+          setBookingDate={booking.changeBookingDate}
           settings={bookingSettings}
         />
 

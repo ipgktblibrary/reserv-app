@@ -37,6 +37,16 @@ export function useBooking(maxSlotsPerUserPerDay: number) {
     });
   }
 
+  function changeRoom(roomId: string | null) {
+    setSelectedRoomId(roomId);
+    setSelectedSlots([]);
+  }
+
+  function changeBookingDate(date: string) {
+    setBookingDate(date);
+    setSelectedSlots([]);
+  }
+
   function updateForm(patch: Partial<BookingFormState>) {
     setForm((prev) => ({
       ...prev,
@@ -53,13 +63,13 @@ export function useBooking(maxSlotsPerUserPerDay: number) {
 
   return {
     selectedRoomId,
-    setSelectedRoomId,
+    changeRoom,
 
     selectedSlots,
     toggleSlot,
 
     bookingDate,
-    setBookingDate,
+    changeBookingDate,
 
     form,
     updateForm,
