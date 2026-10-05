@@ -10,7 +10,6 @@ import {
   Fredoka,
   Geist,
   Geist_Mono,
-  Google_Sans,
   Hanken_Grotesk,
   IBM_Plex_Mono,
   Instrument_Sans,
@@ -54,11 +53,6 @@ const dmSans = DM_Sans({
 
 const publicSans = Public_Sans({
   variable: "--font-public-sans",
-  subsets: ["latin"],
-});
-
-const googleSans = Google_Sans({
-  variable: "--font-google-sans",
   subsets: ["latin"],
 });
 
@@ -137,7 +131,6 @@ export default function RootLayout({
   ${geistMono.variable}
   ${dmSans.variable}
   ${publicSans.variable}
-  ${googleSans.variable}
   ${bricolageGrotesque.variable}
   ${varelaRound.variable}
   ${fraunces.variable}

@@ -31,15 +31,10 @@ export default function ProtectedLayout({
   if (loading) return null;
 
   return (
-    <>
-      {/* {children}
-      <MobileBottomNavigation /> */}
+    <div className="min-h-screen sm:pb-0">
+      <main className="pb-28 sm:pb-0">{children}</main>
 
-      <div className="min-h-screen sm:pb-0">
-        <main className="pb-28 sm:pb-0">{children}</main>
-
-        <MobileBottomNavigation />
-      </div>
-    </>
+      <MobileBottomNavigation />
+    </div>
   );
 }
