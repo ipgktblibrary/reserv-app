@@ -10,7 +10,7 @@
  * @see https://heroui.com/docs/react/getting-started/theming
  */
 
-:root:not([data-theme]),
+:root,
 .light,
 .default,
 [data-theme="light"],
@@ -49,8 +49,8 @@
   --warning-foreground: oklch(21.03% 0.0059 73.41);
 
   /* Border Radius */
-  --radius: 0;
-  --field-radius: 0;
+  --radius: 0.125rem;
+  --field-radius: 0.125rem;
 
   /* Font Family */
   /* Make sure to load Fraunces font in your app */

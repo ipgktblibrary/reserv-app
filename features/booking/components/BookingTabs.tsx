@@ -14,38 +14,38 @@ export default function BookingTabs() {
   return (
     <div className="mb-8 w-full border-b border-purple-100">
       <nav className="-mb-px flex items-end space-x-6 overflow-x-auto no-scrollbar scroll-smooth">
-        <button
+        {/* <button
           type="button"
           className="border-accent text-accent whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-semibold tracking-tight"
         >
           Tempahan Saya
-        </button>
+        </button> */}
 
-        <button
+        {/* <button
           type="button"
           onClick={() => router.push("/history")}
           className="border-transparent text-gray-400 hover:text-accent whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-medium transition"
         >
           Sejarah
-        </button>
+        </button> */}
 
         {/* MASUKKAAN LINK GOOLGE DRIVE ATAU MAKLUMAT YANG BERKENAAN */}
-        <a
+        {/* <a
           href="https://wa.me/60195426768/?text=Hai,Puan Diana"
           target="_blank"
           rel="noopener noreferrer"
           className="whitespace-nowrap border-b-2 border-transparent px-1 pb-4 text-sm font-medium text-gray-400 transition hover:text-accent"
         >
           Info
-        </a>
+        </a> */}
 
-        <button
+        {/* <button
           type="button"
           onClick={() => setConfirmOpen(true)}
           className="border-transparent text-gray-400 hover:text-red-500 whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-medium transition"
         >
           Log Keluar
-        </button>
+        </button> */}
 
         <ThemeSwitcher />
       </nav>

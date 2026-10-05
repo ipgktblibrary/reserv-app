@@ -18,6 +18,10 @@ export type RoomOverride = {
   blocked_reason: string | null;
 };
 
+export type RoomWithOverride = Room & {
+  override: RoomOverride | null;
+};
+
 export const roomService = {
   async getRooms(): Promise<Room[]> {
     const { data, error } = await supabaseClient
@@ -47,5 +51,35 @@ export const roomService = {
       throw new Error(`Failed to fetch room override: ${error.message}`);
     }
     return data;
+  },
+
+  async getRoomsForDate(date: string): Promise<RoomWithOverride[]> {
+    const { data: rooms, error: roomsError } = await supabaseClient
+      .from("rooms")
+      .select("*")
+      .order("id", { ascending: true });
+
+    if (roomsError) {
+      throw new Error(`Failed to fetch rooms: ${roomsError.message}`);
+    }
+
+    const { data: overrides, error: overridesError } = await supabaseClient
+      .from("room_overrides")
+      .select("*")
+      .eq("is_blocked", true)
+      .lte("start_date", date)
+      .gte("end_date", date);
+
+    if (overridesError) {
+      throw new Error(
+        `Failed to fetch room overrides: ${overridesError.message}`,
+      );
+    }
+
+    return (rooms ?? []).map((room) => ({
+      ...room,
+      override:
+        overrides?.find((override) => override.room_id === room.id) ?? null,
+    }));
   },
 };

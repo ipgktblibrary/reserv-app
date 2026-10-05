@@ -69,7 +69,8 @@ export default function BookingHistoryPage() {
         (a, b) =>
           new Date(b.booking_date).getTime() -
           new Date(a.booking_date).getTime(),
-      );
+      )
+      .slice(0, 5);
 
     const cancelled = reservations
       .filter((r) => r.status === "cancelled")
@@ -77,7 +78,8 @@ export default function BookingHistoryPage() {
         (a, b) =>
           new Date(b.booking_date).getTime() -
           new Date(a.booking_date).getTime(),
-      );
+      )
+      .slice(0, 5);
 
     return { active, cancelled };
   }, [reservations]);
@@ -86,7 +88,7 @@ export default function BookingHistoryPage() {
     <div className="min-h-screen bg-linear-to-b from-white via-purple-50/30 to-white flex justify-center px-4 py-8">
       <div className="w-full max-w-2xl">
         {/* TABS */}
-        <div className="mb-6 border-b border-purple-100">
+        {/* <div className="mb-6 border-b border-purple-100">
           <nav className="flex space-x-6">
             <button
               onClick={() => router.push("/booking")}
@@ -99,7 +101,7 @@ export default function BookingHistoryPage() {
               Sejarah
             </button>
           </nav>
-        </div>
+        </div> */}
 
         <div className="rounded-xl border border-yellow-200 bg-yellow-50 p-4 mb-5">
           {/* title */}
